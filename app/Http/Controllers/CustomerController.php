@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCustomerRequest;
+use App\Http\Requests\UpdateCustomerRequest;
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
 
 class CustomerController extends Controller
 {
@@ -14,7 +18,9 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('Customers/Index',[
+            'customers'=> Customer::Select(['id','name','contact','solde'])->paginate(10),
+        ]);
     }
 
     /**
@@ -24,52 +30,49 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Customers/Create',[]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+    public function store(StoreCustomerRequest $request)
     {
-        //
+        $validated = $request->validated();
+        //dd($validated);
+        Customer::create($validated);
+
+        return Redirect::route('customers.index')->with('success', "Customer added successfully");
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Customer $customer)
+
+    public function show( $customer)
     {
-        //
+        $customer= Customer::findOrFail($customer);
+       // dd($customer);
+        return Inertia::render('Customers/Edit',[
+            'customers'=> $customer,
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Customer $customer)
+
+    public function edit(int $customer, UpdateCustomerRequest $request)
     {
-        //
+        $customer= Customer::findOrFail($customer);
+        $validated = $request->validated();
+        //dd($validated);
+        $customer->update($validated);
+
+        return Redirect::back()->with('success', "Customer added successfully");
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Customer $customer)
+
+    public function update(UpdateCustomerRequest $request, $customer)
     {
-        //
+        $customer= Customer::findOrFail($customer);
+        $validated = $request->validated();
+        //dd($validated);
+        $customer->update($validated);
+
+        return Redirect::back()->with('success', "Customer added successfully");
     }
 
     /**

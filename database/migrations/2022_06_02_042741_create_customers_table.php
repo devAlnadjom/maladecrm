@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string("fiscal_code")->nullable();
             $table->boolean("active")->default(1);
             $table->integer("solde")->default(0);
+            $table->mediumText("Description")->nullable();
             $table->timestamps();
         });
     }
