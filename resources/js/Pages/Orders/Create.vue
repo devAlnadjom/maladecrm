@@ -1,5 +1,5 @@
 <script setup>
-import { ref, nextTick } from 'vue';
+import { ref, nextTick, watch, reactive, computed } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
@@ -28,38 +28,80 @@ const form = useForm({
 });
 
 const renderComponent = ref(true);
-
-const oneLigne = {
+var milestone = null;
+const oneLigne = reactive({
+    product_id: 1,
     name: '',
     description: '',
-    unit_price: 0,
+    is_service: true,
+    //unit_price: 0,
     total_price: 0,
-    quantity_price: 0,
-};
-const lignes = Array();
+    total_quantity: 0,
+    ligne_total: computed(() => oneLigne.total_quantity * oneLigne.total_price),
+});
+const lignes = reactive([]);
 
 const addLigne = () => {
+    if (milestone == null) {
+        milestone = oneLigne;
+        lignes.push({ ...milestone });
+    } else {
+        lignes[milestone] = { ...oneLigne };
+    }
 
-    lignes.push(oneLigne);
-
-    oneLigne.name = '';
-    oneLigne.description = '';
-    oneLigne.unit_price = 0;
-    oneLigne.total_price = 0;
-    oneLigne.quantity_price = 0;
+    milestone = null;
     forceRerender();
-   // event.preventDefault();
+    clearForm();
+    invoiceTotal();
+
 };
 
- const forceRerender=()=> {
-        // Removing my-component from the DOM
-        renderComponent.value = false;
+const removeItem = (index) => {
+    lignes.splice(index, 1);
+    invoiceTotal();
+}
 
-        nextTick(() => {
-          // Adding the component back in
-          renderComponent.value = true;
-        });
-      }
+const EditItem = (index) => {
+    let data = { ...lignes[index] };
+    // oneLigne = data;
+    oneLigne.product_id = data.product_id;
+    oneLigne.name = data.name;
+    oneLigne.description = data.description;
+    oneLigne.total_price = data.total_price;
+    oneLigne.total_quantity = data.total_quantity;
+    milestone = index;
+    //textUpdate
+}
+
+const invoiceTotal = () => {
+    let total = lignes.reduce((a, b) => a + b.ligne_total, 0);
+    console.log(total);
+    form.solde = total;
+}
+
+const clearForm = () => {
+
+    oneLigne.product_id = 1;
+    oneLigne.name = '';
+    oneLigne.description = '';
+    oneLigne.total_price = 0;
+    oneLigne.total_quantity = 0;
+};
+
+const forceRerender = () => {
+    // Removing my-component from the DOM
+    renderComponent.value = false;
+
+    nextTick(() => {
+        // Adding the component back in
+        renderComponent.value = true;
+    });
+}
+
+/* watch(oneLigne, (currentValue, oldValue) => {
+       console.log(currentValue);
+       oneLigne.ligne_total= oneLigne.total_price*currentValue
+   });*/
 
 const submit = () => {
     form.post(route('orders.store'), {
@@ -130,7 +172,8 @@ const submit = () => {
 
                                 <div class=".bg-gray-300">
 
-                                    <table v-if="renderComponent" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                    <table v-if="renderComponent"
+                                        class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                         <thead
                                             class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                             <tr>
@@ -152,7 +195,7 @@ const submit = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr class="bg-white dark:bg-gray-800 hover:bg-gray-100">
+                                            <!--tr class="bg-white dark:bg-gray-800 hover:bg-gray-100">
                                                 <td scope="row"
                                                     class="px-6 py-4 font-medium text-gray-900 dark:text-white">
                                                     <span>SERVICES</span>
@@ -176,73 +219,77 @@ const submit = () => {
                                                     <a
                                                         class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2">Delete</a>
                                                 </td>
-                                            </tr>
-                                            <template v-for="(lign, index) in lignes" :key="index">
-                                             <tr
-                                                class="bg-white dark:bg-gray-800 hover:bg-gray-100">
-                                                <td scope="row"
-                                                    class="px-6 py-4 font-medium text-gray-900 dark:text-white">
-                                                    <span>SERVICES</span>
-                                                    <div class=" max-w-xl  text-sm">lorem ipsum Lorem ipsum dolor sit
-                                                        amet consectetur adipisicing elit. Accusamus laborum maiores
-                                                        natus hic commodi maxime.</div>
+                                            </tr-->
+                                            <template v-for="(item, index) in lignes" :key="index">
+                                                <tr class="bg-white dark:bg-gray-800 hover:bg-gray-100">
+                                                    <td scope="row"
+                                                        class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                                                        <span>{{ item.name }}</span>
+                                                        <div class=" max-w-xl  text-sm">lorem ipsum Lorem ipsum dolor
+                                                            sit
+                                                            amet consectetur adipisicing elit. </div>
 
-                                                </td>
-                                                <td class="px-6 py-4">
-                                                    140000
-                                                </td>
-                                                <td class="px-6 py-4">
-                                                    1
-                                                </td>
-                                                <td class="px-6 py-4">
-                                                    14000
-                                                </td>
-                                                <td class="px-6 py-4 text-right">
-                                                    <a
-                                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                                                    <a
-                                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2">Delete</a>
-                                                </td>
-                                            </tr>
-                                            </template >
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        {{ item.total_price }}
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        {{ item.total_quantity }}
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        {{ item.ligne_total }}
+                                                    </td>
+                                                    <td class="px-6 py-4 text-right">
+                                                        <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                                                            @click="EditItem(index)">Edit</a>
+                                                        <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2"
+                                                            @click="removeItem(index)">Delete</a>
+                                                    </td>
+                                                </tr>
+                                            </template>
 
                                         </tbody>
                                     </table>
 
-                                    <div class="mt-4 flex flex-row gap-1 w-full">
-                                        <div class="w-2/5">
+                                    <div v-if="renderComponent" class="mt-4 flex flex-row gap-1 w-full">
+                                        <div class="w-1/2">
                                             <JetLabel for="address" value="Nom" />
-                                            <JetInput id="address" v-model="form.address" type="text"
+                                            <JetInput id="address" v-model="oneLigne.name" type="text"
                                                 class="mt-1 block w-full" />
                                         </div>
 
 
-                                        <div class="w-1/5">
-                                            <JetLabel for="fiscal_code" value="Quantite" />
-                                            <JetInput id="fiscal_code" v-model="form.fiscal_code" type="text"
+                                        <div class="w-1/6">
+                                            <JetLabel for="qty" value="Quantite" />
+                                            <JetInput id="qty" v-model="oneLigne.total_quantity" type="number"
                                                 class="mt-1 block w-full" />
                                         </div>
-                                        <div class="w-1/5">
-                                            <JetLabel for="fiscal_code" value="PU" />
-                                            <JetInput id="fiscal_code" v-model="form.fiscal_code" type="text"
+                                        <div class="w-2/6">
+                                            <JetLabel for="pu" value="PU" />
+                                            <JetInput id="pu" v-model="oneLigne.total_price" type="number"
                                                 class="mt-1 block w-full" />
                                         </div>
-                                        <div class="w-1/5">
-                                            <JetLabel for="fiscal_code" value="Pt" />
-                                            <JetInput id="fiscal_code" v-model="form.fiscal_code" type="text"
-                                                class="mt-1 block w-full" />
+                                        <div class="w-2/6">
+                                            <JetLabel for="" value="Pt" />
+                                            <span class="mt-1 block w-full px-5 py-2 rounded  border border-black "
+                                                readonly="true">{{ oneLigne.ligne_total }}</span>
+                                        </div>
+                                        <div class="w-1/6">
+
+                                                <button type="button" v-if="milestone!==null"
+                                                    class="text-sm my-5 px-4 py-1 rounded  border border-black hover:bg-black hover:text-white text-black "
+                                                    v-on:click.prevent="addLigne">
+                                                    Update
+                                                </button>
+                                                <button type="button" v-if="milestone===null"
+                                                    class="text-sm px-4 mt-6 py-2 rounded  border border-black hover:bg-black hover:text-white text-black "
+                                                    v-on:click.prevent="addLigne">
+                                                   + Add
+                                                </button>
+
                                         </div>
                                     </div>
-                                    <div class="flex items-center justify-end mt-4 gap-4">
-                                        <button class="underline text-sm text-gray-600 hover:text-gray-900">
-                                            Clear
-                                        </button>
 
-                                        <button type="button" class="underline text-sm px-4 py-1 rounded  border border-black hover:bg-black hover:text-white text-black "
-                                            v-on:click.prevent="addLigne" >
-                                            Add
-                                        </button>
-                                    </div>
                                 </div>
 
                                 <h3 class=" text-2xl mt-3">Info Commandes</h3>

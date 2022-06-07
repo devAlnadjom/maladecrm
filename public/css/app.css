@@ -1002,6 +1002,14 @@ select {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
 }
+.my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.my-5 {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
 .ml-3 {
   margin-left: 0.75rem;
 }
@@ -1082,6 +1090,9 @@ select {
 }
 .mb-1 {
   margin-bottom: 0.25rem;
+}
+.-mt-4 {
+  margin-top: -1rem;
 }
 .block {
   display: block;
@@ -1199,6 +1210,12 @@ select {
 }
 .w-1\/5 {
   width: 20%;
+}
+.w-2\/6 {
+  width: 33.333333%;
+}
+.w-1\/6 {
+  width: 16.666667%;
 }
 .min-w-0 {
   min-width: 0px;
@@ -1585,6 +1602,10 @@ select {
 .py-10 {
   padding-top: 2.5rem;
   padding-bottom: 2.5rem;
+}
+.px-5 {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
 }
 .pt-6 {
   padding-top: 1.5rem;
