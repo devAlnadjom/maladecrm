@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreOrderRequest;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class OrderController extends Controller
@@ -28,14 +30,29 @@ class OrderController extends Controller
     }
 
 
-    /*public function store(StoreCustomerRequest $request)
+    public function store(StoreOrderRequest $request)
     {
-        $validated = $request->validated();
+        $validated = $request->safe()->except(['products']);;
         //dd($validated);
-        Customer::create($validated);
+        $products = $request->safe()->only(['products'])['products'] ;
+        $order= Order::create($validated);
 
-        return Redirect::route('customers.index')->with('success', "Customer added successfully");
-    }*/
+        //dd($products);
+        foreach ($products as $product){
+
+            $order->products()->attach($product['product_id'],[
+                'name'=> $product['name'],
+                'description'=> $product['description'],
+                'is_service'=> $product['is_service'],
+                'total_price'=> $product['total_price'],
+                'total_quantity'=> $product['total_quantity'],
+               // 'ligne_total'=>$product['ligne_total']
+            ]);
+        }
+
+
+        return Redirect::route('orders.index')->with('success', "Order added successfully");
+    }
 
 
 }

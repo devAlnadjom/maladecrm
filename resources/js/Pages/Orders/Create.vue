@@ -15,17 +15,21 @@ defineProps({
 
 
 const form = useForm({
-    name: '',
-    email: '',
-    address: '',
-    country: 'Congo',
-    contact: '',
-    telephone: '',
-    fiscal_code: '',
-    description: '',
-    solde: 0,
-    active: true,
-    date_orde: null,
+
+    customer_id:1,
+    date_order: null,
+    due_date_order:null,
+    total_order:0,
+    tax_1_percentage:0,
+    tax_2_percentage:0,
+    tax_1_amount:0,
+    tax_2_amount:0,
+    ttc_total_order:0,
+    order_status: 1,
+    order_comment: '',
+    remise_order:0,
+    ref_customer:'',
+    products:null,
 });
 
 const renderComponent = ref(true);
@@ -44,6 +48,16 @@ const oneLigne = reactive({
 const lignes = reactive([]);
 
 const addLigne = () => {
+    if(oneLigne.total_quantity<1){
+        alert("Quantity must be more than one.");
+        return;
+    }
+    if((oneLigne.name).length < 3 && oneLigne.product_id==1){
+        alert("Please Provide a correct description.");
+        console.log((oneLigne.name).length);
+        return;
+    }
+
     if (milestone == null) {
         milestone = oneLigne;
         lignes.push({ ...milestone });
@@ -78,11 +92,13 @@ const EditItem = (index) => {
 const invoiceTotal = () => {
     let total = lignes.reduce((a, b) => a + b.ligne_total, 0);
     console.log(total);
-    form.solde = total;
+    form.total_order = total;
+    form.tax_1_amount = (total*(form.tax_1_percentage/100));
+    form.tax_2_amount = (total*(form.tax_2_percentage/100));
+    form.ttc_total_order = total+ form.tax_1_amount + form.tax_2_amount;
 }
 
 const clearForm = () => {
-
     oneLigne.product_id = 1;
     oneLigne.name = '';
     oneLigne.description = '';
@@ -91,11 +107,9 @@ const clearForm = () => {
 };
 
 const forceRerender = () => {
-    // Removing my-component from the DOM
     renderComponent.value = false;
 
     nextTick(() => {
-        // Adding the component back in
         renderComponent.value = true;
     });
 }
@@ -111,8 +125,11 @@ const toogleForm = () => {
    });*/
 
 const submit = () => {
+    form.products= lignes;
+    console.table(form.products);
+
     form.post(route('orders.store'), {
-        onFinish: () => form.reset(),
+        onSuccess: () => form.reset(),
     });
 };
 </script>
@@ -148,17 +165,11 @@ const submit = () => {
                             <form @submit.prevent="submit">
                                 <div class="flex mb-8 justify-between">
                                     <div class="w-2/4">
-                                        <div class="mb-2 md:mb-1 md:flex items-center">
+                                        <div class="mb-2 md:mb-5 md:flex items-center">
                                             <label
-                                                class="w-32 text-gray-800 block font-bold text-sm uppercase tracking-wide">Facture
-                                                No.</label>
-                                            <span class="mr-4 inline-block hidden md:block">:</span>
-                                            <div class="flex-1">
-                                                <input
-                                                    class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-48 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500"
-                                                    id="inline-full-name" type="text" placeholder="eg. #INV-100001"
-                                                    >
-                                            </div>
+                                                class="w-32 text-gray-800 block font-bold text-xl uppercase tracking-wide">Facture
+                                            </label>
+
                                         </div>
 
                                         <div class="mb-2 md:mb-1 md:flex items-center">
@@ -168,7 +179,7 @@ const submit = () => {
                                             <span class="mr-4 inline-block hidden md:block">:</span>
                                             <div class="flex-1">
 
-                                                    <JetInput  v-model="form.date_orde" type="date"
+                                                    <JetInput  v-model="form.date_order" type="date"
                                                         class="mt-1 block w-48 bg-gray-100 border-0" placeholder="eg. 17 Feb, 2020" />
                                             </div>
                                         </div>
@@ -180,7 +191,7 @@ const submit = () => {
                                             <span class="mr-4 inline-block hidden md:block">:</span>
                                             <div class="flex-1">
 
-                                                    <JetInput  v-model="form.date_orde" type="date"
+                                                    <JetInput  v-model="form.due_date_order" type="date"
                                                         class="mt-1 block w-48 bg-gray-100 border-0" placeholder="eg. 17 Feb, 2020" />
                                             </div>
                                         </div>
@@ -217,22 +228,18 @@ const submit = () => {
                                 <div class="mt-4 flex flex-row justify-between w-full">
                                     <div class="w-full lg:w-1/3">
                                         <h5>Client</h5>
-                                        <JetInput id="contact" v-model="form.contact" type="text"
-                                            class="mt-1 block w-full bg-gray-100 border-0" placeholder="Contact" />
-                                        <JetInput id="telephone" v-model="form.telephone" type="text"
+                                        <JetInput v-model="form.ref_customer" type="text"
+                                            class="mt-1 block w-full bg-gray-100 border-0" placeholder="Reference" />
+                                        <JetInput id="telephone" v-model="form.ref_customer" type="text"
                                             class="mt-1 block w-full bg-gray-100 border-0" placeholder="Telephone" />
-                                        <JetInput id="address" v-model="form.address" type="text"
-                                            class="mt-1 block w-full bg-gray-100 border-0" />
 
-                                        <JetInput id="fiscal_code" v-model="form.fiscal_code" type="text"
-                                            class="mt-1 block w-full bg-gray-100 border-0" />
                                     </div>
 
 
                                     <div class="w-full lg:w-1/3">
                                         <h5>De</h5>
-                                        <JetInput id="contact" v-model="form.contact" type="text"
-                                            class="mt-1 block w-full bg-gray-100 border-0" placeholder="Contact" />
+                                        <JetInput v-model="form.ref_customer" type="text"
+                                            class="mt-1 block w-full bg-gray-100 border-0" placeholder="Client Info" />
                                     </div>
                                 </div>
 
@@ -249,10 +256,10 @@ const submit = () => {
                                                     Designation
                                                 </th>
                                                 <th scope="col" class="px-6 py-3">
-                                                    Pu
+                                                    P. Unit.
                                                 </th>
                                                 <th scope="col" class="px-6 py-3">
-                                                    Qt
+                                                    Quantity
                                                 </th>
                                                 <th scope="col" class="px-6 py-3">
                                                     Montant Total
@@ -268,10 +275,8 @@ const submit = () => {
                                                 <tr class="bg-white dark:bg-gray-800 hover:bg-gray-100">
                                                     <td scope="row"
                                                         class="px-6 py-4 font-medium text-gray-900 dark:text-white">
-                                                        <span CLASS="font-bold">{{ item.name }}</span>
-                                                        <div class=" max-w-xl  text-sm">lorem ipsum Lorem ipsum dolor
-                                                            sit
-                                                            amet consectetur adipisicing elit. </div>
+                                                        <span class="font-bold">{{ item.name }}</span>
+                                                        <div class=" max-w-xl  text-sm">{{item.description}}</div>
 
                                                     </td>
                                                     <td class="px-6 py-4">
@@ -297,41 +302,37 @@ const submit = () => {
 
                                     <div v-if="renderComponent && openForm" class="mt-5 flex flex-row gap-1 w-full">
                                         <div class="w-1/2">
-                                            <JetLabel for="address" value="Nom" />
-                                            <JetInput id="address" v-model="oneLigne.name" type="text"
+                                            <JetInput v-model="oneLigne.name" type="text" placeholder="Product Name"
                                                 class="mt-1 block w-full" />
                                         </div>
 
 
                                         <div class="w-1/6">
-                                            <JetLabel for="qty" value="Quantite" />
-                                            <JetInput id="qty" v-model="oneLigne.total_quantity" type="number"
+                                            <JetInput id="qty" v-model="oneLigne.total_quantity" type="number" placeholder="Quantity"
                                                 class="mt-1 block w-full" />
                                         </div>
                                         <div class="w-2/6">
-                                            <JetLabel for="pu" value="PU" />
-                                            <JetInput id="pu" v-model="oneLigne.total_price" type="number"
+                                            <JetInput id="pu" v-model="oneLigne.total_price" type="number" placeholder="Unit Price"
                                                 class="mt-1 block w-full" />
                                         </div>
                                         <div class="w-2/6">
-                                            <JetLabel for="" value="Pt" />
                                             <span class="mt-1 block w-full px-5 py-2 rounded  border border-black "
                                                 readonly="true">{{ oneLigne.ligne_total }}</span>
                                         </div>
                                         <div class="w-1/6">
 
-                                            <button type="button" v-if="milestone !== null"
-                                                class="text-sm my-5 px-4 py-1 rounded  border border-black hover:bg-black hover:text-white text-black "
+                                            <button type="button" v-if="milestone != null"
+                                                class="text-sm mt-1 px-4 py-1 rounded  border border-black hover:bg-black hover:text-white text-black "
                                                 v-on:click.prevent="addLigne">
                                                 Update
                                             </button>
-                                            <button type="button" v-if="milestone === null"
-                                                class="text-sm px-4 mt-6 py-2 rounded  border border-black hover:bg-black hover:text-white text-black "
+                                            <button type="button" v-if="milestone == null"
+                                                class="text-sm px-4 mt-1 py-2 rounded  border border-black hover:bg-black hover:text-white text-black "
                                                 v-on:click.prevent="addLigne">
                                                 + Add
                                             </button>
                                             <button type="button" v-if="milestone === null"
-                                                class="text-sm px-4 mt-6 py-1 rounded  hover:text-red-500 text-red-900 hover:overline"
+                                                class="text-sm px-4 mt-3 py-1 rounded  hover:text-red-500 text-red-900  hover:underline"
                                                 v-on:click.prevent="toogleForm">
                                                 Close
                                             </button>
@@ -349,21 +350,29 @@ const submit = () => {
                                 <div class="mt-8 flex flex-row gap-4 w-full">
                                     <div class="w-full lg:w-1/2">
                                         <JetLabel for="description" value="Info Supplementaires" />
-                                        <textarea id="description" rows="3" v-model="form.description" type="text"
+                                        <textarea id="description" rows="3" v-model="form.order_comment" type="text"
                                             placeholder="Fill for extra information"
                                             class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full"></textarea>
                                     </div>
                                     <div class="py-2 ml-auto mt-3 w-full sm:w-2/4 lg:w-1/3">
                                         <div class="flex justify-between mb-3">
-                                            <div class="text-gray-800 text-right flex-1">Total incl. Taxe</div>
+                                            <div class="text-gray-800 text-right flex-1">Total Brut</div>
                                             <div class="text-right w-40">
-                                                <div class="text-gray-800 font-medium">{{ form.solde }}</div>
+                                                <div class="text-gray-800 font-medium">{{ form.total_order }}</div>
                                             </div>
                                         </div>
                                         <div class="flex justify-between mb-4">
-                                            <div class="text-sm text-gray-600 text-right flex-1">Taxe incl. Total</div>
+                                            <div class="text-sm text-gray-600 text-right flex-1">
+                                                <select class="text-gray-700 block appearance-none w-full bg-gray-200 border-2 border-gray-200 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-blue-500"
+                                                    v-model="form.tax_1_percentage" @change="invoiceTotal()">
+                                                    <option value="0">Taxe 0%</option>
+                                                    <option value="5">Tax 5%</option>
+                                                    <option value="12">TVA 12%</option>
+                                                    <option value="18">TVA 18%</option>
+                                                </select>
+                                            </div>
                                             <div class="text-right w-40">
-                                                <div class="text-sm text-gray-600">0</div>
+                                                <div class="text-sm text-gray-600">{{form.tax_1_amount}}</div>
                                             </div>
                                         </div>
 
@@ -371,24 +380,14 @@ const submit = () => {
                                             <div class="flex justify-between">
                                                 <div class="text-xl text-gray-600 text-right flex-1">Montant due</div>
                                                 <div class="text-right w-40">
-                                                    <div class="text-xl text-gray-800 font-bold">0</div>
+                                                    <div class="text-xl text-gray-800 font-bold">{{ form.ttc_total_order }}</div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="mt-4">
-                                    <JetLabel for="active">
-                                        <div class="flex items-center">
-                                            <JetCheckbox id="active" v-model:checked="form.active" name="active" />
 
-                                            <div class="ml-2">
-                                                Active
-                                            </div>
-                                        </div>
-                                    </JetLabel>
-                                </div>
 
                                 <div class="flex items-center justify-end mt-4">
                                     <button class="underline text-sm text-gray-600 hover:text-gray-900">
