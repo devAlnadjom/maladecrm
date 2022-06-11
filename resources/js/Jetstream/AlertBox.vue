@@ -9,8 +9,8 @@ let open = ref(true);
 
 
 onMounted(() => {
-    open.value = ref(props.on);
-    setTimeout(() => {open.value = false}, 3000)
+    open.value = props.on;
+    //setTimeout(() => {open.value = false}, 5000)
 });
 </script>
 

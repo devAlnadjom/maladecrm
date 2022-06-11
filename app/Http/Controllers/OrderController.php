@@ -73,14 +73,24 @@ class OrderController extends Controller
         $order = Order::findOrFail($id);
         if ($order->order_key=""){}else{}
 
-            $order->products->detach();
+            $order->products()->detach();
             $validated = $request->safe()->except(['products','id','order_key']);
+            $order->update($validated);
 
-       /* return Inertia::render('Orders/Edit',[
-            'order' => $order,
-        ]);*/
+            $products = $request->safe()->only(['products'])['products'] ;
 
-        return Redirect::route('orders.index')->with('success', "Order added successfully");
+            foreach ($products as $product){
+            $order->products()->attach($product['product_id'],[
+                'name'=> $product['name'],
+                'description'=> $product['description'],
+                'is_service'=> $product['is_service'],
+                'total_price'=> $product['total_price'],
+                'total_quantity'=> $product['total_quantity'],
+               // 'ligne_total'=>$product['ligne_total']
+            ]);
+        }
+
+        return Redirect::back()->with('success', "Order Updated successfully");
     }
 
 

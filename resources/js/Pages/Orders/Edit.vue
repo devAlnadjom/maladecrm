@@ -8,6 +8,7 @@ import JetInput from '@/Jetstream/Input.vue';
 import JetCheckbox from '@/Jetstream/Checkbox.vue';
 import JetLabel from '@/Jetstream/Label.vue';
 import JetValidationErrors from '@/Jetstream/ValidationErrors.vue';
+import AlertBox from '@/Jetstream/AlertBox.vue';
 
 const props = defineProps({
     order: Object,
@@ -38,6 +39,7 @@ const form = useForm({
 const renderComponent = ref(true);
 var milestone = null;
 const openForm= ref(false);
+const showAlert= ref(true);
 const oneLigne = reactive({
     product_id: 1,
     name: '',
@@ -46,7 +48,7 @@ const oneLigne = reactive({
     //unit_price: 0,
     total_price: 0,
     total_quantity: 0,
-    ligne_total: 0 //computed(() => oneLigne.total_quantity * oneLigne.total_price),
+    ligne_total: 0
 });
 const lignes =props.order[0]?.products;
 
@@ -146,8 +148,8 @@ const submit = () => {
         } );
     //console.table(form.products);
 
-    form.post(route('orders.update'), {
-        onSuccess: () => form.reset(),
+    form.post(route('orders.update', props.order[0]?.id,), {
+        onSuccess: () => {clearForm(); form.products=[], showAlert.value=true; setTimeout(() => {showAlert.value = false}, 5000)},
     });
 };
 
@@ -163,7 +165,7 @@ onMounted(() => {
         <div class="py-8 px-3">
             <div class="flex flex-row justify-between">
                 <h3>
-                    <Link class="text-xl" :href="route('orders.index')">Custommers Management</Link> / Create New
+                    <Link class="text-xl" :href="route('orders.index')">Custommers Management</Link> / Update Facture
                 </h3>
                 <div class="flex flex-row justify-end">
                     <Link :href="route('orders.create')"
@@ -180,6 +182,8 @@ onMounted(() => {
 
             </div>
             <div class="mt-5">
+                <AlertBox v-if="showAlert" :flash="$page.props.flash" :on="showAlert" class="mr-3"></AlertBox>
+
                 <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
                     <div class="">
                         <JetValidationErrors class="mb-4 " />
