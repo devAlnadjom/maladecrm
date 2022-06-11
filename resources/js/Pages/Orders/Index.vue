@@ -10,6 +10,9 @@ defineProps({
     orders: Object,
 });
 
+const  formatMoney=(number) =>{
+   return 'XAF '+ number.toLocaleString('en-US');
+};
 
 /*const logout = () => {
     Inertia.post(route('logout'));
@@ -20,7 +23,7 @@ defineProps({
     <AppLayout title="Custommers Management">
 
 
-        <div class="py-8 px-3">
+        <div class="py-8 xl:px-10 px-3">
             <div class="flex flex-row justify-between">
                 <h3 class="text-xl">Orders Management</h3>
                 <div class="flex flex-row justify-end">
@@ -50,7 +53,7 @@ defineProps({
                                     Name
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Adresse
+                                    status
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                     Montant
@@ -67,16 +70,21 @@ defineProps({
                                     {{ order.customer_id }}-{{ order?.order_key }}
                                 </th>
                                 <td class="px-6 py-4">
-                                    {{ order?.customer.name }}
+                                    <p class=" font-bold">{{ order?.customer.name }} </p>
+                                    <p class="">{{ order?.ref_customer }}</p>
+
                                 </td>
                                 <td class="px-6 py-4">
-                                    Accessories
+
+                                    <span v-if="order?.order_status==1" class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
+                                        Created
+                                    </span>
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{ order?.montant_total}}
+                                    {{ formatMoney(order?.ttc_total_order)}}
                                 </td>
                                 <td class="px-6 py-4 text-right">
-                                    <Link :href="route('orders.show', order.id)"
+                                    <Link :href="route('orders.edit', order.id)"
                                         class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</Link>
                                     <Link :href="route('orders.show', order.id)"
                                         class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2">Invoice</Link>

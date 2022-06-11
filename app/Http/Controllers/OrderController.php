@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOrderRequest;
+use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -53,6 +54,36 @@ class OrderController extends Controller
 
         return Redirect::route('orders.index')->with('success', "Order added successfully");
     }
+
+
+    public function edit(int $id)
+    {
+        $order = Order::findOrFail($id)
+                ->with('products')
+                ->get();
+
+        return Inertia::render('Orders/Edit',[
+            'order' => $order,
+        ]);
+    }
+
+
+    public function update(UpdateOrderRequest $request , int $id)
+    {
+        $order = Order::findOrFail($id);
+        if ($order->order_key=""){}else{}
+
+            $order->products->detach();
+            $validated = $request->safe()->except(['products','id','order_key']);
+
+       /* return Inertia::render('Orders/Edit',[
+            'order' => $order,
+        ]);*/
+
+        return Redirect::route('orders.index')->with('success', "Order added successfully");
+    }
+
+
 
 
 }
