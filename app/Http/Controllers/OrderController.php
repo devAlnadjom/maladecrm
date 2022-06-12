@@ -15,6 +15,7 @@ class OrderController extends Controller
     {
         return Inertia::render('Orders/Index',[
             'orders'=> Order::Select()
+                    ->where('company_id',auth()->user()->company->id)
                     ->with('customer:id,name')
             ->paginate(10),
         ]);
@@ -27,14 +28,15 @@ class OrderController extends Controller
      */
     public function create()
     {
+        //$company =auth()->user()->company();
+        //$customers =$company->customers();
         return Inertia::render('Orders/Create',[]);
     }
 
 
     public function store(StoreOrderRequest $request)
     {
-        $validated = $request->safe()->except(['products']);;
-        //dd($validated);
+        $validated = $request->safe()->except(['products']);
         $products = $request->safe()->only(['products'])['products'] ;
         $order= Order::create($validated);
 
@@ -47,7 +49,6 @@ class OrderController extends Controller
                 'is_service'=> $product['is_service'],
                 'total_price'=> $product['total_price'],
                 'total_quantity'=> $product['total_quantity'],
-               // 'ligne_total'=>$product['ligne_total']
             ]);
         }
 
@@ -58,7 +59,7 @@ class OrderController extends Controller
 
     public function edit(int $id)
     {
-        $order = Order::findOrFail($id)
+        $order = Order::Where('id',$id)
                 ->with('products')
                 ->get();
 
@@ -70,13 +71,16 @@ class OrderController extends Controller
 
     public function update(UpdateOrderRequest $request , int $id)
     {
-        $order = Order::findOrFail($id);
-        if ($order->order_key=""){}else{}
+        $order = Order::findOrFail($id);//('id',$id)->get();
+
+        $validated = $request->safe()->except(['products','id']);
+
+        if ($order->order_key!=$validated['order_key'] || $order->company_id != auth()->user()->company->id){
+            abort(404,"Unable to check this Order.",);
+        }
 
             $order->products()->detach();
-            $validated = $request->safe()->except(['products','id','order_key']);
             $order->update($validated);
-
             $products = $request->safe()->only(['products'])['products'] ;
 
             foreach ($products as $product){
@@ -86,9 +90,10 @@ class OrderController extends Controller
                 'is_service'=> $product['is_service'],
                 'total_price'=> $product['total_price'],
                 'total_quantity'=> $product['total_quantity'],
-               // 'ligne_total'=>$product['ligne_total']
             ]);
         }
+
+        //if status equal validated then update customer sole, and create new transaction.
 
         return Redirect::back()->with('success', "Order Updated successfully");
     }

@@ -44,6 +44,7 @@ class StoreOrderRequest extends FormRequest
             "date_order"=>"date",
             "due_date_order"=>"date",
             "products"=>"array",
+            "company_id"=>"numeric",
         ];
     }
 
@@ -53,6 +54,7 @@ class StoreOrderRequest extends FormRequest
         $this->merge([
             'order_key' => sha1(time()),
             'order_status' => 1,
+            'company_id' => auth()->user()->company->id,
         ]);
     }
 }

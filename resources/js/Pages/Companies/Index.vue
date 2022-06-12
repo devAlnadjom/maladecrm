@@ -7,12 +7,9 @@ import JetDropdownLink from '@/Jetstream/DropdownLink.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import Pagination from '../../Jetstream/Pagination.vue';
 defineProps({
-    orders: Object,
+    customers: Object,
 });
 
-const  formatMoney=(number) =>{
-   return 'XAF '+ number.toLocaleString('en-US');
-};
 
 /*const logout = () => {
     Inertia.post(route('logout'));
@@ -20,21 +17,21 @@ const  formatMoney=(number) =>{
 </script>
 
 <template>
-    <AppLayout title="Custommers Management">
+    <AppLayout title="Dashboard">
 
 
-        <div class="py-8 xl:px-10 px-3">
+        <div class="py-8 px-3">
             <div class="flex flex-row justify-between">
-                <h3 class="text-xl">Orders Management</h3>
+                <h3 class="text-xl">Custommers Management</h3>
                 <div class="flex flex-row justify-end">
-                    <Link :href="route('orders.create')"
+                    <Link :href="route('customers.create')"
                         class="flex items-center mx-2 justify-between w-40 px-4 py-2 text-sm font-medium leading-5 text-purple-600  hover:text-white transition-colors duration-150 border border-purple-600 rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
                         Payment
                         <span class="ml-2" aria-hidden="true">+</span>
                     </Link>
-                    <Link :href="route('orders.create')"
+                    <Link :href="route('customers.create')"
                         class="flex items-center justify-between w-40 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                        Create order
+                        Create Customer
                         <span class="ml-2" aria-hidden="true">+</span>
                     </Link>
                 </div>
@@ -47,16 +44,16 @@ const  formatMoney=(number) =>{
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
-                                   Ref
+                                    Company
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Name
+                                    Contact
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    status
+                                    Adresse
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Montant
+                                    Solde
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                     <span class="sr-only">Action</span>
@@ -64,29 +61,24 @@ const  formatMoney=(number) =>{
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="order in orders.data" :key="order.id" class="bg-white dark:bg-gray-800 hover:bg-gray-100">
+                            <tr v-for="customer in customers.data" :key="customer.id" class="bg-white dark:bg-gray-800 hover:bg-gray-100">
                                 <th scope="row"
                                     class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                    ORD- {{ order.id }}
+                                    {{ customer.name }}
                                 </th>
                                 <td class="px-6 py-4">
-                                    <p class=" font-bold">{{ order?.customer.name }} </p>
-                                    <p class="">{{ order?.ref_customer }}</p>
-
+                                    {{ customer?.contact }}
                                 </td>
                                 <td class="px-6 py-4">
-
-                                    <span v-if="order?.order_status==1" class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                                        Created
-                                    </span>
+                                    Accessories
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{ formatMoney(order?.ttc_total_order)}}
+                                    {{ customer?.solde}}
                                 </td>
                                 <td class="px-6 py-4 text-right">
-                                    <Link :href="route('orders.edit', order.id)"
+                                    <Link :href="route('customers.show', customer.id)"
                                         class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</Link>
-                                    <Link :href="route('orders.show', order.id)"
+                                    <Link :href="route('customers.show', customer.id)"
                                         class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2">Invoice</Link>
                                 </td>
                             </tr>
@@ -97,7 +89,7 @@ const  formatMoney=(number) =>{
 
                 </div>
                 <div class="mt-3 flex flex-row-reverse ">
-                    <Pagination :links="orders.links" />
+                    <Pagination :links="customers.links" />
                 </div>
             </div>
         </div>

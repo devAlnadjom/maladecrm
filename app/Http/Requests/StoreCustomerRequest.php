@@ -32,7 +32,14 @@ class StoreCustomerRequest extends FormRequest
             'fiscal_code'=>"string|required|max:255",
             'email'=>"email|required|max:255",
             'solde' =>"integer",
-            'description' =>"max:5000"
+            'description' =>"max:5000",
+            'company_id' =>"numeric"
         ];
+    }
+
+    protected function prepareForValidation(){
+        $this->merge([
+            'company_id' => auth()->user()->company->id,
+        ]);
     }
 }

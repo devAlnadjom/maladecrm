@@ -11,15 +11,13 @@ use Inertia\Inertia;
 
 class CustomerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         return Inertia::render('Customers/Index',[
-            'customers'=> Customer::Select(['id','name','contact','solde'])->paginate(10),
+            'customers'=> Customer::Select(['id','name','contact','solde'])
+                                    ->where('company_id',auth()->user()->company->id)
+                                    ->paginate(10),
         ]);
     }
 

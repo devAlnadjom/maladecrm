@@ -18,4 +18,8 @@ class Order extends Model
         return $this->belongsToMany(Product::class)
             ->withPivot("name","description","is_service","total_price","total_quantity");
     }
+
+    public function company(){
+        return $this->belongsTo(Company::class);
+    }
 }

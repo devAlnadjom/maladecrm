@@ -13,18 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-
-            $table->unsignedBigInteger("company_id")->nullable();
+            $table->unsignedBigInteger("company_id");
+            $table->unsignedBigInteger("customer_id");
             $table->unsignedBigInteger("user_id")->nullable();
-            $table->string("name")->nullable();
-            $table->string("manufacturer")->nullable();
-            $table->mediumText("description")->nullable();
-
-            $table->boolean("is_service")->default(true);
-            $table->string("refrence")->nullable();
-            $table->integer("price")->default(0);
+            $table->string("description")->nullable();
+            $table->bigInteger("debit")->default(0);
+            $table->bigInteger("credit")->default(0);
+            $table->bigInteger("solde")->default(0);
             $table->timestamps();
         });
     }
@@ -36,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('transactions');
     }
 };

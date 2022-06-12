@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Product>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Company>
  */
-class ProductFactory extends Factory
+class CompanyFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,10 +17,7 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => 1,
-            'name' => "Services",
-            'is_service' => 1,
-            'price'=> 0,
+            //
         ];
     }
 }
