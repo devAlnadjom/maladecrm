@@ -6,11 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateCustomerRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
+
     public function authorize()
     {
         return true; //
@@ -26,7 +22,7 @@ class UpdateCustomerRequest extends FormRequest
             'contact'=>"string|max:20",
             'fiscal_code'=>"string|required|max:255",
             'email'=>"email|required|max:255",
-            'solde' =>"integer",
+            //'solde' =>"integer",
             'description' =>"max:5000"
         ];
     }
