@@ -9,14 +9,19 @@ import JetCheckbox from '@/Jetstream/Checkbox.vue';
 import JetLabel from '@/Jetstream/Label.vue';
 import JetValidationErrors from '@/Jetstream/ValidationErrors.vue';
 
-defineProps({
+//import vSelect from 'vue-select'
+
+
+const props= defineProps({
     //orders: Object,
+    customers:Object,
+    company:String,
 });
 
 
 const form = useForm({
 
-    customer_id:1,
+    customer_id:null,
     date_order: null,
     due_date_order:null,
     total_order:0,
@@ -30,6 +35,8 @@ const form = useForm({
     remise_order:0,
     ref_customer:'',
     products:null,
+
+    solde:0,
 });
 
 const renderComponent = ref(true);
@@ -89,6 +96,21 @@ const EditItem = (index) => {
     //textUpdate
 }
 
+const selectedCustomer = () => {
+    if(form.customer_id == null){
+        return;
+    }
+    let customer_id = form.customer_id;
+    for(let i = 0; i< props.customers.length; i++){
+        if(customer_id == props.customers[i].id){
+            form.solde= props.customers[i].solde;
+             console.log(form.solde);
+            break;
+        }
+    }
+
+}
+
 const invoiceTotal = () => {
     let total = lignes.reduce((a, b) => a + b.ligne_total, 0);
     console.log(total);
@@ -125,8 +147,11 @@ const toogleForm = () => {
    });*/
 
 const submit = () => {
+    if(form.customer_id==null){
+        alert("Please selcet a customers");
+        return;
+    }
     form.products= lignes;
-    console.table(form.products);
 
     form.post(route('orders.store'), {
         onSuccess: () => form.reset(),
@@ -176,7 +201,7 @@ const submit = () => {
                                             <label
                                                 class="w-32 text-gray-800 block font-bold text-sm uppercase tracking-wide">Date
                                                 de Facturation</label>
-                                            <span class="mr-4 inline-block hidden md:block">:</span>
+                                            <span class="mr-4 inline-block  md:block">:</span>
                                             <div class="flex-1">
 
                                                     <JetInput  v-model="form.date_order" type="date"
@@ -188,7 +213,7 @@ const submit = () => {
                                             <label
                                                 class="w-32 text-gray-800 block font-bold text-sm uppercase tracking-wide">Délai
                                                 de Paiement</label>
-                                            <span class="mr-4 inline-block hidden md:block">:</span>
+                                            <span class="mr-4 inline-block md:block">:</span>
                                             <div class="flex-1">
 
                                                     <JetInput  v-model="form.due_date_order" type="date"
@@ -227,20 +252,24 @@ const submit = () => {
 
                                 <div class="mt-4 flex flex-row justify-between w-full">
                                     <div class="w-full lg:w-1/3">
-                                        <h5>Client</h5>
+
+                                        <select class="mt-1 block w-full bg-gray-100 border-0 rounded" v-model="form.customer_id" @change="selectedCustomer()">
+                                            <option :value="null"> Select Client</option>
+                                            <template v-for="(item, index) in customers" :key="index">
+                                                <option :value="item.id"> {{item.name}}</option>
+                                            </template>
+                                        </select>
+                                        <h4 class="mt-1 block w-full bg-gray-100 border-0 rounded p-2" title="Solde">{{form.solde}}</h4>
                                         <JetInput v-model="form.ref_customer" type="text"
                                             class="mt-1 block w-full bg-gray-100 border-0" placeholder="Reference" />
-                                        <JetInput id="telephone" v-model="form.ref_customer" type="text"
-                                            class="mt-1 block w-full bg-gray-100 border-0" placeholder="Telephone" />
 
                                     </div>
 
 
                                     <div class="w-full lg:w-1/3">
                                         <h5>De</h5>
-                                        <JetInput v-model="form.ref_customer" type="text"
-                                            class="mt-1 block w-full bg-gray-100 border-0" placeholder="Client Info" />
-                                    </div>
+                                        <h4 class="mt-1 block w-full bg-gray-100 border-0 rounded p-2">{{company}}</h4>
+                                     </div>
                                 </div>
 
 
