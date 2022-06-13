@@ -14,9 +14,6 @@ const  formatMoney=(number) =>{
    return 'XAF '+ number.toLocaleString('en-US');
 };
 
-/*const logout = () => {
-    Inertia.post(route('logout'));
-};*/
 </script>
 
 <template>
@@ -66,24 +63,30 @@ const  formatMoney=(number) =>{
                         <tbody>
                             <tr v-for="order in orders.data" :key="order.id" class="bg-white dark:bg-gray-800 hover:bg-gray-100">
                                 <th scope="row"
-                                    class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                    class="px-6 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                     ORD- {{ order.id }}
                                 </th>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-2">
                                     <p class=" font-bold">{{ order?.customer.name }} </p>
                                     <p class="">{{ order?.ref_customer }}</p>
 
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-2">
 
-                                    <span v-if="order?.order_status==1" class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
+                                    <span v-if="order?.order_status==1" class="px-2 py-1 font-semibold leading-tight text-yellow-700 bg-yellow-100 rounded-full dark:bg-green-700 dark:text-green-100">
                                         Created
                                     </span>
+                                    <span v-if="order?.order_status==2" class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
+                                        Validated
+                                    </span>
+                                    <span v-if="order?.order_status==4" class="px-2 py-1 font-semibold leading-tight text-red-700 bg-red-100 rounded-full dark:bg-red-700 dark:text-red-100">
+                                        Cancelled
+                                    </span>
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-2">
                                     {{ formatMoney(order?.ttc_total_order)}}
                                 </td>
-                                <td class="px-6 py-4 text-right">
+                                <td class="px-6 py-2 text-right">
                                     <Link :href="route('orders.edit', order.id)"
                                         class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</Link>
                                     <Link :href="route('orders.show', order.id)"

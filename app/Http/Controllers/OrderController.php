@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use App\Models\Customer;
 use App\Models\Order;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -30,7 +33,14 @@ class OrderController extends Controller
     {
         //$company =auth()->user()->company();
         //$customers =$company->customers();
-        return Inertia::render('Orders/Create',[]);
+        $customers= Customer::Select(['id','name','contact','solde'])
+                    ->where('company_id',auth()->user()->company->id)
+                    ->get();
+            //dd($customers);
+        return Inertia::render('Orders/Create',[
+            'customers'=> $customers,
+            'company'=> auth()->user()->company->name,
+        ]);
     }
 
 
@@ -62,9 +72,14 @@ class OrderController extends Controller
         $order = Order::Where('id',$id)
                 ->with('products')
                 ->get();
+    $customers= Customer::Select(['id','name','contact','solde'])
+                ->where('company_id',auth()->user()->company->id)
+                ->get();
 
         return Inertia::render('Orders/Edit',[
             'order' => $order,
+            'customers'=> $customers,
+            'company'=> auth()->user()->company->name,
         ]);
     }
 
@@ -72,10 +87,10 @@ class OrderController extends Controller
     public function update(UpdateOrderRequest $request , int $id)
     {
         $order = Order::findOrFail($id);//('id',$id)->get();
-
+        $company_id = auth()->user()->company->id;
         $validated = $request->safe()->except(['products','id']);
 
-        if ($order->order_key!=$validated['order_key'] || $order->company_id != auth()->user()->company->id){
+        if ($order->order_key!=$validated['order_key'] || $order->company_id != $company_id){
             abort(404,"Unable to check this Order.",);
         }
 
@@ -93,7 +108,40 @@ class OrderController extends Controller
             ]);
         }
 
-        //if status equal validated then update customer sole, and create new transaction.
+        // Validate
+        if($validated['order_status']==2){
+            $solde_client=Customer::find($validated['customer_id'])->solde;
+            DB::table('customers')->where('id', $validated['customer_id'])->increment('solde',$validated['ttc_total_order']);
+            Transaction::create([
+                'company_id'=>$company_id,
+                'customer_id'=>$validated['customer_id'],
+                'user_id'=>auth()->user()->id,
+                'description'=>"Adding Facture N:".$order->id." to account.",
+                'debit'=>"0",
+                'credit'=>100*$validated['ttc_total_order'],
+                'solde'=>100*($validated['ttc_total_order']+ $solde_client),
+            ]);
+
+            return Redirect::route('orders.index')->with('success', "Order Updated successfully");
+        }
+
+        // Cancel Invoice
+        if($validated['order_status']==4){
+            $solde_client=Customer::find($validated['customer_id'])->solde;
+            DB::table('customers')->where('id', $validated['customer_id'])->decrement('solde',$validated['ttc_total_order']);
+            Transaction::create([
+                'company_id'=>$company_id,
+                'customer_id'=>$validated['customer_id'],
+                'user_id'=>auth()->user()->id,
+                'description'=>"Cancelling Facture N:".$order->id." to account.",
+                'debit'=>100*$validated['ttc_total_order'],
+                'credit'=>"0",
+                'solde'=>100*($solde_client-$validated['ttc_total_order']),
+            ]);
+
+            return Redirect::route('orders.index')->with('success', "Order Updated successfully");
+        }
+
 
         return Redirect::back()->with('success', "Order Updated successfully");
     }
