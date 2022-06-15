@@ -16,12 +16,13 @@ const props= defineProps({
     //orders: Object,
     customers:Object,
     company:String,
+     customer_id: Object,
 });
 
 
 const form = useForm({
 
-    customer_id:null,
+    customer_id:props.customer_id,
     date_order: null,
     due_date_order:null,
     total_order:0,

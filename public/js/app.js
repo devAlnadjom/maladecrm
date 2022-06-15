@@ -24140,14 +24140,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   props: {
     //orders: Object,
     customers: Object,
-    company: String
+    company: String,
+    customer_id: Object
   },
   setup: function setup(__props, _ref) {
     var expose = _ref.expose;
     expose();
     var props = __props;
     var form = (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__.useForm)({
-      customer_id: null,
+      customer_id: props.customer_id,
       date_order: null,
       due_date_order: null,
       total_order: 0,
@@ -24777,14 +24778,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'Create',
   props: {
-    customers: Object
+    customers: Object,
+    customer_id: Object
   },
   setup: function setup(__props, _ref) {
     var expose = _ref.expose;
     expose();
     var props = __props;
     var form = (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__.useForm)({
-      customer_id: null,
+      customer_id: props.customer_id,
       order_id: '0',
       description: '',
       method: '',
@@ -30081,7 +30083,7 @@ var _hoisted_5 = {
   "class": "flex flex-row justify-end"
 };
 
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Payment ");
+var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Add Payment ");
 
 var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "ml-2",
@@ -30090,7 +30092,7 @@ var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 /* HOISTED */
 );
 
-var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Create Customer ");
+var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Create Invoice ");
 
 var _hoisted_9 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "ml-2",
@@ -30185,7 +30187,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, 8
       /* PROPS */
       , ["href"]), _hoisted_4]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Link"], {
-        href: _ctx.route('customers.create'),
+        href: _ctx.route('payments.create') + '?customer_id=' + $setup.props.customers.id,
         "class": "flex items-center mx-2 justify-between w-40 px-4 py-2 text-sm font-medium leading-5 text-purple-600 hover:text-white transition-colors duration-150 border border-purple-600 rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -30197,7 +30199,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, 8
       /* PROPS */
       , ["href"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Link"], {
-        href: _ctx.route('customers.create'),
+        href: _ctx.route('orders.create') + '?customer_id=' + $setup.props.customers.id,
         "class": "flex items-center justify-between w-40 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -30453,23 +30455,23 @@ var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 
 var _hoisted_13 = {
   scope: "row",
-  "class": "px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+  "class": "px-6 py-3 font-medium text-gray-900 dark:text-white whitespace-nowrap"
 };
 var _hoisted_14 = {
-  "class": "px-6 py-4"
+  "class": "px-6 py-3"
 };
 
 var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
-  "class": "px-6 py-4"
+  "class": "px-6 py-3"
 }, " Accessories ", -1
 /* HOISTED */
 );
 
 var _hoisted_16 = {
-  "class": "px-6 py-4"
+  "class": "px-6 py-3"
 };
 var _hoisted_17 = {
-  "class": "px-6 py-4 text-right"
+  "class": "px-6 py-3 text-right"
 };
 
 var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Edit");
@@ -30511,7 +30513,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       , ["href"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.customers.data, function (customer) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
           key: customer.id,
-          "class": "bg-white dark:bg-gray-800 hover:bg-gray-100"
+          "class": "bg-white dark:bg-gray-800 hover:bg-gray-100 border-t"
         }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(customer.name), 1
         /* TEXT */
         ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(customer === null || customer === void 0 ? void 0 : customer.contact), 1
@@ -32384,7 +32386,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       , ["href"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.orders.data, function (order) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
           key: order.id,
-          "class": "bg-white dark:bg-gray-800 hover:bg-gray-100"
+          "class": "bg-white dark:bg-gray-800 hover:bg-gray-100 border-t"
         }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", _hoisted_13, " ORD- " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(order.id), 1
         /* TEXT */
         ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(order === null || order === void 0 ? void 0 : order.customer.name), 1
@@ -33023,19 +33025,19 @@ var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 
 var _hoisted_11 = {
   scope: "row",
-  "class": "px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+  "class": "px-6 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap"
 };
 var _hoisted_12 = {
-  "class": "px-6 py-4"
+  "class": "px-6 py-2"
 };
 var _hoisted_13 = {
-  "class": "px-6 py-4"
+  "class": "px-6 py-2"
 };
 var _hoisted_14 = {
-  "class": "px-6 py-4"
+  "class": "px-6 py-2"
 };
 var _hoisted_15 = {
-  "class": "px-6 py-4 text-right"
+  "class": "px-6 py-2 text-right"
 };
 
 var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("View");
@@ -33065,7 +33067,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
           key: payment.id,
-          "class": "bg-white dark:bg-gray-800 hover:bg-gray-100"
+          "class": "bg-white dark:bg-gray-800 hover:bg-gray-100 border-t"
         }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" ref-" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(payment.id) + " ", 1
         /* TEXT */
         ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(payment === null || payment === void 0 ? void 0 : (_payment$customer = payment.customer) === null || _payment$customer === void 0 ? void 0 : _payment$customer.name), 1

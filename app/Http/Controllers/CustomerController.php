@@ -16,7 +16,6 @@ class CustomerController extends Controller
     {
         return Inertia::render('Customers/Index',[
             'customers'=> Customer::Select(['id','name','contact','solde'])
-                                    ->where('company_id',auth()->user()->company->id)
                                     ->paginate(10),
         ]);
     }
@@ -67,7 +66,6 @@ class CustomerController extends Controller
     {
         $customer= Customer::findOrFail($customer);
         $validated = $request->validated();
-        //dd($validated);
         $customer->update($validated);
 
         return Redirect::back()->with('success', "Customer added successfully");

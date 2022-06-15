@@ -18,28 +18,27 @@ class OrderController extends Controller
     {
         return Inertia::render('Orders/Index',[
             'orders'=> Order::Select()
-                    ->where('company_id',auth()->user()->company->id)
                     ->with('customer:id,name')
             ->paginate(10),
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+
+    public function create(Request $request)
     {
+        if ($request->has('customer_id')) {
+            $customer_id=$request->query('customer_id');
+        }
         //$company =auth()->user()->company();
         //$customers =$company->customers();
         $customers= Customer::Select(['id','name','contact','solde'])
-                    ->where('company_id',auth()->user()->company->id)
+                    //->where('company_id',auth()->user()->company->id)
                     ->get();
             //dd($customers);
         return Inertia::render('Orders/Create',[
             'customers'=> $customers,
             'company'=> auth()->user()->company->name,
+            'customer_id' => isset($customer_id)?$customer_id:null
         ]);
     }
 
@@ -67,7 +66,7 @@ class OrderController extends Controller
     }
 
 
-    public function edit(int $id)
+    public function edit($id)
     {
         $order = Order::Where('id',$id)
                 ->with('products')

@@ -61,7 +61,7 @@ const  formatMoney=(number) =>{
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="order in orders.data" :key="order.id" class="bg-white dark:bg-gray-800 hover:bg-gray-100">
+                            <tr v-for="order in orders.data" :key="order.id" class="bg-white dark:bg-gray-800 hover:bg-gray-100 border-t">
                                 <th scope="row"
                                     class="px-6 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                     ORD- {{ order.id }}

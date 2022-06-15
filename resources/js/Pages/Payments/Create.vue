@@ -11,11 +11,12 @@ import JetValidationErrors from '@/Jetstream/ValidationErrors.vue';
 
 const props= defineProps({
     customers: Object,
+    customer_id: Object,
 });
 
 
 const form = useForm({
-    customer_id:null,
+    customer_id:props.customer_id,
     order_id:'0',
     description: '',
     method: '',

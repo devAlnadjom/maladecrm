@@ -17,7 +17,7 @@ class PaymentController extends Controller
     {
 
         $payments=Payment::Select(['id','description','montant','date','method','customer_id'])
-                            ->where('company_id',auth()->user()->company->id)
+
                             ->with('customer:id,name')
                             ->paginate(10);
 
@@ -29,13 +29,18 @@ class PaymentController extends Controller
     }
 
 
-    public function create()
+    public function create( Request $request)
     {
+        if ($request->has('customer_id')) {
+            $customer_id=$request->query('customer_id');
+        }
+
         $customers= Customer::Select(['id','name','contact','solde'])
-                    ->where('company_id',auth()->user()->company->id)
+                    //->where('company_id',auth()->user()->company->id)
                     ->get();
         return Inertia::render('Payments/Create',[
             'customers'=> $customers,
+            'customer_id' => isset($customer_id)?$customer_id:null
         ]);
     }
 

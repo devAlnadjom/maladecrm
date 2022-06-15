@@ -61,21 +61,21 @@ defineProps({
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="customer in customers.data" :key="customer.id" class="bg-white dark:bg-gray-800 hover:bg-gray-100">
+                            <tr v-for="customer in customers.data" :key="customer.id" class="bg-white dark:bg-gray-800 hover:bg-gray-100  border-t">
                                 <th scope="row"
-                                    class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                    class="px-6 py-3 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                     {{ customer.name }}
                                 </th>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-3">
                                     {{ customer?.contact }}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-3">
                                     Accessories
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-3">
                                     {{ customer?.solde}}
                                 </td>
-                                <td class="px-6 py-4 text-right">
+                                <td class="px-6 py-3 text-right">
                                     <Link :href="route('customers.show', customer.id)"
                                         class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</Link>
                                     <Link :href="route('customers.show', customer.id)"
