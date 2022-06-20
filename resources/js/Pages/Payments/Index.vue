@@ -10,7 +10,9 @@ defineProps({
     payments: Object,
 });
 
-
+const  formatMoney=(number) =>{
+   return 'XAF '+ number.toLocaleString('en-US');
+};
 /*const logout = () => {
     Inertia.post(route('logout'));
 };*/
@@ -43,26 +45,26 @@ defineProps({
                                     Company
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    payment
+                                    Date
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Adresse
+                                    Type
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Solde
+                                    Amount
                                 </th>
-                                <th scope="col" class="px-6 py-3">
+                                <!--th scope="col" class="px-6 py-3">
                                     <span class="sr-only">Action</span>
-                                </th>
+                                </th-->
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="payment in payments.data" :key="payment.id" class="bg-white dark:bg-gray-800 hover:bg-gray-100 border-t">
-                                <th scope="row"
+                                <td scope="row"
                                     class="px-6 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                    ref-{{ payment.id }}
+                                    PAY-0{{ payment.id }}
                                     <p>{{ payment?.customer?.name }}</p>
-                                </th>
+                                </td>
                                 <td class="px-6 py-2">
                                     {{ payment?.date }}
                                 </td>
@@ -70,12 +72,12 @@ defineProps({
                                     {{ payment?.method}}
                                 </td>
                                 <td class="px-6 py-2">
-                                    {{ payment?.montant}}
+                                    {{ formatMoney(payment?.montant)}}
                                 </td>
-                                <td class="px-6 py-2 text-right">
+                                <!--td class="px-6 py-2 text-right">
                                     <Link :href="route('payments.show', payment.id)"
                                         class="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</Link>
-                                </td>
+                                </td-->
                             </tr>
                         </tbody>
                     </table>

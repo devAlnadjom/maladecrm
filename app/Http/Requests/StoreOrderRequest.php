@@ -37,6 +37,7 @@ class StoreOrderRequest extends FormRequest
             "tax_2_amount"=>"numeric",
             "total_order"=>"numeric",
             "ttc_total_order"=>"numeric",
+            "order_type"=>"numeric",
 
             "order_comment"=>"max:200",
             "remise_order"=>"numeric",

@@ -35,6 +35,7 @@ const form = useForm({
     order_comment: '',
     remise_order:0,
     ref_customer:'',
+    order_type:0,
     products:null,
 
     solde:0,
@@ -152,6 +153,10 @@ const submit = () => {
         alert("Please selcet a customers");
         return;
     }
+    if(form.order_type==1){
+        if(!confirm("This order is set to be comptant, Do you want to continue?"))
+            return;
+    }
     form.products= lignes;
 
     form.post(route('orders.store'), {
@@ -169,7 +174,7 @@ const submit = () => {
                     <Link class="text-xl" :href="route('orders.index')">Custommers Management</Link> / Create New
                 </h3>
                 <div class="flex flex-row justify-end">
-                    <Link :href="route('orders.create')"
+                    <!--Link :href="route('orders.create')"
                         class="flex items-center mx-2 justify-between w-40 px-4 py-2 text-sm font-medium leading-5 text-purple-600  hover:text-white transition-colors duration-150 border border-purple-600 rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
                     Payment
                     <span class="ml-2" aria-hidden="true">+</span>
@@ -178,7 +183,7 @@ const submit = () => {
                         class="flex items-center justify-between w-40 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
                     Create order
                     <span class="ml-2" aria-hidden="true">+</span>
-                    </Link>
+                    </Link-->
                 </div>
 
             </div>
@@ -192,10 +197,11 @@ const submit = () => {
                                 <div class="flex mb-8 justify-between">
                                     <div class="w-2/4">
                                         <div class="mb-2 md:mb-5 md:flex items-center">
-                                            <label
-                                                class="w-32 text-gray-800 block font-bold text-xl uppercase tracking-wide">Facture
-                                            </label>
 
+                                            <select class="pl-0 w-42 text-gray-800 block font-bold text-xl uppercase mt-1  border-0 rounded" v-model="form.order_type" >
+                                                <option :value="0"> Facture Credit</option>
+                                                <option :value="1"> Facture Comptant</option>
+                                            </select>
                                         </div>
 
                                         <div class="mb-2 md:mb-1 md:flex items-center">

@@ -28,6 +28,7 @@ return new class extends Migration
             $table->integer("tax_2_percentage")->default(0);
             $table->integer("tax_1_amount")->default(0);
             $table->integer("tax_2_amount")->default(0);
+            $table->integer("order_type")->default(0);
             $table->bigInteger("total_order")->default(0);
             $table->bigInteger("ttc_total_order")->default(0);
 

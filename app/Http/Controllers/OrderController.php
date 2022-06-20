@@ -61,8 +61,23 @@ class OrderController extends Controller
             ]);
         }
 
+        if($validated['order_type']==1){
+            $order->update(['order_status'=>3]);
+            $solde_client=Customer::find($validated['customer_id'])->solde;
+            Transaction::create([
+                'company_id'=>auth()->user()->company->id,
+                'customer_id'=>$validated['customer_id'],
+                'user_id'=>auth()->user()->id,
+                'description'=>"Adding Facture(Comptant) N:".$order->id." to account.",
+                'debit'=>100*$validated['ttc_total_order'],
+                'credit'=>100*$validated['ttc_total_order'],
+                'solde'=>100*($solde_client),
+            ]);
 
-        return Redirect::route('orders.index')->with('success', "Order added successfully");
+        }
+
+
+        return Redirect::route('orders.edit',$order->id)->with('success', "Order added successfully");
     }
 
 

@@ -10,7 +10,9 @@ defineProps({
     customers: Object,
 });
 
-
+const  formatMoney=(number) =>{
+   return 'XAF '+ number.toLocaleString('en-US');
+};
 /*const logout = () => {
     Inertia.post(route('logout'));
 };*/
@@ -49,9 +51,7 @@ defineProps({
                                 <th scope="col" class="px-6 py-3">
                                     Contact
                                 </th>
-                                <th scope="col" class="px-6 py-3">
-                                    Adresse
-                                </th>
+
                                 <th scope="col" class="px-6 py-3">
                                     Solde
                                 </th>
@@ -69,17 +69,23 @@ defineProps({
                                 <td class="px-6 py-3">
                                     {{ customer?.contact }}
                                 </td>
+
                                 <td class="px-6 py-3">
-                                    Accessories
-                                </td>
-                                <td class="px-6 py-3">
-                                    {{ customer?.solde}}
+
+                                    <span v-if="customer?.solde > 50000" class="text-red-600">
+                                        {{formatMoney(customer?.solde)}}
+                                    </span>
+                                    <span v-if="customer?.solde <= 50000" class="text-green-600">
+                                        {{formatMoney(customer?.solde)}}
+                                    </span>
                                 </td>
                                 <td class="px-6 py-3 text-right">
                                     <Link :href="route('customers.show', customer.id)"
-                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</Link>
-                                    <Link :href="route('customers.show', customer.id)"
-                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2">Invoice</Link>
+                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</Link>
+                                    <Link :href="route('payments.create')+'?customer_id='+customer.id"
+                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2">Payment</Link>
+                                    <Link :href="route('orders.create')+'?customer_id='+customer.id" title="Add Order"
+                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2">Order</Link>
                                 </td>
                             </tr>
                         </tbody>
