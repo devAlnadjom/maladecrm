@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use App\Mail\OrderShipped;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -74,6 +76,7 @@ class OrderController extends Controller
                 'solde'=>100*($solde_client),
             ]);
 
+
         }
 
 
@@ -83,12 +86,15 @@ class OrderController extends Controller
 
     public function edit($id)
     {
+        Mail::to('altest@gmail.com')->send(new OrderShipped( Order::findOrFail($id)));
         $order = Order::Where('id',$id)
                 ->with('products')
                 ->get();
+
     $customers= Customer::Select(['id','name','contact','solde'])
                 ->where('company_id',auth()->user()->company->id)
                 ->get();
+
 
         return Inertia::render('Orders/Edit',[
             'order' => $order,
