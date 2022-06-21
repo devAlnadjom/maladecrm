@@ -1,7 +1,7 @@
 <script setup>
 import { ref, reactive, nextTick } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
-import { Head, Link } from '@inertiajs/inertia-vue3';
+import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import Welcome from '@/Jetstream/Welcome.vue';
 import JetInput from '@/Jetstream/Input.vue';
@@ -37,6 +37,21 @@ const form = reactive({
     error: '',
     processing: false,
 });
+
+const _form = useForm({
+    type:'',
+    comment: '',
+    processing: false,
+});
+
+const submitFeedBack = () => {
+    _form.processing=true;
+    _form.post(route('feedbacks.store'), {
+        preserveScroll: true,
+        onSuccess: () => {_form.reset(); closeModal();},
+        onFinish: () => { _form.processing=false;},
+    });
+};
 
 const passwordInput = ref(null);
 
@@ -249,25 +264,22 @@ const closeModal = () => {
 
             <template #content>
 
-
+                <JetValidationErrors class="mt-4 " />
                 <div class="mt-4">
-                    <JetInput
-                        ref="passwordInput"
-                        v-model="form.password"
-                        type="password"
-                        class="mt-1 block w-3/4"
-                        placeholder="Password"
-
-                    />
+                     <select class="w-3/4 text-gray-800 block font-bold  mt-1  border-1 rounded" v-model="_form.type" >
+                        <option :value="null"> Select Option</option>
+                        <option :value="'Suggestion'"> Suggestion</option>
+                        <option :value="'Erreur / Beug'"> Erreur / Beug</option>
+                        <option :value="'Autres'"> Autres </option>
+                    </select>
 
                 </div>
                 <div class="mt-4">
-                    <textarea id="description" rows="3" v-model="form.password" type="text"
-                                placeholder="Fill for extra information"
+                    <textarea id="description" rows="3" v-model="_form.comment"
+                                placeholder="Laissez votre commentaire"
                                 class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-3/4"></textarea>
 
 
-                    <JetInputError :message="form.error" class="mt-2" />
                 </div>
             </template>
 
@@ -278,9 +290,9 @@ const closeModal = () => {
 
                 <JetButton
                     class="ml-3"
-                    :class="{ 'opacity-25': form.processing }"
-                    :disabled="form.processing"
-                    @click="confirmPassword"
+                    :class="{ 'opacity-25': _form.processing }"
+                    :disabled="_form.processing"
+                    @click="submitFeedBack"
                 >
                     Envoyer
                 </JetButton>

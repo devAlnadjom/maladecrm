@@ -3,6 +3,7 @@
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
@@ -38,6 +39,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', [DashboardController::class,"index"])->name('dashboard');
+    Route::resource('feedbacks', FeedbackController::class);
     Route::resource('payments', PaymentController::class);
     Route::resource('companies', CompanyController::class);
     Route::resource('orders', OrderController::class);

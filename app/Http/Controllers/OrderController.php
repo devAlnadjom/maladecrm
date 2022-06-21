@@ -86,7 +86,7 @@ class OrderController extends Controller
 
     public function edit($id)
     {
-        Mail::to('altest@gmail.com')->send(new OrderShipped( Order::findOrFail($id)));
+        //Mail::to('altest@gmail.com')->send(new OrderShipped( Order::findOrFail($id)));
         $order = Order::Where('id',$id)
                 ->with('products')
                 ->get();

@@ -408,6 +408,10 @@ const logout = () => {
                         </div>
 
                         <div class="mt-3 space-y-1">
+                            <JetResponsiveNavLink :href="route('orders.index')"
+                                :active="route().current('orders.index')">
+                                Orders
+                            </JetResponsiveNavLink>
                             <JetResponsiveNavLink :href="route('profile.show')"
                                 :active="route().current('profile.show')">
                                 Profile
