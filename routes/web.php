@@ -8,6 +8,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -21,6 +22,12 @@ use Inertia\Inertia;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('admin/mimi', function () {
+
+    $exitCode = Artisan::call('migrate');
+    echo $exitCode;
+});
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -39,9 +46,23 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', [DashboardController::class,"index"])->name('dashboard');
+
+
+    /** Companies Informations */
+    Route::get('/company/settings', [CompanyController::class,"my_company"])->name('company.settings');
+
     Route::resource('feedbacks', FeedbackController::class);
     Route::resource('payments', PaymentController::class);
     Route::resource('companies', CompanyController::class);
     Route::resource('orders', OrderController::class);
     Route::resource('customers', CustomerController::class);
+
+
+    Route::get('admin/link', function () {
+        $exitCode = Artisan::call('storage:link');
+        echo $exitCode;
+    });
 });
+
+
+

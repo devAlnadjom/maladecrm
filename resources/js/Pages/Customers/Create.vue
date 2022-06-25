@@ -56,11 +56,16 @@ const submit = () => {
                 </div>
 
             </div>
-            <div class="mt-5">
-                <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                    <div class="">
+            <hr class="mt-4"/>
+            <div class="mt-1">
+               <div class="w-full flex flex-column lg:flex-row lg:justify-between mx-auto py-5 sm:px-6 lg:px-8 lg:gap-2">
+                    <div class="sm:col w-full lg:flex-1">
+                        <h3 class="text-bold"> General Infos</h3>
+                        <p class="text-sm">Your company identifications informations, This will appear in invoices</p>
+                    </div>
+                    <div class="w-full lg:w-2/3 ">
                         <JetValidationErrors class="mb-4 " />
-                        <div class="border p-4 rounded-sm">
+                        <div class="border p-4 rounded bg-white">
                             <form @submit.prevent="submit">
                                 <div>
                                     <JetLabel for="name" value="Name" />

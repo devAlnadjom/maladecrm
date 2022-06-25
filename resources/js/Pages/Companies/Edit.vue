@@ -12,26 +12,22 @@ import JetActionMessage from '@/Jetstream/ActionMessage.vue';
 import AlertBox from '@/Jetstream/AlertBox.vue';
 
 const props = defineProps({
-    customers: Object,
+    companies: Object,
 });
 
 
 const form = useForm({
     _method: "PUT",
-    name: props.customers?.name,
-    email: props.customers?.email,
-    address: props.customers?.address,
-    country: props.customers?.country || "Congo",
-    contact: props.customers?.contact,
-    telephone: props.customers?.telephone,
-    fiscal_code: props.customers?.fiscal_code,
-    description: props.customers?.description,
-    solde: props.customers?.solde,
-    active: props.customers?.active,
+    name: props.companies?.name,
+    categorie: props.companies?.categorie,
+    address: props.companies?.address,
+    contact: props.companies?.contact,
+    description: props.companies?.description,
+    active: props.companies?.active,
 });
 
 const submit = () => {
-    form.post(route('customers.update', props.customers.id), {
+    form.post(route('companies.update', props.companies.id), {
         //onFinish: () => form.reset(),
     });
 };
@@ -43,14 +39,10 @@ const submit = () => {
         <div class="py-8 px-3">
             <div class="flex flex-row justify-between">
                 <h3>
-                    <Link class="text-xl" :href="route('customers.index')">Custommers Management</Link> / Update Customer
+                    <Link class="text-xl" :href="route('companies.index')">Company Management</Link> / Update Customer
                 </h3>
                 <div class="flex flex-row justify-end">
-                    <Link :href="route('customers.create')"
-                        class="flex items-center mx-2 justify-between w-40 px-4 py-2 text-sm font-medium leading-5 text-purple-600  hover:text-white transition-colors duration-150 border border-purple-600 rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                    Payment
-                    <span class="ml-2" aria-hidden="true">+</span>
-                    </Link>
+
                     <Link :href="route('customers.create')"
                         class="flex items-center justify-between w-40 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
                     Create Customer
@@ -63,11 +55,15 @@ const submit = () => {
                 <AlertBox :flash="$page.props.flash" :on="true" class="mr-3">
 
                 </AlertBox>
-                <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                    <div class="">
+                <div class="w-full flex justify-between mx-auto py-5 sm:px-6 lg:px-8 gap-2">
+                    <div class="flex-1">
+                        <h3 class="text-bold"> General Infos</h3>
+                        <p class="text-sm">Your company identifications informations, This will appear in invoices</p>
+                    </div>
+                    <div class="lg:w-2/3 bg-white">
                         <JetValidationErrors class="mb-4 " />
-                        <div class="border p-4 rounded-sm">
-                            <form @submit.prevent="submit">
+                        <div class="border p-4 rounded">
+                             <form @submit.prevent="submit">
                                 <div>
                                     <JetLabel for="name" value="Name" />
                                     <JetInput id="name" v-model="form.name" type="text" class="mt-1 block w-full"
@@ -75,9 +71,9 @@ const submit = () => {
                                 </div>
 
                                 <div class="mt-4">
-                                    <JetLabel for="email" value="Email" />
-                                    <JetInput id="email" v-model="form.email" type="email" class="mt-1 block w-full"
-                                        required />
+                                    <JetLabel for="categorie" value="Domaine de Specialisation" />
+                                    <JetInput id="categorie" v-model="form.categorie" type="text"
+                                        class="mt-1 block w-full" required />
                                 </div>
 
                                 <div class="mt-4 flex flex-row gap-4 w-full">
@@ -87,67 +83,25 @@ const submit = () => {
                                             class="mt-1 block w-full" />
                                     </div>
 
-
-                                    <div class="w-full">
-                                        <JetLabel for="telephone" value="Telephone" />
-                                        <JetInput id="telephone" v-model="form.telephone" type="text"
-                                            class="mt-1 block w-full" />
-                                    </div>
-                                </div>
-                                <div class="mt-4 flex flex-row gap-4 w-full">
                                     <div class="w-full">
                                         <JetLabel for="address" value="address" />
                                         <JetInput id="address" v-model="form.address" type="text"
                                             class="mt-1 block w-full" />
                                     </div>
-
-
-                                    <div class="w-full">
-                                        <JetLabel for="fiscal_code" value="Identifiant Fiscal" />
-                                        <JetInput id="fiscal_code" v-model="form.fiscal_code" type="text"
-                                            class="mt-1 block w-full" />
-                                    </div>
                                 </div>
+
                                 <div class="mt-4 flex flex-row gap-4 w-full">
                                     <div class="w-full">
                                         <JetLabel for="description" value="description" />
                                         <textarea id="description" rows="3" v-model="form.description" type="text"
-                                            class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full" ></textarea>
+                                            class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full"></textarea>
                                     </div>
 
 
-                                    <div class="w-full">
-                                         <JetLabel for="solde" value="Solde Courant" />
-                                        <JetInput id="solde" v-model="form.solde" type="number" class="mt-1 block w-full" />
-
-                                    </div>
                                 </div>
 
 
-
-
-
-
-
-
-
-                                <div class="mt-4">
-                                    <JetLabel for="active">
-                                        <div class="flex items-center">
-                                            <JetCheckbox id="active" v-model:checked="form.active" name="active" />
-
-                                            <div class="ml-2">
-                                                Active
-                                            </div>
-                                        </div>
-                                    </JetLabel>
-                                </div>
-
-                                <div class="flex items-center justify-end mt-4">
-                                    <button class="underline text-sm text-gray-600 hover:text-gray-900">
-                                        Clear
-                                    </button>
-
+                                <div class="flex items-center justify-end mt-4 ">
                                     <JetButton class="ml-4" :class="{ 'opacity-25': form.processing }"
                                         :disabled="form.processing">
                                         Update

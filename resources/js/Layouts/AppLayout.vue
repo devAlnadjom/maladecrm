@@ -42,8 +42,8 @@ const logout = () => {
                         FreeCRM <sup>beta</sup>
                     </a>
                     <ul class="mt-6">
-                        <li class="relative px-6 py-3">
-                            <span class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
+                        <li  class="relative px-6 py-3">
+                            <span v-if="$page.url.startsWith('/dashboard')"  class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
                                 aria-hidden="true"></span>
                             <Link :href="route('dashboard')" class="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
                                 >
@@ -62,6 +62,8 @@ const logout = () => {
                         <li class="relative px-6 py-3">
                             <Link :href="route('customers.index')" class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer"
                                 >
+                                 <span v-if="$page.url.startsWith('/customers')" class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
+                                aria-hidden="true"></span>
                                 <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round"
                                     stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -74,6 +76,8 @@ const logout = () => {
                         <li class="relative px-6 py-3">
                             <Link :href="route('orders.index')" class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer"
                                 >
+                                 <span v-if="$page.url.startsWith('/orders')" class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
+                                aria-hidden="true"></span>
                                 <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round"
                                     stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
                                     <path
@@ -86,6 +90,8 @@ const logout = () => {
                         <li class="relative px-6 py-3">
                             <Link :href="route('payments.index')" class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer"
                                 >
+                                 <span v-if="$page.url.startsWith('/payments')" class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
+                                aria-hidden="true"></span>
                                 <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round"
                                     stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
                                          <path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -208,13 +214,13 @@ const logout = () => {
                             </template>
                         </li-->
                     </ul>
-                    <div class="px-6 my-6">
+                    <!--div class="px-6 my-6">
                         <button
                             class="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
                             Create account
                             <span class="ml-2" aria-hidden="true">+</span>
                         </button>
-                    </div>
+                    </div-->
                 </div>
             </aside>
             <div class="w-full">
@@ -341,6 +347,9 @@ const logout = () => {
                                         <JetDropdownLink :href="route('profile.show')">
                                             Profile
                                         </JetDropdownLink>
+                                        <JetDropdownLink :href="route('company.settings')">
+                                            Company Settings
+                                        </JetDropdownLink>
 
                                         <JetDropdownLink v-if="$page.props.jetstream.hasApiFeatures"
                                             :href="route('api-tokens.index')">
@@ -415,6 +424,10 @@ const logout = () => {
                             <JetResponsiveNavLink :href="route('profile.show')"
                                 :active="route().current('profile.show')">
                                 Profile
+                            </JetResponsiveNavLink>
+                            <JetResponsiveNavLink :href="route('company.settings')"
+                                :active="route().current('company.settings')">
+                                Company Settings
                             </JetResponsiveNavLink>
 
                             <JetResponsiveNavLink v-if="$page.props.jetstream.hasApiFeatures"
