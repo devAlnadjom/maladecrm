@@ -21,7 +21,7 @@ const form = useForm({
     country: 'Congo',
     contact: '',
     telephone: '',
-    fiscal_code: '',
+    fiscal_code: 'Non-defini',
     description: '',
     solde: 0,
     active: true,
@@ -40,19 +40,11 @@ const submit = () => {
         <div class="py-8 px-3">
             <div class="flex flex-row justify-between">
                 <h3>
-                    <Link class="text-xl" :href="route('customers.index')">Custommers Management</Link> / Create New
+                    <Link class="text-xl" :href="route('customers.index')">Gestion des Clients</Link> / Ajout
                 </h3>
                 <div class="flex flex-row justify-end">
-                    <Link :href="route('customers.create')"
-                        class="flex items-center mx-2 justify-between w-40 px-4 py-2 text-sm font-medium leading-5 text-purple-600  hover:text-white transition-colors duration-150 border border-purple-600 rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                    Payment
-                    <span class="ml-2" aria-hidden="true">+</span>
-                    </Link>
-                    <Link :href="route('customers.create')"
-                        class="flex items-center justify-between w-40 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                    Create Customer
-                    <span class="ml-2" aria-hidden="true">+</span>
-                    </Link>
+
+
                 </div>
 
             </div>
@@ -61,14 +53,14 @@ const submit = () => {
                <div class="w-full flex flex-column lg:flex-row lg:justify-between mx-auto py-5 sm:px-6 lg:px-8 lg:gap-2">
                     <div class="sm:col w-full lg:flex-1">
                         <h3 class="text-bold"> General Infos</h3>
-                        <p class="text-sm">Your company identifications informations, This will appear in invoices</p>
+                        <p class="text-sm">Mettez un commentaires si possibles</p>
                     </div>
                     <div class="w-full lg:w-2/3 ">
                         <JetValidationErrors class="mb-4 " />
                         <div class="border p-4 rounded bg-white">
                             <form @submit.prevent="submit">
                                 <div>
-                                    <JetLabel for="name" value="Name" />
+                                    <JetLabel for="name" value="Nom / Raison Social" />
                                     <JetInput id="name" v-model="form.name" type="text" class="mt-1 block w-full"
                                         required autofocus autocomplete="name" />
                                 </div>
@@ -109,7 +101,7 @@ const submit = () => {
                                 </div>
                                 <div class="mt-4 flex flex-row gap-4 w-full">
                                     <div class="w-full">
-                                        <JetLabel for="description" value="description" />
+                                        <JetLabel for="description" value="Commentaire" />
                                         <textarea id="description" rows="3" v-model="form.description" type="text"
                                             class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full" ></textarea>
                                     </div>
@@ -143,13 +135,11 @@ const submit = () => {
                                 </div>
 
                                 <div class="flex items-center justify-end mt-4">
-                                    <button class="underline text-sm text-gray-600 hover:text-gray-900">
-                                        Clear
-                                    </button>
+
 
                                     <JetButton class="ml-4" :class="{ 'opacity-25': form.processing }"
                                         :disabled="form.processing">
-                                        Submit
+                                        Enregistrer
                                     </JetButton>
                                 </div>
                             </form>

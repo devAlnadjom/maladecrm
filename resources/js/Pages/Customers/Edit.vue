@@ -43,17 +43,17 @@ const submit = () => {
         <div class="py-8 px-3">
             <div class="flex flex-row justify-between">
                 <h3>
-                    <Link class="text-xl" :href="route('customers.index')">Custommers Management</Link> / Update Customer
+                    <Link class="text-xl" :href="route('customers.index')">Gestions des Cliemts</Link> / Fiche client
                 </h3>
                 <div class="flex flex-row justify-end">
                     <Link :href="route('payments.create')+'?customer_id='+props.customers.id"
                         class="flex items-center mx-2 justify-between w-40 px-4 py-2 text-sm font-medium leading-5 text-purple-600  hover:text-white transition-colors duration-150 border border-purple-600 rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                    Add Payment
+                    Ajouter Paiement
                     <span class="ml-2" aria-hidden="true">+</span>
                     </Link>
                     <Link :href="route('orders.create')+'?customer_id='+props.customers.id"
-                        class="flex items-center justify-between w-40 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                    Create Invoice
+                        class="flex items-center justify-between w-42 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+                    Creer une Facture
                     <span class="ml-2" aria-hidden="true">+</span>
                     </Link>
                 </div>
@@ -63,13 +63,13 @@ const submit = () => {
                 <AlertBox :flash="$page.props.flash" :on="true" class="mr-3">
 
                 </AlertBox>
-                <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+                <div class="max-w-7xl mx-auto py-5 sm:px-6 lg:px-8">
                     <div class="">
                         <JetValidationErrors class="mb-4 " />
-                        <div class="border p-4 rounded-sm">
+                        <div class="border p-4 rounded bg-white">
                             <form @submit.prevent="submit">
                                 <div>
-                                    <JetLabel for="name" value="Name" />
+                                    <JetLabel for="name" value="Nom / Raison Social" />
                                     <JetInput id="name" v-model="form.name" type="text" class="mt-1 block w-full"
                                         required autofocus autocomplete="name" />
                                 </div>
@@ -144,13 +144,11 @@ const submit = () => {
                                 </div>
 
                                 <div class="flex items-center justify-end mt-4">
-                                    <button class="underline text-sm text-gray-600 hover:text-gray-900">
-                                        Clear
-                                    </button>
+
 
                                     <JetButton class="ml-4" :class="{ 'opacity-25': form.processing }"
                                         :disabled="form.processing">
-                                        Update
+                                        Mettre a jour
                                     </JetButton>
                                 </div>
                             </form>

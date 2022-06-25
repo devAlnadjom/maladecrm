@@ -191,22 +191,22 @@ onMounted(() => {
         <div class="py-8 px-3">
             <div class="flex flex-row justify-between">
                 <h3>
-                    <Link class="text-xl" :href="route('orders.index')">Custommers Management</Link> / Update Facture
+                    <Link class="text-xl" :href="route('orders.index')">Gestions des Facture</Link> / Facture N- {{props?.order[0]?.id}}
                 </h3>
                 <div class="flex flex-row justify-end">
                     <Link :href="route('orders.create')"
                         class="flex items-center mx-2 justify-between w-40 px-4 py-2 text-sm font-medium leading-5 text-purple-600  hover:text-white transition-colors duration-150 border border-purple-600 rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                    Payment
+                    Paiement
                     <span class="ml-2" aria-hidden="true">+</span>
                     </Link>
                     <Link :href="route('orders.create')"
                         class="flex items-center justify-between w-40 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                    Create order
+                    Nouvelle Facture
                     <span class="ml-2" aria-hidden="true">+</span>
                     </Link>
                     <a :href="'/invoices/'+props.order[0].order_key+'/'+props.order[0].id" target="_blank"
                         class="flex ml-2 items-center justify-between w-30 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-600 border border-transparent rounded-lg active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-green">
-                    Print
+                    Impr.
                     <span class="ml-2" aria-hidden="true">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
@@ -216,17 +216,17 @@ onMounted(() => {
                 </div>
 
             </div>
-            <div class="mt-5">
+            <div class="mt-3">
                 <AlertBox v-if="showAlert" :flash="$page.props.flash" :on="showAlert" class="mr-3"></AlertBox>
 
-                <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+                <div class="max-w-7xl mx-auto py-5 sm:px-6 lg:px-8">
                     <div class="">
                         <JetValidationErrors class="mb-4 " />
                         <div class="border p-4 py-8 rounded-lg bg-white ">
 
                             <form @submit.prevent="submit">
-                                <div class="flex mb-8 justify-between">
-                                    <div class="w-2/4">
+                                <div class="flex flex-col md:flex-row mb-8 md:justify-between">
+                                    <div class="w-full md:w-2/4">
                                         <div class="mb-2 md:mb-5 md:flex items-center">
                                             <label
                                                 class="w-full text-gray-800 block font-bold text-xl uppercase tracking-wide">Facture
@@ -235,7 +235,7 @@ onMounted(() => {
                                                     Brouillon</span>
                                                 <span v-if="props.order[0]?.order_status != 1"
                                                     class="px-2 py-2 text-xs bg-green-300 text-green-700 rounded-xl">
-                                                    Validated</span>
+                                                    Validee</span>
                                             </label>
 
                                         </div>
@@ -266,7 +266,7 @@ onMounted(() => {
                                             </div>
                                         </div>
                                     </div>
-                                    <div>
+                                    <div class=" hidden md:block">
                                         <div
                                             class="w-32 h-32 mb-1 border rounded-lg overflow-hidden relative bg-gray-100">
                                             <img id="image" class="object-cover w-full h-32"
@@ -295,7 +295,7 @@ onMounted(() => {
                                     </div>
                                 </div>
 
-                                <div class="mt-4 flex flex-row justify-between w-full">
+                                <div class="mt-4 flex gap-2 flex-col md:flex-row justify-between w-full">
                                     <div class="w-full lg:w-1/3">
 
                                         <select class="mt-1 block w-full bg-gray-100 border-0 rounded"
@@ -323,10 +323,10 @@ onMounted(() => {
 
 
 
-                                <div class="">
+                                <div class="w-full">
 
                                     <table v-if="renderComponent"
-                                        class="w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-5">
+                                        class="w-full overflow-x-scroll text-sm text-left text-gray-500 dark:text-gray-400 mt-5">
                                         <thead
                                             class="text-xs bold text-gray-700 uppercase border-b  dark:bg-gray-700 dark:text-gray-400">
                                             <tr>
@@ -419,12 +419,12 @@ onMounted(() => {
                                             <button type="button" v-if="milestone == null"
                                                 class="text-sm px-4 mt-1 py-2 rounded  border border-black hover:bg-black hover:text-white text-black "
                                                 v-on:click.prevent="addLigne">
-                                                + Add
+                                                + Ajouter
                                             </button>
                                             <button type="button" v-if="milestone === null"
                                                 class="text-sm px-4 mt-3 py-1 rounded  hover:text-red-500 text-red-900  hover:underline"
                                                 v-on:click.prevent="toogleForm">
-                                                Close
+                                                Fermer
                                             </button>
 
                                         </div>
@@ -491,13 +491,13 @@ onMounted(() => {
                                 <div v-if="props.order[0]?.order_status == 1" class="flex items-center justify-end mt-4">
                                     <select class="ml-2 mt-1 block w-48 bg-gray-100 border-0 rounded"
                                         v-model="form.order_status">
-                                        <option :value="1"> Created</option>
-                                        <option :value="2"> Confirmed</option>
+                                        <option :value="1"> A confirmer</option>
+                                        <option :value="2"> Validee</option>
                                     </select>
 
                                     <JetButton class="ml-4" :class="{ 'opacity-25': form.processing }"
                                         :disabled="form.processing">
-                                        Submit
+                                        Enregistrer
                                     </JetButton>
                                 </div>
                             </form>

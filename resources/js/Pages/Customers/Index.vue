@@ -24,16 +24,16 @@ const  formatMoney=(number) =>{
 
         <div class="py-8 px-3">
             <div class="flex flex-row justify-between">
-                <h3 class="text-xl">Custommers Management</h3>
+                <h3 class="text-xl">Gestions de Clients</h3>
                 <div class="flex flex-row justify-end">
                     <Link :href="route('customers.create')"
                         class="flex items-center mx-2 justify-between w-40 px-4 py-2 text-sm font-medium leading-5 text-purple-600  hover:text-white transition-colors duration-150 border border-purple-600 rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                        Payment
+                        Paiement
                         <span class="ml-2" aria-hidden="true">+</span>
                     </Link>
                     <Link :href="route('customers.create')"
                         class="flex items-center justify-between w-40 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                        Create Customer
+                        Nouveau Client
                         <span class="ml-2" aria-hidden="true">+</span>
                     </Link>
                 </div>
@@ -46,7 +46,7 @@ const  formatMoney=(number) =>{
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
-                                    Company
+                                    Client
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                     Contact
@@ -81,11 +81,11 @@ const  formatMoney=(number) =>{
                                 </td>
                                 <td class="px-6 py-3 text-right">
                                     <Link :href="route('customers.show', customer.id)"
-                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</Link>
+                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Details</Link>
                                     <Link :href="route('payments.create')+'?customer_id='+customer.id"
-                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2">Payment</Link>
+                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2">Paiement</Link>
                                     <Link :href="route('orders.create')+'?customer_id='+customer.id" title="Add Order"
-                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2">Order</Link>
+                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2">Facture</Link>
                                 </td>
                             </tr>
                         </tbody>

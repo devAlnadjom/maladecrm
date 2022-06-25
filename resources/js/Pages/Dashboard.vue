@@ -157,11 +157,11 @@ const closeModal = () => {
                 </div>
                 <div>
                   <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
-                    Amount due
+                    Creances Clients
                   </p>
-                  <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
+                  <Link :href="route('customers.index')" class="text-lg font-semibold text-gray-700 dark:text-gray-200">
                     {{formatMoney( props.solde.data)}}
-                  </p>
+                  </Link>
                 </div>
               </div>
               <!-- Card -->
@@ -173,11 +173,11 @@ const closeModal = () => {
                 </div>
                 <div>
                   <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
-                    New sales
+                    Nouvelles Ventes
                   </p>
-                  <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
+                   <Link :href="route('orders.index')" class="text-lg font-semibold text-gray-700 dark:text-gray-200">
                     {{props.invoice_completed.data_count}} | {{formatMoney(props.invoice_completed.data_sum) }}
-                  </p>
+                  </Link>
                 </div>
               </div>
               <!-- Card -->
@@ -189,7 +189,7 @@ const closeModal = () => {
                 </div>
                 <div>
                   <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
-                    Pending Invoice
+                    Facture a Valider
                   </p>
                   <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
                     {{props.invoice_waiting.data}}
@@ -200,22 +200,22 @@ const closeModal = () => {
 
                 <div class="my-5">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg lg:w-2/3">
-
+                    <h3 class="text-xl px-4 my-3">Derniers ventes</h3>
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 ">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
-                                   Ref
+                                   Ref. Fac.
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Name
+                                    Produit
                                 </th>
 
                                 <th scope="col" class="px-6 py-3">
                                     Montant
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    <span class="sr-only">Action</span>
+                                    <span class="sr-only" title="Voir la facture"></span>
                                 </th>
                             </tr>
                         </thead>
@@ -238,7 +238,7 @@ const closeModal = () => {
                                 </td>
                                 <td class="px-6 py-2 text-right">
                                      <a :href="'invoices/'+order.order_key+'/'+order.id" target="_blank"
-                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2">Invoice</a>
+                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2">Facture</a>
                                 </td>
                             </tr>
                         </tbody>

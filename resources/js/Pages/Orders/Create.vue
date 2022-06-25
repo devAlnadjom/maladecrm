@@ -150,11 +150,15 @@ const toogleForm = () => {
 
 const submit = () => {
     if(form.customer_id==null){
-        alert("Please selcet a customers");
+        alert("Veuillez selectionner un clients");
         return;
     }
+    if(form.ttc_total_order==0){
+        if(!confirm("Le montant de cette facture est 0. Voulez vous continuer?"))
+            return;
+    }
     if(form.order_type==1){
-        if(!confirm("This order is set to be comptant, Do you want to continue?"))
+        if(!confirm("Cette facture est definie compant. Voulez vous continuer?"))
             return;
     }
     form.products= lignes;
@@ -171,7 +175,7 @@ const submit = () => {
         <div class="py-8 px-3">
             <div class="flex flex-row justify-between">
                 <h3>
-                    <Link class="text-xl" :href="route('orders.index')">Custommers Management</Link> / Create New
+                    <Link class="text-xl" :href="route('orders.index')">Gestions de Facturations</Link> / Ajouter Nouveau
                 </h3>
                 <div class="flex flex-row justify-end">
                     <!--Link :href="route('orders.create')"
@@ -187,8 +191,8 @@ const submit = () => {
                 </div>
 
             </div>
-            <div class="mt-5">
-                <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+            <div class="mt-3">
+                <div class="max-w-7xl mx-auto py-5 sm:px-6 lg:px-8">
                     <div class="">
                         <JetValidationErrors class="mb-4 " />
                         <div class="border p-4 py-8 rounded-lg bg-white ">
@@ -234,7 +238,7 @@ const submit = () => {
                                             <img id="image" class="object-cover w-full h-32"
                                                 src="https://placehold.co/300x300/e2e8f0/e2e8f0">
 
-                                            <div class="absolute top-0 left-0 right-0 bottom-0 w-full block cursor-pointer flex items-center justify-center"
+                                            <div class="absolute top-0 left-0 right-0 bottom-0 w-full cursor-pointer flex items-center justify-center"
                                                 onclick="document.getElementById('fileInput').click()">
                                                 <button type="button"
                                                     style="background-color: rgba(255, 255, 255, 0.65)"
@@ -346,19 +350,20 @@ const submit = () => {
 
                                     <div v-if="renderComponent && openForm" class="mt-5 flex flex-row gap-1 w-full">
                                         <div class="w-1/2">
-                                            <JetInput v-model="oneLigne.name" type="text" placeholder="Product Name"
+                                            <JetInput v-model="oneLigne.name" type="text" placeholder="Designation Produit"
                                                 class="mt-1 block w-full" />
                                         </div>
 
+                                        <div class="w-2/6">
+                                            <JetInput id="pu" v-model="oneLigne.total_price" type="number" placeholder="Prix Unitaire"
+                                                class="mt-1 block w-full" />
+                                        </div>
 
                                         <div class="w-1/6">
-                                            <JetInput id="qty" v-model="oneLigne.total_quantity" type="number" placeholder="Quantity"
+                                            <JetInput id="qty" v-model="oneLigne.total_quantity" type="number" placeholder="Quantite"
                                                 class="mt-1 block w-full" />
                                         </div>
-                                        <div class="w-2/6">
-                                            <JetInput id="pu" v-model="oneLigne.total_price" type="number" placeholder="Unit Price"
-                                                class="mt-1 block w-full" />
-                                        </div>
+
                                         <div class="w-2/6">
                                             <span class="mt-1 block w-full px-5 py-2 rounded  border border-black "
                                                 readonly="true">{{ oneLigne.ligne_total }}</span>
@@ -373,12 +378,12 @@ const submit = () => {
                                             <button type="button" v-if="milestone == null"
                                                 class="text-sm px-4 mt-1 py-2 rounded  border border-black hover:bg-black hover:text-white text-black "
                                                 v-on:click.prevent="addLigne">
-                                                + Add
+                                                Ajouter
                                             </button>
                                             <button type="button" v-if="milestone === null"
                                                 class="text-sm px-4 mt-3 py-1 rounded  hover:text-red-500 text-red-900  hover:underline"
                                                 v-on:click.prevent="toogleForm">
-                                                Close
+                                               Fermer
                                             </button>
 
                                         </div>
@@ -434,13 +439,11 @@ const submit = () => {
 
 
                                 <div class="flex items-center justify-end mt-4">
-                                    <button class="underline text-sm text-gray-600 hover:text-gray-900">
-                                        Clear
-                                    </button>
+
 
                                     <JetButton class="ml-4" :class="{ 'opacity-25': form.processing }"
                                         :disabled="form.processing">
-                                        Submit
+                                        Enregistrer
                                     </JetButton>
                                 </div>
                             </form>

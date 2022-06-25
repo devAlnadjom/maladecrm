@@ -22,16 +22,16 @@ const  formatMoney=(number) =>{
 
         <div class="py-8 xl:px-10 px-3">
             <div class="flex flex-row justify-between">
-                <h3 class="text-xl">Orders Management</h3>
+                <h3 class="text-xl">Gestion des Factures</h3>
                 <div class="flex flex-row justify-end">
                     <Link :href="route('orders.create')"
                         class="flex items-center mx-2 justify-between w-40 px-4 py-2 text-sm font-medium leading-5 text-purple-600  hover:text-white transition-colors duration-150 border border-purple-600 rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                        Payment
+                        Paiement
                         <span class="ml-2" aria-hidden="true">+</span>
                     </Link>
                     <Link :href="route('orders.create')"
                         class="flex items-center justify-between w-40 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                        Create order
+                        Nouvelle Facture
                         <span class="ml-2" aria-hidden="true">+</span>
                     </Link>
                 </div>
@@ -47,7 +47,7 @@ const  formatMoney=(number) =>{
                                    Ref
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Name
+                                    Client
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                     status
@@ -74,16 +74,16 @@ const  formatMoney=(number) =>{
                                 <td class="px-6 py-2">
 
                                     <span v-if="order?.order_status==1" class="px-2 py-1 font-semibold leading-tight text-yellow-700 bg-yellow-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                                        Created
+                                        A Confirmer
                                     </span>
                                     <span v-if="order?.order_status==2" class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                                        Validated
+                                        Validee
                                     </span>
                                     <span v-if="order?.order_status==3" class="px-2 py-1 font-semibold leading-tight text-blue-700 bg-blue-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                                        Paid
+                                        Payee
                                     </span>
                                     <span v-if="order?.order_status==4" class="px-2 py-1 font-semibold leading-tight text-red-700 bg-red-100 rounded-full dark:bg-red-700 dark:text-red-100">
-                                        Cancelled
+                                        Annullee
                                     </span>
                                 </td>
                                 <td class="px-6 py-2">
@@ -92,11 +92,9 @@ const  formatMoney=(number) =>{
                                 </td>
                                 <td class="px-6 py-2 text-right">
                                     <Link :href="route('orders.edit', order.id)"
-                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</Link>
-                                    <Link :href="route('orders.show', order.id)"
-                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2">Invoice</Link>
+                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Modifier</Link>
                                     <a :href="'invoices/'+order.order_key+'/'+order.id" target="_blank"
-                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2">Invoice</a>
+                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2" title="Voir la facture">Facture</a>
                                 </td>
                             </tr>
                         </tbody>

@@ -11,7 +11,7 @@ defineProps({
 });
 
 const  formatMoney=(number) =>{
-   return 'XAF '+ number.toLocaleString('en-US');
+   return number.toLocaleString('en-US')+ 'XAF ';
 };
 /*const logout = () => {
     Inertia.post(route('logout'));
@@ -24,12 +24,12 @@ const  formatMoney=(number) =>{
 
         <div class="py-8 px-3">
             <div class="flex flex-row justify-between">
-                <h3 class="text-xl">Custommers Management</h3>
+                <h3 class="text-xl">Gestions de Paiement Clients</h3>
                 <div class="flex flex-row justify-end">
 
                     <Link :href="route('payments.create')"
-                        class="flex items-center justify-between w-40 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                        Add Payment
+                        class="flex items-center justify-between w-44 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+                        Nouveau Paiement
                         <span class="ml-2" aria-hidden="true">+</span>
                     </Link>
                 </div>
@@ -42,16 +42,16 @@ const  formatMoney=(number) =>{
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
-                                    Company
+                                   Client
                                 </th>
                                 <th scope="col" class="px-6 py-3">
                                     Date
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Type
+                                    Methode de Paie.
                                 </th>
                                 <th scope="col" class="px-6 py-3">
-                                    Amount
+                                   Montant
                                 </th>
                                 <!--th scope="col" class="px-6 py-3">
                                     <span class="sr-only">Action</span>
