@@ -23,7 +23,8 @@ const verificationLinkSent = computed(() => props.status === 'verification-link-
 
     <JetAuthenticationCard>
         <template #logo>
-            <JetAuthenticationCardLogo />
+            <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">FreeCRM
+                    <sup>beta</sup> </span>
         </template>
 
         <div class="mb-4 text-sm text-gray-600">

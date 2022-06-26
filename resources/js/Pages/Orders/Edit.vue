@@ -9,6 +9,9 @@ import JetCheckbox from '@/Jetstream/Checkbox.vue';
 import JetLabel from '@/Jetstream/Label.vue';
 import JetValidationErrors from '@/Jetstream/ValidationErrors.vue';
 import AlertBox from '@/Jetstream/AlertBox.vue';
+import JetDialogModal from '@/Jetstream//DialogModal.vue';
+import JetInputError from '@/Jetstream/InputError.vue';
+import JetSecondaryButton from '@/Jetstream/SecondaryButton.vue';
 
 const props = defineProps({
     order: Object,
@@ -41,6 +44,7 @@ const form = useForm({
 var can_update = props.order[0]?.order_status == 1 ? true : false;
 
 const renderComponent = ref(true);
+const formAdd = ref(true);
 var milestone = null;
 const openForm = ref(false);
 const showAlert = ref(true);
@@ -76,9 +80,11 @@ const addLigne = () => {
     }
 
     milestone = null;
+    formAdd.value= true;
     forceRerender();
     clearForm();
     invoiceTotal();
+    openForm.value =false;
 
 };
 
@@ -106,10 +112,10 @@ const removeItem = (index) => {
 const EditItem = (index) => {
 
     console.log(index);
-
+    formAdd.value= false;
     let data = { ...lignes[index].pivot };
     // oneLigne = data;
-
+    formAdd.value=false;
     oneLigne.product_id = data.product_id;
     oneLigne.name = data.name;
     oneLigne.description = data.description;
@@ -388,47 +394,6 @@ onMounted(() => {
                                         </tbody>
                                     </table>
 
-                                    <div v-if="renderComponent && openForm" class="mt-5 flex flex-row gap-1 w-full">
-                                        <div class="w-1/2">
-                                            <JetInput v-model="oneLigne.name" type="text" placeholder="Product Name"
-                                                class="mt-1 block w-full" />
-                                        </div>
-
-
-                                        <div class="w-1/6">
-                                            <JetInput id="qty" v-model="oneLigne.total_quantity" type="number"
-                                                placeholder="Quantity" class="mt-1 block w-full" />
-                                        </div>
-                                        <div class="w-2/6">
-                                            <JetInput id="pu" v-model="oneLigne.total_price" type="number"
-                                                placeholder="Unit Price"
-                                                @change="(oneLigne.ligne_total = oneLigne.total_quantity * oneLigne.total_price)"
-                                                class="mt-1 block w-full" />
-                                        </div>
-                                        <div class="w-2/6">
-                                            <span class="mt-1 block w-full px-5 py-2 rounded  border border-black "
-                                                readonly="true">{{ oneLigne.ligne_total }}</span>
-                                        </div>
-                                        <div class="w-1/6">
-
-                                            <button type="button" v-if="milestone != null"
-                                                class="text-sm mt-1 px-4 py-1 rounded  border border-black hover:bg-black hover:text-white text-black "
-                                                v-on:click.prevent="addLigne">
-                                                Update
-                                            </button>
-                                            <button type="button" v-if="milestone == null"
-                                                class="text-sm px-4 mt-1 py-2 rounded  border border-black hover:bg-black hover:text-white text-black "
-                                                v-on:click.prevent="addLigne">
-                                                + Ajouter
-                                            </button>
-                                            <button type="button" v-if="milestone === null"
-                                                class="text-sm px-4 mt-3 py-1 rounded  hover:text-red-500 text-red-900  hover:underline"
-                                                v-on:click.prevent="toogleForm">
-                                                Fermer
-                                            </button>
-
-                                        </div>
-                                    </div>
 
                                 </div>
                                 <div v-if="!openForm && props.order[0]?.order_status == 1">
@@ -509,6 +474,65 @@ onMounted(() => {
                     </div>
                 </div>
             </div>
+
+
+            <JetDialogModal :show="openForm" @close="toogleForm">
+                <template #title>
+                   <h2 class="font-bold text-2xl mb-6 text-gray-800 border-b pb-2">Veuillez ajouter une ligne</h2>
+                </template>
+
+                <template #content>
+
+                   <div class="w-full rounded-lg bg-white overflow-hidden  block ">
+
+
+					<div class="mb-4">
+						<label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Description</label>
+                         <JetInput v-model="oneLigne.name" type="text"
+                                                placeholder="Designation Produit" class="mt-1 block w-full" />
+                    </div>
+
+					<div class="flex flex-column md:flex-row">
+						<div class="mb-4 sm:w-full md:w-20 mr-2">
+							<label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Unités</label>
+							<JetInput id="qty" v-model="oneLigne.total_quantity" type="number"
+                                                placeholder="Quantite" class="mt-1 block w-full" />
+                        </div>
+
+						<div class="mb-4 sm:w-full md:w-32 mr-2">
+							<label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Prix Unitaire</label>
+                            <JetInput id="pu" v-model="oneLigne.total_price" type="number"
+                                                placeholder="Prix Unitaire" class="mt-1 block w-full" />
+                        </div>
+
+						<div class="mb-4 sm:w-full md:w-40">
+							<label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Montant Total</label>
+							<span class="mt-1 block w-full px-5 py-2 rounded  border border-black "
+                                                readonly="true">{{ oneLigne.ligne_total }}</span>
+                            </div>
+					</div>
+
+
+
+				</div>
+                </template>
+
+                <template #footer>
+                    <JetSecondaryButton @click="toogleForm">
+                        Fermer
+                    </JetSecondaryButton>
+
+                    <JetButton v-if="formAdd" class="ml-3"
+                        @click="addLigne">
+                        Ajouter
+                    </JetButton>
+
+                    <JetButton v-if="!formAdd" class="ml-3"
+                        @click="addLigne">
+                        Modifier
+                    </JetButton>
+                </template>
+            </JetDialogModal>
         </div>
     </AppLayout>
 </template>

@@ -369,7 +369,7 @@ const logout = () => {
                                         <!-- Authentication -->
                                         <form @submit.prevent="logout">
                                             <JetDropdownLink as="button">
-                                                Log Out
+                                                Se Deconntecr
                                             </JetDropdownLink>
                                         </form>
                                     </template>
@@ -427,7 +427,11 @@ const logout = () => {
                         <div class="mt-3 space-y-1">
                             <JetResponsiveNavLink :href="route('orders.index')"
                                 :active="route().current('orders.index')">
-                                Orders
+                                Facturation
+                            </JetResponsiveNavLink>
+                            <JetResponsiveNavLink :href="route('customers.index')"
+                                :active="route().current('customers.index')">
+                                Clients
                             </JetResponsiveNavLink>
                             <JetResponsiveNavLink :href="route('profile.show')"
                                 :active="route().current('profile.show')">
@@ -435,7 +439,7 @@ const logout = () => {
                             </JetResponsiveNavLink>
                             <JetResponsiveNavLink :href="route('company.settings')"
                                 :active="route().current('company.settings')">
-                                Company Settings
+                                Parametres d'entreprise
                             </JetResponsiveNavLink>
 
                             <JetResponsiveNavLink v-if="$page.props.jetstream.hasApiFeatures"
@@ -446,7 +450,7 @@ const logout = () => {
                             <!-- Authentication -->
                             <form method="POST" @submit.prevent="logout">
                                 <JetResponsiveNavLink as="button">
-                                    Log Out
+                                    Se Deconnecter
                                 </JetResponsiveNavLink>
                             </form>
 

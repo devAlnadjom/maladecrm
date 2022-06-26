@@ -31,7 +31,8 @@ const submit = () => {
 
     <JetAuthenticationCard>
         <template #logo>
-            <JetAuthenticationCardLogo />
+           <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">FreeCRM
+                    <sup>beta</sup> </span>
         </template>
 
         <JetValidationErrors class="mb-4" />
@@ -75,7 +76,7 @@ const submit = () => {
 
             <div class="flex items-center justify-end mt-4">
                 <JetButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Reset Password
+                    Reinitialiser
                 </JetButton>
             </div>
         </form>

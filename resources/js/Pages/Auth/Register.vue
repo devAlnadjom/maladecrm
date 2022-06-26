@@ -28,14 +28,15 @@ const submit = () => {
 
     <JetAuthenticationCard>
         <template #logo>
-            <JetAuthenticationCardLogo />
+            <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">FreeCRM
+                    <sup>beta</sup> </span>
         </template>
 
         <JetValidationErrors class="mb-4" />
 
         <form @submit.prevent="submit">
             <div>
-                <JetLabel for="name" value="Name" />
+                <JetLabel for="name" value="Votre Nom" />
                 <JetInput
                     id="name"
                     v-model="form.name"
@@ -59,7 +60,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <JetLabel for="password" value="Password" />
+                <JetLabel for="password" value="Mot de Passe" />
                 <JetInput
                     id="password"
                     v-model="form.password"
@@ -71,7 +72,7 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <JetLabel for="password_confirmation" value="Confirm Password" />
+                <JetLabel for="password_confirmation" value="Confirmer Mot de Passe" />
                 <JetInput
                     id="password_confirmation"
                     v-model="form.password_confirmation"
@@ -88,7 +89,7 @@ const submit = () => {
                         <JetCheckbox id="terms" v-model:checked="form.terms" name="terms" />
 
                         <div class="ml-2">
-                            I agree to the <a target="_blank" :href="route('terms.show')" class="underline text-sm text-gray-600 hover:text-gray-900">Terms of Service</a> and <a target="_blank" :href="route('policy.show')" class="underline text-sm text-gray-600 hover:text-gray-900">Privacy Policy</a>
+                            J'accepte les conditions <a target="_blank" :href="route('terms.show')" class="underline text-sm text-gray-600 hover:text-gray-900">Terms of Service</a> and <a target="_blank" :href="route('policy.show')" class="underline text-sm text-gray-600 hover:text-gray-900">Privacy Policy</a>
                         </div>
                     </div>
                 </JetLabel>
@@ -96,11 +97,11 @@ const submit = () => {
 
             <div class="flex items-center justify-end mt-4">
                 <Link :href="route('login')" class="underline text-sm text-gray-600 hover:text-gray-900">
-                    Already registered?
+                    J'ai deja un compte?
                 </Link>
 
                 <JetButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Register
+                    Creer un compte
                 </JetButton>
             </div>
         </form>
