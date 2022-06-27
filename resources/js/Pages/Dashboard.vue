@@ -25,7 +25,10 @@ const props = defineProps({
 });
 
 const  formatMoney=(number) =>{
-   return 'XAF '+ parseInt(number).toLocaleString('en-US');
+    let val= parseInt(number);
+    if(isNaN(val))
+        return 0+ " XAF";
+   return val.toLocaleString('en-US')+ ' XAF ';
 };
 //console.log(props.customer_count)
 

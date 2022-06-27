@@ -49,14 +49,18 @@ Route::middleware([
 
 
     /** Companies Informations */
-    Route::get('/company/settings', [CompanyController::class,"my_company"])->name('company.settings');
 
-    Route::resource('feedbacks', FeedbackController::class);
-    Route::resource('payments', PaymentController::class);
+
+    Route::middleware(['company.check'])->group(function () {
+        Route::get('/company/settings', [CompanyController::class,"my_company"])->name('company.settings');
+        Route::resource('feedbacks', FeedbackController::class);
+        Route::resource('payments', PaymentController::class);
+        Route::resource('orders', OrderController::class);
+        Route::resource('customers', CustomerController::class);
+    });
+
+
     Route::resource('companies', CompanyController::class);
-    Route::resource('orders', OrderController::class);
-    Route::resource('customers', CustomerController::class);
-
 
     Route::get('admin/link', function () {
         $exitCode = Artisan::call('storage:link');
