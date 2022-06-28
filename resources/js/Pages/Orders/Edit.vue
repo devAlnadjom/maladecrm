@@ -168,7 +168,7 @@ const toogleForm = (a = 0) => {
    });*/
 
 const cancel_order=() =>{
-    if(!confirm("Are you sure you want to cancel this order?"))return;
+    if(!confirm("Voulez vous annuler cette facture?"))return;
     form.order_status=4;
     submit();
 }
@@ -178,13 +178,17 @@ const submit = () => {
     lignes.forEach(item => {
         form.products.push(item.pivot)
     });
-    //console.table(form.products);
-
     form.post(route('orders.update', props.order[0]?.id,), {
         onSuccess: () => { clearForm(); form.products = [], showAlert.value = true; setTimeout(() => { showAlert.value = false }, 5000) },
     });
 };
 
+const deleteOrder = () => {
+    if(!confirm('Voulez vous supprimer cette facture?'))
+        return;
+
+    Inertia.delete(route('orders.destroy', props.order[0]?.id));
+}
 
 onMounted(() => {
 
@@ -200,7 +204,12 @@ onMounted(() => {
                     <Link class="text-xl" :href="route('orders.index')">Gestions des Facture</Link> / Facture N- {{props?.order[0]?.id}}
                 </h3>
                 <div class="flex flex-row justify-end">
-                    <Link :href="route('orders.create')"
+                    <span v-if="props.order[0].order_status==1" @click="deleteOrder"
+                        class=" cursor-pointer flex items-center mx-2 justify-between w-40 px-4 py-2 text-sm font-medium leading-5 text-red-600  hover:text-white transition-colors duration-150 border border-red-600 rounded-lg active:bg-red-600 hover:bg-red-700 focus:outline-none focus:shadow-outline-red">
+                    Supprimer
+                    <span class="ml-2" aria-hidden="true">X</span>
+                    </span>
+                    <Link :href="route('orders.create')" v-if="props.order[0].order_status==2"
                         class="flex items-center mx-2 justify-between w-40 px-4 py-2 text-sm font-medium leading-5 text-purple-600  hover:text-white transition-colors duration-150 border border-purple-600 rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
                     Paiement
                     <span class="ml-2" aria-hidden="true">+</span>

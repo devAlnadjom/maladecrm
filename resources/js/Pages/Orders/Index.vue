@@ -1,10 +1,11 @@
 <script setup>
-import { ref } from 'vue';
+import { ref,onMounted } from 'vue';
 import { Inertia } from '@inertiajs/inertia';
 import { Head, Link } from '@inertiajs/inertia-vue3';
 import JetDropdown from '@/Jetstream/Dropdown.vue';
 import JetDropdownLink from '@/Jetstream/DropdownLink.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
+import AlertBox from '@/Jetstream/AlertBox.vue';
 import Pagination from '../../Jetstream/Pagination.vue';
 defineProps({
     orders: Object,
@@ -13,7 +14,11 @@ defineProps({
 const  formatMoney=(number) =>{
    return 'XAF '+ number.toLocaleString('en-US');
 };
+const showAlert =ref(true);
 
+onMounted(() =>{
+    setTimeout(() =>{ showAlert.value=false;},3500);
+})
 </script>
 
 <template>
@@ -38,6 +43,8 @@ const  formatMoney=(number) =>{
 
             </div>
             <div class="mt-5">
+                <AlertBox v-if="showAlert" :flash="$page.props.flash" :on="showAlert" class="mb-3"></AlertBox>
+
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
 
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -92,7 +99,7 @@ const  formatMoney=(number) =>{
                                 </td>
                                 <td class="px-6 py-2 text-right">
                                     <Link :href="route('orders.edit', order.id)"
-                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Modifier</Link>
+                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Details</Link>
                                     <a :href="'invoices/'+order.order_key+'/'+order.id" target="_blank"
                                         class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2" title="Voir la facture">Facture</a>
                                 </td>

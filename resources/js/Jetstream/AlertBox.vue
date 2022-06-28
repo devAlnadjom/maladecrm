@@ -10,18 +10,26 @@ let open = ref(true);
 
 onMounted(() => {
     open.value = props.on;
-    //setTimeout(() => {open.value = false}, 5000)
+    setTimeout(() => {open.value = false}, 3500)
 });
 </script>
 
 <template>
     <div>
         <transition leave-active-class="transition ease-in duration-1000" leave-from-class="opacity-100" leave-to-class="opacity-0">
-            <div v-show="flash.success && open" class="text-sm text-gray-600">
-                <div class="py-3 px-3 lg:mx-8 w-1/2 rounded bg-green-700 text-white">
-                        <span> {{ flash.success }}</span>
-                    </div>
-            </div>
+           <div>
+                <div v-show="flash.success && open" class="text-sm text-gray-600">
+                    <div class="py-3 px-3 lg:mx-8 w-1/2 rounded bg-green-700 text-white">
+                            <span> {{ flash.success }}</span>
+                        </div>
+                </div>
+                <div v-show="flash.error && open" class="text-sm text-gray-600">
+                    <div class="py-3 px-3 lg:mx-8 w-1/2 rounded bg-red-700 text-white">
+                            <span> {{ flash.error }}</span>
+                        </div>
+                </div>
+           </div>
+
         </transition>
     </div>
 </template>

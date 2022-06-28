@@ -20,6 +20,7 @@ class OrderController extends Controller
     {
         return Inertia::render('Orders/Index',[
             'orders'=> Order::Select()
+                    ->where('order_status','<>','6')
                     ->with('customer:id,name')
             ->paginate(10),
         ]);
@@ -31,10 +32,7 @@ class OrderController extends Controller
         if ($request->has('customer_id')) {
             $customer_id=$request->query('customer_id');
         }
-        //$company =auth()->user()->company();
-        //$customers =$company->customers();
         $customers= Customer::Select(['id','name','contact','solde'])
-                    //->where('company_id',auth()->user()->company->id)
                     ->get();
             //dd($customers);
         return Inertia::render('Orders/Create',[
@@ -64,7 +62,7 @@ class OrderController extends Controller
         }
 
         if($validated['order_type']==1){
-            $order->update(['order_status'=>3]);
+            $order->update(['order_status'=>3]); //Comptant
             $solde_client=Customer::find($validated['customer_id'])->solde;
             Transaction::create([
                 'company_id'=>auth()->user()->company->id,
@@ -159,13 +157,25 @@ class OrderController extends Controller
                 'solde'=>100*($solde_client-$validated['ttc_total_order']),
             ]);
 
-            return Redirect::route('orders.index')->with('success', "Order Updated successfully");
+            return Redirect::route('orders.index')->with('success', "Facture Mis a Jour");
         }
 
 
-        return Redirect::back()->with('success', "Order Updated successfully");
+        return Redirect::back()->with('success', "Facture mis a jour.");
     }
 
+
+
+    public function destroy(int $order_id)
+    {
+        $order = Order::findOrFail($order_id);
+
+        if ($order->order_status != '1'){
+            return Redirect::back()->with('success', "Cette Facture ne peut plus etre suprrimer.");
+        }
+        $order->update(['order_status' => '6']); //Deleted
+        return Redirect::route('orders.index')->with('success', "Facture supprimee..");
+    }
 
 
 
