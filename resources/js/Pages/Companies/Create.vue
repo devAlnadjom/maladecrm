@@ -9,6 +9,8 @@ import JetCheckbox from '@/Jetstream/Checkbox.vue';
 import JetLabel from '@/Jetstream/Label.vue';
 import JetValidationErrors from '@/Jetstream/ValidationErrors.vue';
 
+import AlertBox from '@/Jetstream/AlertBox.vue';
+
 defineProps({
     //customers: Object,
 });
@@ -36,18 +38,20 @@ const submit = () => {
         <div class="py-8 px-3">
             <div class="flex flex-row justify-between">
                 <h3>
-                    <Link class="text-xl" :href="route('companies.show',1)">Your Company</Link> / Create New
+                    <Link class="text-xl" :href="route('companies.show',1)">Votre Entreprise</Link> / Configuration
                 </h3>
 
             </div>
             <div class="mt-5">
                 <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+                    <AlertBox :flash="$page.props.flash" :on="true" class="mr-3"></AlertBox>
+
                     <div class="">
                         <JetValidationErrors class="mb-4 " />
                         <div class="border p-4 rounded-md bg-white">
                             <form @submit.prevent="submit">
                                 <div>
-                                    <JetLabel for="name" value="Name" />
+                                    <JetLabel for="name" value="Nom / Raison Social" />
                                     <JetInput id="name" v-model="form.name" type="text" class="mt-1 block w-full"
                                         required autofocus autocomplete="name" />
                                 </div>
@@ -62,13 +66,13 @@ const submit = () => {
                                     <div class="w-full">
                                         <JetLabel for="contact" value="Contact" />
                                         <JetInput id="contact" v-model="form.contact" type="text"
-                                            class="mt-1 block w-full" />
+                                            class="mt-1 block w-full"  required/>
                                     </div>
 
                                     <div class="w-full">
-                                        <JetLabel for="address" value="address" />
+                                        <JetLabel for="address" value="Addresse" />
                                         <JetInput id="address" v-model="form.address" type="text"
-                                            class="mt-1 block w-full" />
+                                            class="mt-1 block w-full"  required/>
                                     </div>
                                 </div>
 
@@ -84,32 +88,24 @@ const submit = () => {
 
 
 
-
-
-
-
-
-
                                 <div class="mt-4">
                                     <JetLabel for="active">
                                         <div class="flex items-center">
                                             <JetCheckbox id="active" v-model:checked="form.active" name="active" />
 
                                             <div class="ml-2">
-                                                Active
+                                                Actif
                                             </div>
                                         </div>
                                     </JetLabel>
                                 </div>
 
                                 <div class="flex items-center justify-end mt-4">
-                                    <button class="underline text-sm text-gray-600 hover:text-gray-900">
-                                        Clear
-                                    </button>
+
 
                                     <JetButton class="ml-4" :class="{ 'opacity-25': form.processing }"
                                         :disabled="form.processing">
-                                        Submit
+                                        Enregistrer
                                     </JetButton>
                                 </div>
                             </form>
