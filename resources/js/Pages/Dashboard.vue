@@ -109,19 +109,20 @@ const closeModal = () => {
                  <span @click="showModal()"
                         class=" cursor-pointer flex items-center mx-2 justify-between w-58 px-4 py-2 text-sm font-medium leading-5 text-purple-600  hover:text-white transition-colors duration-150 border border-purple-600 rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
                     Aidez nous a ammeliorer.
-                    <span class="ml-2" aria-hidden="true">+</span>
+
                 </span>
             </div>
 
         </template>
 
-        <div class="py-12">
+        <div class="py-8">
             <div class="max -w-7xl mx-auto sm:px-6 lg:px-8">
                 <div v-if="company==null" class=" bg-red-500 rounded-md border px-10 py-4 my-5 w-full">
-                    <h3 class=" text-white"> You have to set your company setting</h3>
+                    <h3 class=" text-white font-bold text-lg"> Bienvenue sur FreeCRM</h3>
+                    <p class=" text-white"> Vous devez configurer une nouvelle entreprise pour pouvoir utliser tous les services.</p>
                     <Link :href="route('companies.create')">
                         <div class="mt-1 flex items-center text-sm font-semibold text-gray-100 hover:text-white">
-                            <div>Set Up my Company</div>
+                            <div>Configurer mon entreprise</div>
 
                             <div class="ml-1 ">
                                 <svg viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
@@ -133,6 +134,8 @@ const closeModal = () => {
                         </div>
                     </Link>
                 </div>
+
+                <AlertBox :flash="$page.props.flash" :on="true" class="mr-3 mb-4"></AlertBox>
 
                 <div class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
               <!-- Card -->
@@ -226,7 +229,7 @@ const closeModal = () => {
                             <tr v-for="order in lastproducts" :key="order.id" class="bg-white dark:bg-gray-800 hover:bg-gray-100 border-t">
                                 <th scope="row"
                                     class="px-6 py-2 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                    ORD- {{ order.id }}
+                                    FAC- {{ order.id }}
                                     <p class="font-light">{{ order?.nom }} </p>
 
                                 </th>

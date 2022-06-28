@@ -40,11 +40,11 @@ const submit = () => {
                 <h3>
                     <Link class="text-xl" :href="route('companies.show',1)">Votre Entreprise</Link> / Configuration
                 </h3>
-
             </div>
+
             <div class="mt-5">
-                <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                    <AlertBox :flash="$page.props.flash" :on="true" class="mr-3"></AlertBox>
+                <div class="max-w-7xl mx-auto py-4 sm:px-6 lg:px-8">
+                    <AlertBox :flash="$page.props.flash" :on="true" class="mr-3 mb-4"></AlertBox>
 
                     <div class="">
                         <JetValidationErrors class="mb-4 " />
