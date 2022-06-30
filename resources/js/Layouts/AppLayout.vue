@@ -247,7 +247,7 @@ const logout = () => {
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <JetNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
+                                    Tableau de Bordd
                                 </JetNavLink>
                             </div>
                         </div>
@@ -349,14 +349,14 @@ const logout = () => {
                                     <template #content>
                                         <!-- Account Management -->
                                         <div class="block px-4 py-2 text-xs text-gray-400">
-                                            Manage Account
+                                           Parametres
                                         </div>
 
                                         <JetDropdownLink :href="route('profile.show')">
                                             Profile
                                         </JetDropdownLink>
                                         <JetDropdownLink :href="route('company.settings')">
-                                            Company Settings
+                                            Mon Entreprise
                                         </JetDropdownLink>
 
                                         <JetDropdownLink v-if="$page.props.jetstream.hasApiFeatures"
@@ -369,7 +369,7 @@ const logout = () => {
                                         <!-- Authentication -->
                                         <form @submit.prevent="logout">
                                             <JetDropdownLink as="button">
-                                                Se Deconntecr
+                                                Se Deconnecter
                                             </JetDropdownLink>
                                         </form>
                                     </template>

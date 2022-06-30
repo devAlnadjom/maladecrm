@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -50,8 +52,15 @@ class DashboardController extends Controller
                                 ->limit(10)
                                 ->get();
 
-
-                //ddd($lastproduct);
+                $statsale= Order::select(DB::raw("SUM(ttc_total_order) as somme, MONTH(created_at) as month"))
+                    //->orderBy('created_at')
+                    ->groupBy(DB::raw("MONTH(created_at)"))
+                    ->whereIn('order_status' ,[2,3])
+                    ->whereBetween('created_at',
+                            [Carbon::now()->subMonth(6), Carbon::now()]
+                        )
+                    ->get();
+                //ddd($statsale);
             }
 
         return Inertia::render('Dashboard',[
@@ -61,6 +70,7 @@ class DashboardController extends Controller
             'invoice_completed' => isset($invoice_completed)?$invoice_completed:0,
             'solde' => isset($solde)?$solde:0,
             'lastproducts' => isset($lastproduct)?$lastproduct:0,
+            'statsale' => isset($statsale)?$statsale:[],
         ]);
     }
 }

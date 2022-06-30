@@ -22,7 +22,7 @@ const  formatMoney=(number) =>{
     <AppLayout title="Dashboard">
 
 
-        <div class="py-8 px-3">
+        <div class="py-8 xl:px-10 px-3">
             <div class="flex flex-row justify-between">
                 <h3 class="text-xl">Gestions de Paiement Clients</h3>
                 <div class="flex flex-row justify-end">

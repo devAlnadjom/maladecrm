@@ -13,7 +13,7 @@ class MustHaveCompany
     {
         $user = auth()->user();
         if($user->company?->id=== null){
-           return Redirect::route("companies.create")->with("error", "Vous devez configurer votre antreprise avant de pouvoir utiliser les autres services.");
+           return Redirect::route("companies.create")->with("error", "Vous devez configurer votre entreprise avant de pouvoir utiliser les autres services.");
         }
 
         return $next($request);

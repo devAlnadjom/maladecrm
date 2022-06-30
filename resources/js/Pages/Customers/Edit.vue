@@ -43,7 +43,7 @@ const submit = () => {
         <div class="py-8 px-3">
             <div class="flex flex-row justify-between">
                 <h3>
-                    <Link class="text-xl" :href="route('customers.index')">Gestions des Cliemts</Link> / Fiche client
+                    <Link class="text-xl" :href="route('customers.index')">Gestions des Clients</Link> / Fiche client
                 </h3>
                 <div class="flex flex-row justify-end">
                     <Link :href="route('payments.create')+'?customer_id='+props.customers.id"

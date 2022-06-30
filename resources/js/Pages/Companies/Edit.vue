@@ -39,13 +39,13 @@ const submit = () => {
         <div class="py-8 px-3">
             <div class="flex flex-row justify-between">
                 <h3>
-                    <Link class="text-xl" :href="route('companies.index')">Company Management</Link> / Update Customer
+                    <Link class="text-xl" :href="route('companies.index')">Mon Entreprise</Link> / Configuration
                 </h3>
                 <div class="flex flex-row justify-end">
 
                     <Link :href="route('customers.create')"
                         class="flex items-center justify-between w-40 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                    Create Customer
+                    Ajouter un Client
                     <span class="ml-2" aria-hidden="true">+</span>
                     </Link>
                 </div>
@@ -57,15 +57,15 @@ const submit = () => {
                 </AlertBox>
                 <div class="w-full flex justify-between mx-auto py-5 sm:px-6 lg:px-8 gap-2">
                     <div class="flex-1">
-                        <h3 class="text-bold"> General Infos</h3>
-                        <p class="text-sm">Your company identifications informations, This will appear in invoices</p>
+                        <h3 class="text-bold"> Infos General</h3>
+                        <p class="text-sm">Les informations general de votre entreprise, qui apparraissent sur vos factures</p>
                     </div>
                     <div class="lg:w-2/3 bg-white">
                         <JetValidationErrors class="mb-4 " />
                         <div class="border p-4 rounded">
                              <form @submit.prevent="submit">
                                 <div>
-                                    <JetLabel for="name" value="Name" />
+                                    <JetLabel for="name" value="Nom/ Raison Social" />
                                     <JetInput id="name" v-model="form.name" type="text" class="mt-1 block w-full"
                                         required autofocus autocomplete="name" />
                                 </div>
@@ -84,7 +84,7 @@ const submit = () => {
                                     </div>
 
                                     <div class="w-full">
-                                        <JetLabel for="address" value="address" />
+                                        <JetLabel for="address" value="Addresse" />
                                         <JetInput id="address" v-model="form.address" type="text"
                                             class="mt-1 block w-full" />
                                     </div>
@@ -92,7 +92,7 @@ const submit = () => {
 
                                 <div class="mt-4 flex flex-row gap-4 w-full">
                                     <div class="w-full">
-                                        <JetLabel for="description" value="description" />
+                                        <JetLabel for="description" value="Description" />
                                         <textarea id="description" rows="3" v-model="form.description" type="text"
                                             class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full"></textarea>
                                     </div>
@@ -104,7 +104,7 @@ const submit = () => {
                                 <div class="flex items-center justify-end mt-4 ">
                                     <JetButton class="ml-4" :class="{ 'opacity-25': form.processing }"
                                         :disabled="form.processing">
-                                        Update
+                                        Enregistrer
                                     </JetButton>
                                 </div>
                             </form>

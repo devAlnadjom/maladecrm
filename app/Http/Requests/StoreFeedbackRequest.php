@@ -20,4 +20,12 @@ class StoreFeedbackRequest extends FormRequest
             'comment'=>'string|required|max:1000',
         ];
     }
+
+    public function messages()
+{
+    return [
+        'type.required' => 'A title is required',
+        'comment.required' => 'A message is required',
+    ];
+}
 }
