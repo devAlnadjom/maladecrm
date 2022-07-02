@@ -35,9 +35,9 @@ class CustomerController extends Controller
     {
         $validated = $request->validated();
         //dd($validated);
-        Customer::create($validated);
+        $customer=Customer::create($validated);
 
-        return Redirect::route('customers.index')->with('success', "Customer added successfully");
+        return Redirect::route('customers.show',$customer->id)->with('success', "Fiche Client mis à jour");
     }
 
 
@@ -58,7 +58,7 @@ class CustomerController extends Controller
         //dd($validated);
         $customer->update($validated);
 
-        return Redirect::back()->with('success', "Customer added successfully");
+        return Redirect::back()->with('success', "Fiche Client mis à jour");
     }
 
 
@@ -68,7 +68,7 @@ class CustomerController extends Controller
         $validated = $request->validated();
         $customer->update($validated);
 
-        return Redirect::back()->with('success', "Customer added successfully");
+        return Redirect::back()->with('success', "Fiche Client mis à jour");
     }
 
     /**

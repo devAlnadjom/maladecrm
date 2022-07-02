@@ -237,19 +237,19 @@ const submit = () => {
 
                                                 <JetInput v-model="form.due_date_order" type="date"
                                                     class="mt-1 block w-48 bg-gray-100 border-0"
-                                                    placeholder="eg. 17 Feb, 2020" />
+                                                    placeholder="ex. 17 04 2020" />
                                             </div>
                                         </div>
                                     </div>
                                     <div>
                                         <div
-                                            class="w-32 h-32 mb-1 border rounded-lg overflow-hidden relative bg-gray-100">
-                                            <img id="image" class="object-cover w-full h-32"
-                                                src="https://placehold.co/300x300/e2e8f0/e2e8f0">
+                                            class="w-32 h-32 mb-1 .border rounded-lg overflow-hidden relative -bg-gray-100">
+                                            <!--img id="image" class="object-cover w-full h-32"
+                                                src="https://placehold.co/300x300/e2e8f0/e2e8f0"-->
 
                                             <div class="absolute top-0 left-0 right-0 bottom-0 w-full cursor-pointer flex items-center justify-center"
                                                 onclick="document.getElementById('fileInput').click()">
-                                                <button type="button"
+                                                <!--button type="button"
                                                     style="background-color: rgba(255, 255, 255, 0.65)"
                                                     class="hover:bg-gray-100 text-gray-700 font-semibold py-2 px-4 text-sm border border-gray-300 rounded-lg shadow-sm">
                                                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -263,7 +263,7 @@ const submit = () => {
                                                         </path>
                                                         <circle cx="12" cy="13" r="3"></circle>
                                                     </svg>
-                                                </button>
+                                                </button-->
                                             </div>
                                         </div>
 

@@ -30,10 +30,22 @@ class StorePaymentRequest extends FormRequest
             "order_id"=>"string",
             "montant"=>"numeric",
 
-            "method"=>"string|max:100",
-            "description"=>"string|max:200",
+            "method"=>"string|required|max:100",
+            "description"=>"max:200",
             "date"=>"date",
 
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'customer_id.numeric' => 'Veuillez selectionner un client',
+            'montant.numeric' => 'Veuillez saisir un montant',
+            'method.*' => 'Veuillez saisir une methode paiement',
+            'date.date' => 'Veuillez selectionner la date de paiement ',
+
+            // ..
         ];
     }
 

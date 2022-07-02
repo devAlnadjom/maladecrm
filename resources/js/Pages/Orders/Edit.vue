@@ -179,9 +179,18 @@ const submit = () => {
         form.products.push(item.pivot)
     });
     form.post(route('orders.update', props.order[0]?.id,), {
-        onSuccess: () => { clearForm(); form.products = [], showAlert.value = true; setTimeout(() => { showAlert.value = false }, 5000) },
+        onSuccess: () => { clearForm(); form.products = [],
+                            showAlert.value = true;
+                            setTimeout(() => { showAlert.value = false }, 5000) },
     });
 };
+
+const validateOrder=() => {
+     if(!confirm('Cette action ajoutera le total au solde du client et la facture ne sera plus modifible. Valider ?'))
+        return;
+    form.order_status=2;
+    submit();
+}
 
 const deleteOrder = () => {
     if(!confirm('Voulez vous supprimer cette facture?'))
@@ -204,6 +213,15 @@ onMounted(() => {
                     <Link class="text-xl" :href="route('orders.index')">Gestions des Facture</Link> / Facture N- {{props?.order[0]?.id}}
                 </h3>
                 <div class="flex flex-row justify-end">
+                    <span v-if="props.order[0].order_status==1" @click="validateOrder"
+                        class=" cursor-pointer flex items-center mx-2 justify-between w-40 px-4 py-2 text-sm font-medium leading-5 text-green-600  hover:text-white transition-colors duration-150 border border-green-600 rounded-lg active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-green">
+                    Valider
+                    <span class="ml-2" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </span>
+                    </span>
                     <span v-if="props.order[0].order_status==1" @click="deleteOrder"
                         class=" cursor-pointer flex items-center mx-2 justify-between w-40 px-4 py-2 text-sm font-medium leading-5 text-red-600  hover:text-white transition-colors duration-150 border border-red-600 rounded-lg active:bg-red-600 hover:bg-red-700 focus:outline-none focus:shadow-outline-red">
                     Supprimer
@@ -283,11 +301,11 @@ onMounted(() => {
                                     </div>
                                     <div class=" hidden md:block">
                                         <div
-                                            class="w-32 h-32 mb-1 border rounded-lg overflow-hidden relative bg-gray-100">
-                                            <img id="image" class="object-cover w-full h-32"
-                                                src="https://placehold.co/300x300/e2e8f0/e2e8f0">
+                                            class="w-32 h-32 mb-1 -border rounded-lg overflow-hidden relative -bg-gray-100">
+                                            <!--img id="image" class="object-cover w-full h-32"
+                                                src="https://placehold.co/300x300/e2e8f0/e2e8f0"-->
 
-                                            <div class="absolute top-0 left-0 right-0 bottom-0 w-full block cursor-pointer flex items-center justify-center"
+                                            <!--div class="absolute top-0 left-0 right-0 bottom-0 w-full block cursor-pointer flex items-center justify-center"
                                                 onclick="document.getElementById('fileInput').click()">
                                                 <button type="button"
                                                     style="background-color: rgba(255, 255, 255, 0.65)"
@@ -304,7 +322,7 @@ onMounted(() => {
                                                         <circle cx="12" cy="13" r="3"></circle>
                                                     </svg>
                                                 </button>
-                                            </div>
+                                            </div-->
                                         </div>
 
                                     </div>

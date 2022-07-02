@@ -78,7 +78,7 @@ class OrderController extends Controller
         }
 
 
-        return Redirect::route('orders.edit',$order->id)->with('success', "Order added successfully");
+        return Redirect::route('orders.edit',$order->id)->with('success', "Facture créée");
     }
 
 
@@ -140,7 +140,7 @@ class OrderController extends Controller
                 'solde'=>100*($validated['ttc_total_order']+ $solde_client),
             ]);
 
-            return Redirect::route('orders.index')->with('success', "Order Updated successfully");
+            return Redirect::route('orders.index')->with('success', "Facture mis à jour");
         }
 
         // Cancel Invoice
@@ -171,10 +171,10 @@ class OrderController extends Controller
         $order = Order::findOrFail($order_id);
 
         if ($order->order_status != '1'){
-            return Redirect::back()->with('success', "Cette Facture ne peut plus etre suprrimer.");
+            return Redirect::back()->with('success', "Cette Facture ne peut plus etre suprrimée.");
         }
         $order->update(['order_status' => '6']); //Deleted
-        return Redirect::route('orders.index')->with('success', "Facture supprimee..");
+        return Redirect::route('orders.index')->with('success', "Facture supprimée..");
     }
 
 

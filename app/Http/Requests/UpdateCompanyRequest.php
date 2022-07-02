@@ -24,11 +24,24 @@ class UpdateCompanyRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => "string|required|max:200",
+            'name' => "required|min:3|max:200",
             'address'=>"string|required|max:255",
-            'categorie'=>"string|required|max:255",
-            'contact'=>"string|required|max:20",
+            'categorie'=>"required|max:255",
+            'contact'=>"required|max:20",
             'description' =>"max:1000",
+        ];
+    }
+
+
+    public function messages()
+    {
+        return [
+            'name.required' => 'Vous devez fournir un nom...',
+            'name.min' => 'Le nom de l\'entreprise doit contenir au moins 3 caracteres.',
+            'address.required' => 'Vous devez fournir une adresse...',
+            'contact.required' => 'Vous devez fournir un contact...',
+            'categorie.required' => 'Vous devez fournir un votre secteur d\'activite...',
+            // ..
         ];
     }
 }

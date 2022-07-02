@@ -29,7 +29,7 @@ const form = useForm({
 
 const submit = () => {
     form.post(route('customers.store'), {
-        onFinish: () => form.reset(),
+        //onFinish: () => form.reset(),
     });
 };
 </script>
@@ -44,25 +44,24 @@ const submit = () => {
                 </h3>
                 <div class="flex flex-row justify-end">
 
-
                 </div>
 
             </div>
             <hr class="mt-4"/>
             <div class="mt-1">
-               <div class="w-full flex flex-column lg:flex-row lg:justify-between mx-auto py-5 sm:px-6 lg:px-8 lg:gap-2">
-                    <div class="sm:col w-full lg:flex-1">
-                        <h3 class="text-bold"> General Infos</h3>
-                        <p class="text-sm">Mettez un commentaires si possibles</p>
+               <div class="w-full md:flex flex-column  lg:justify-between mx-auto py-5 sm:px-6 lg:px-8 lg:gap-2">
+                    <div class="  lg:flex-1 ">
+                        <h3 class="text-bold"> Infos Generales</h3>
+                        <p class="text-sm mb-4">Mettez un commentaires si possible</p>
                     </div>
-                    <div class="w-full lg:w-2/3 ">
+                    <div class="w-full md:w-2/3 ">
                         <JetValidationErrors class="mb-4 " />
                         <div class="border p-4 rounded bg-white">
                             <form @submit.prevent="submit">
                                 <div>
                                     <JetLabel for="name" value="Nom / Raison Social" />
                                     <JetInput id="name" v-model="form.name" type="text" class="mt-1 block w-full"
-                                        required autofocus autocomplete="name" />
+                                         autofocus autocomplete="name" />
                                 </div>
 
                                 <div class="mt-4">
@@ -72,11 +71,11 @@ const submit = () => {
                                 </div>
 
                                 <div class="mt-4 flex flex-row gap-4 w-full">
-                                    <div class="w-full">
+                                    <!--div class="w-full">
                                         <JetLabel for="contact" value="Contact" />
                                         <JetInput id="contact" v-model="form.contact" type="text"
                                             class="mt-1 block w-full" />
-                                    </div>
+                                    </div-->
 
 
                                     <div class="w-full">
@@ -128,7 +127,7 @@ const submit = () => {
                                             <JetCheckbox id="active" v-model:checked="form.active" name="active" />
 
                                             <div class="ml-2">
-                                                Active
+                                                Actif
                                             </div>
                                         </div>
                                     </JetLabel>

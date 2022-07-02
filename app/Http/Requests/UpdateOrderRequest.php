@@ -49,6 +49,17 @@ class UpdateOrderRequest extends FormRequest
     }
 
 
+    public function messages()
+    {
+        return [
+            'customer_id.numeric' => 'Veuillez selectionner un client',
+            'date_order.date' => 'Veuillez selectionner une date de creation',
+            'due_date_order.date' => 'Veuillez selectionner d\'echeance ',
+
+            // ..
+        ];
+    }
+
     protected function prepareForValidation()
     {
         $this->merge([

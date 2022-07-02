@@ -11,7 +11,7 @@ defineProps({
 
 <template>
 
-    <Head title="Welcome" />
+    <Head title="Acceuil" />
 
     <nav class="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
         <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
@@ -95,7 +95,7 @@ defineProps({
                     ça marche?
                 </h2>
                 <p class="text-base text-gray-700 md:text-lg">
-                    Gestion du processus du processus de facturation depuis l'ajout du client jusqu'au paiement,
+                    Gestion du processus de facturation depuis l'ajout du client jusqu'au paiement,
                     en passant par la facturation et la validation.
                 </p>
             </div>
@@ -123,7 +123,7 @@ defineProps({
                         </svg>
                     </div>
                     <p class="text-gray-600">
-                        Ajouter un client facilement, ses informations de contacts et autres infos...
+                        Ajoutez un client facilement, ses informations de contacts et autres infos...
                     </p>
                 </div>
                 <div>
@@ -136,8 +136,8 @@ defineProps({
                         </svg>
                     </div>
                     <p class="text-gray-600">
-                        Creez une facture. Selectionnez le client, remplisser les lignes( Quantites, Prix Unitaires), definisser
-                        si c'est credit ou Compant. Validez et laisser le systeme calculer les compte.
+                        Créez une facture. Sélectionnez le client, remplissez les lignes( Quantites, Prix Unitaires), definissez
+                        si c'est crédit ou Compant. Validez et laissez le systeme calculer les compte.
                     </p>
                 </div>
                 <div>
@@ -150,14 +150,14 @@ defineProps({
                     </div>
                     <p class="text-gray-600">
                         Laissez le systeme vous alerter sur les comptes, les dates d'echeances. Enregistrez les paiements. Le systeme fait
-                        tout le reste du travail pour vous. Profitez de votre temps pour cherchez de nouveau client.
+                        tout le reste du travail pour vous. Profitez de votre temps pour chercher de nouveaux clients.
                     </p>
                 </div>
             </div>
             <div class="text-center mt-10">
                  <Link v-if="canRegister" :href="route('register')"
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                Creer un Compte gratuitement </Link>
+                Créer un Compte gratuitement </Link>
             </div>
         </div>
     </section>

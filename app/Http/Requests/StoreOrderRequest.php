@@ -25,7 +25,6 @@ class StoreOrderRequest extends FormRequest
     {
         return [
             "customer_id"=> "numeric",
-
            "order_status"=> "numeric",
            "order_key"=>"max:100",
 
@@ -49,6 +48,16 @@ class StoreOrderRequest extends FormRequest
         ];
     }
 
+    public function messages()
+    {
+        return [
+            'customer_id.numeric' => 'Veuillez selectionner un client',
+            'date_order.date' => 'Veuillez selectionner une date de creation',
+            'due_date_order.date' => 'Veuillez selectionner d\'echeance ',
+
+            // ..
+        ];
+    }
 
     protected function prepareForValidation()
     {

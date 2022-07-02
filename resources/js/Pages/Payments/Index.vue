@@ -6,6 +6,8 @@ import JetDropdown from '@/Jetstream/Dropdown.vue';
 import JetDropdownLink from '@/Jetstream/DropdownLink.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import Pagination from '../../Jetstream/Pagination.vue';
+
+import AlertBox from '@/Jetstream/AlertBox.vue';
 defineProps({
     payments: Object,
 });
@@ -24,7 +26,7 @@ const  formatMoney=(number) =>{
 
         <div class="py-8 xl:px-10 px-3">
             <div class="flex flex-row justify-between">
-                <h3 class="text-xl">Gestions de Paiement Clients</h3>
+                <h3 class="text-xl">Gestion des Paiement Clients</h3>
                 <div class="flex flex-row justify-end">
 
                     <Link :href="route('payments.create')"
@@ -36,6 +38,8 @@ const  formatMoney=(number) =>{
 
             </div>
             <div class="mt-5">
+                <AlertBox :flash="$page.props.flash" :on="true" class="mb-3"></AlertBox>
+
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
 
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">

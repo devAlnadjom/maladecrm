@@ -30,7 +30,7 @@ class CompanyController extends Controller
 
         $company->owner()->update(['company_id'=> $company->id]);
 
-        return Redirect::route('customers.index')->with('success', "You added successfully your company");
+        return Redirect::route('customers.index')->with('success', "Fiche entreprise mis à jour");
     }
 
     public function my_company(){
@@ -53,6 +53,6 @@ class CompanyController extends Controller
         $validated = $request->validated();
         $company->update($validated);
 
-        return Redirect::back()->with('success', "Company Infos Updated");
+        return Redirect::back()->with('success', "Fiche entreprise mis à jour");
     }
 }

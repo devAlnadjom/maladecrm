@@ -65,7 +65,7 @@ class PaymentController extends Controller
             ]);
 
 
-        return Redirect::route('payments.index')->with('success', "Payment added successfully");
+        return Redirect::route('payments.index')->with('success', "Paiement ajouté au compte du client");
     }
 
 

@@ -29,11 +29,11 @@ onMounted(() =>{
             <div class="flex flex-row justify-between">
                 <h3 class="text-xl">Gestion des Factures</h3>
                 <div class="flex flex-row justify-end">
-                    <Link :href="route('orders.create')"
+                    <!--Link :href="route('orders.create')"
                         class="flex items-center mx-2 justify-between w-40 px-4 py-2 text-sm font-medium leading-5 text-purple-600  hover:text-white transition-colors duration-150 border border-purple-600 rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
                         Paiement
                         <span class="ml-2" aria-hidden="true">+</span>
-                    </Link>
+                    </Link-->
                     <Link :href="route('orders.create')"
                         class="flex items-center justify-between w-40 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
                         Nouvelle Facture
