@@ -30,7 +30,7 @@ class UpdateOrderRequest extends FormRequest
            "order_status"=> "numeric",
            "order_key"=>"max:100",
 
-            "ref_customer"=>"string|max:100",
+            "ref_customer"=>"max:100",
             "montant_total"=>"numeric",
             "tax_1_percentage"=>"numeric",
             "tax_2_percentage"=>"numeric",

@@ -72,11 +72,11 @@ const  formatMoney=(number) =>{
 
                                 <td class="px-6 py-3">
 
-                                    <span v-if="customer?.solde > 50000" class="text-red-600">
-                                        {{formatMoney(customer?.solde)}}
+                                    <span v-if="customer?.solde > 500" class="text-red-600">
+                                        {{formatMoney(customer?.solde/100)}}
                                     </span>
-                                    <span v-if="customer?.solde <= 50000" class="text-green-600">
-                                        {{formatMoney(customer?.solde)}}
+                                    <span v-if="customer?.solde <= 500" class="text-green-600">
+                                        {{formatMoney(customer?.solde/100)}}
                                     </span>
                                 </td>
                                 <td class="px-6 py-3 text-right">

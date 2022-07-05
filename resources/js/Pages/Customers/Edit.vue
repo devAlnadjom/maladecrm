@@ -123,12 +123,12 @@ const submit = () => {
                                         </div>
 
 
-                                        <div class="w-full">
+                                        <!--div class="w-full">
                                             <JetLabel for="solde" value="Solde Courant" />
                                             <JetInput id="solde" v-model="form.solde" type="number"
                                                 class="mt-1 block w-full" />
 
-                                        </div>
+                                        </div-->
                                     </div>
 
 

@@ -28,12 +28,12 @@ const form = useForm({
     order_status: props.order[0]?.order_status,
     date_order: props.order[0]?.date_order,
     due_date_order: props.order[0].due_date_order,
-    total_order: props.order[0].total_order,
+    total_order: props.order[0].total_order/100,
     tax_1_percentage: props.order[0].tax_1_percentage,
     tax_2_percentage: props.order[0].tax_2_percentage,
     tax_1_amount: props.order[0].tax_1_amount,
     tax_2_amount: props.order[0].tax_2_amount,
-    ttc_total_order: props.order[0].ttc_total_order,
+    ttc_total_order: props.order[0].ttc_total_order/100,
     order_status: props.order[0].order_status,
     order_comment: props.order[0].order_comment,
     remise_order: props.order[0].remise_order,
@@ -42,6 +42,12 @@ const form = useForm({
 });
 
 var can_update = props.order[0]?.order_status == 1 ? true : false;
+const taxTable= reactive({
+    '0':0,
+    '5':5,
+    '18':18,
+    '20':20,
+});
 
 const renderComponent = ref(true);
 const formAdd = ref(true);
@@ -56,7 +62,8 @@ const oneLigne = reactive({
     //unit_price: 0,
     total_price: 0,
     total_quantity: 0,
-    ligne_total: 0
+    ligne_total: 0,
+    tax:0
 });
 const lignes = props.order[0]?.products;
 
@@ -70,6 +77,7 @@ const addLigne = () => {
         console.log((oneLigne.name).length);
         return;
     }
+    oneLigne.ligne_total=  Math.round(oneLigne.total_quantity * oneLigne.total_price* (1 + (oneLigne.tax/100))*100) /100;
 
     if (milestone == null) {
         milestone = oneLigne;
@@ -121,7 +129,8 @@ const EditItem = (index) => {
     oneLigne.description = data.description;
     oneLigne.total_price = data.total_price;
     oneLigne.total_quantity = data.total_quantity;
-    oneLigne.ligne_total = data.total_price * data.total_quantity;
+    oneLigne.tax = data.tax;
+    oneLigne.ligne_total = Math.round(data.total_quantity * data.total_price* (1 + (data.tax/100))*100) /100;
     milestone = index;
     toogleForm();
 
@@ -129,7 +138,7 @@ const EditItem = (index) => {
 }
 
 const invoiceTotal = () => {
-    let total = lignes.reduce((a, b) => a + (b.pivot.total_price * b.pivot.total_quantity), 0);
+    let total = lignes.reduce((a, b) => a + (Math.round(b.pivot.total_price * b.pivot.total_quantity* (1+(b.pivot.tax/100)) *100)/100), 0);
     console.log(total);
     form.total_order = total;
     form.tax_1_amount = (total * (form.tax_1_percentage / 100));
@@ -339,7 +348,7 @@ onMounted(() => {
                                             </template>
                                         </select>
                                         <h4 class="mt-1 block w-full bg-gray-100 border-0 rounded p-2" title="Solde">
-                                            {{ form.solde }}</h4>
+                                            {{ parseInt(form.solde)/100 }}</h4>
                                         <JetInput v-model="form.ref_customer" type="text"
                                             class="mt-1 block w-full bg-gray-100 border-0" placeholder="Reference" />
 
@@ -451,9 +460,9 @@ onMounted(() => {
                                                     class="text-gray-700 block appearance-none w-full bg-gray-200 border-2 border-gray-200 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-blue-500"
                                                     v-model="form.tax_1_percentage" @change="invoiceTotal()">
                                                     <option value="0">Taxe 0%</option>
-                                                    <option value="5">Tax 5%</option>
+                                                    <!--option value="5">Tax 5%</option>
                                                     <option value="12">TVA 12%</option>
-                                                    <option value="18">TVA 18%</option>
+                                                    <option value="18">TVA 18%</option-->
                                                 </select>
                                             </div>
                                             <div class="text-right w-40">
@@ -476,7 +485,7 @@ onMounted(() => {
                                 <div v-if="props.order[0]?.order_status == 2" class="flex items-center justify-end mt-4">
                                     <button type="button" class="ml-4 px-4 p-2 rounded-md text-white bg-red-700 hover:bg-red-500 text-sm" :class="{ 'opacity-25': form.processing }"
                                         :disabled="form.processing" @click="cancel_order()">
-                                        Cancel This Order
+                                        Annuler cette Facture
                                     </button>
                                 </div>
 
@@ -530,6 +539,17 @@ onMounted(() => {
 							<label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Prix Unitaire</label>
                             <JetInput id="pu" v-model="oneLigne.total_price" type="number"
                                                 placeholder="Prix Unitaire" class="mt-1 block w-full" />
+                        </div>
+                        	<div class="mb-4 sm:w-full md:w-32 mr-2">
+							<label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Taxe</label>
+                            <select class="mt-1 block w-full bg-gray-100 border-0 rounded"
+                                            v-model="oneLigne.tax" >
+
+                                            <template v-for="(item, index) in taxTable" :key="index">
+                                                <option :value="item"> {{ item }}
+                                                </option>
+                                            </template>
+                            </select>
                         </div>
 
 						<div class="mb-4 sm:w-full md:w-40">

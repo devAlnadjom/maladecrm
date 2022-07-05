@@ -105,7 +105,7 @@ onMounted(() =>{
 
     let taille= props.statsale.length;
     console.log("taille est"+ taille );
-    if(taille < 2){
+    if(taille < 5){
         lineConfig.data.datasets[0].data.push(0);
         lineConfig.data.datasets[0].data.push(0);
         lineConfig.data.labels.push("m-2");

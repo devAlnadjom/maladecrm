@@ -49,8 +49,10 @@ class PaymentController extends Controller
     {
         $validated = $request->validated();
         //dd($validated);
+        $validated['montant']=$validated['montant']*100;
         $payment=Payment::create($validated);
         $company_id =auth()->user()->company->id;
+
 
             $solde_client=Customer::find($validated['customer_id'])->solde;
             DB::table('customers')->where('id', $validated['customer_id'])->decrement('solde',$validated['montant']);
@@ -59,9 +61,9 @@ class PaymentController extends Controller
                 'customer_id'=>$validated['customer_id'],
                 'user_id'=>auth()->user()->id,
                 'description'=>"Paiemnt dans le compte to account.",
-                'debit'=>100*$validated['montant'],
+                'debit'=>$validated['montant'],
                 'credit'=>"0",
-                'solde'=>100*($solde_client-$validated['montant']),
+                'solde'=>$solde_client-$validated['montant'],
             ]);
 
 

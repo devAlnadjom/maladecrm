@@ -12,7 +12,7 @@ defineProps({
 });
 
 const  formatMoney=(number) =>{
-   return 'XAF '+ number.toLocaleString('en-US');
+   return  number.toLocaleString('en-US') +' XAF';
 };
 const showAlert =ref(true);
 
@@ -95,7 +95,7 @@ onMounted(() =>{
                                 </td>
                                 <td class="px-6 py-2">
 
-                                    {{ formatMoney(order?.ttc_total_order)}}
+                                    {{ formatMoney(order?.ttc_total_order/100)}}
                                 </td>
                                 <td class="px-6 py-2 text-right">
                                     <Link :href="route('orders.edit', order.id)"

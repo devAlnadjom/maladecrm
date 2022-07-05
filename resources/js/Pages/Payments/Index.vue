@@ -13,7 +13,7 @@ defineProps({
 });
 
 const  formatMoney=(number) =>{
-   return number.toLocaleString('en-US')+ 'XAF ';
+   return number.toLocaleString('en-US')+ ' XAF ';
 };
 /*const logout = () => {
     Inertia.post(route('logout'));
@@ -76,7 +76,7 @@ const  formatMoney=(number) =>{
                                     {{ payment?.method}}
                                 </td>
                                 <td class="px-6 py-2">
-                                    {{ formatMoney(payment?.montant)}}
+                                    {{ formatMoney(payment?.montant/100)}}
                                 </td>
                                 <!--td class="px-6 py-2 text-right">
                                     <Link :href="route('payments.show', payment.id)"

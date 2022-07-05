@@ -52,20 +52,27 @@ const oneLigne = reactive({
     description: '',
     is_service: true,
     //unit_price: 0,
+    tax:0,
     total_price: 0,
     total_quantity: 0,
-    ligne_total: computed(() => oneLigne.total_quantity * oneLigne.total_price),
+    ligne_total: computed(() => Math.round(oneLigne.total_quantity * oneLigne.total_price* (1 + (oneLigne.tax/100))*100) /100),
 });
 const lignes = reactive([]);
 const formAdd = ref(true);
+const taxTable= reactive({
+    '0':0,
+    '5':5,
+    '18':18,
+    '20':20,
+});
 
 const addLigne = () => {
     if (oneLigne.total_quantity < 1) {
-        alert("Quantity must be more than one.");
+        alert("La quantitee doit etre superieur a 1.");
         return;
     }
     if ((oneLigne.name).length < 3 && oneLigne.product_id == 1) {
-        alert("Please Provide a correct description.");
+        alert("Veuillez fournir la description du produit a ajouter.");
         console.log((oneLigne.name).length);
         return;
     }
@@ -99,6 +106,7 @@ const EditItem = (index) => {
     oneLigne.description = data.description;
     oneLigne.total_price = data.total_price;
     oneLigne.total_quantity = data.total_quantity;
+    oneLigne.tax = data.tax;
     milestone = index;
     openForm.value= true;
     formAdd.value =false;
@@ -135,6 +143,7 @@ const clearForm = () => {
     oneLigne.description = '';
     oneLigne.total_price = 0;
     oneLigne.total_quantity = 0;
+    oneLigne.tax = 0;
 };
 
 const forceRerender = () => {
@@ -281,7 +290,7 @@ const submit = () => {
                                             </template>
                                         </select>
                                         <h4 class="mt-1 block w-full bg-gray-100 border-0 rounded p-2" title="Solde">
-                                            {{form.solde}}</h4>
+                                            {{(form.solde/100)}}</h4>
                                         <JetInput v-model="form.ref_customer" type="text"
                                             class="mt-1 block w-full bg-gray-100 border-0" placeholder="Reference" />
 
@@ -465,6 +474,19 @@ const submit = () => {
                             <JetInput id="pu" v-model="oneLigne.total_price" type="number"
                                                 placeholder="Prix Unitaire" class="mt-1 block w-full" />
                         </div>
+						<div class="mb-4 sm:w-full md:w-32 mr-2">
+							<label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Taxe</label>
+                            <select class="mt-1 block w-full bg-gray-100 border-0 rounded"
+                                            v-model="oneLigne.tax" >
+
+                                            <template v-for="(item, index) in taxTable" :key="index">
+                                                <option :value="item"> {{ item }}
+                                                </option>
+                                            </template>
+                            </select>
+                        </div>
+
+
 
 						<div class="mb-4 sm:w-full md:w-40">
 							<label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Montant Total</label>

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger("product_id");
             $table->unsignedBigInteger("company_id")->nullable();
             $table->string("name")->nullable();
+            $table->integer("tax")->default(0);
             $table->mediumText("description")->nullable();
 
             $table->boolean("is_service")->default(true);

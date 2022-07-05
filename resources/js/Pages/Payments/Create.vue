@@ -61,7 +61,7 @@ const submit = () => {
                                             v-model="form.customer_id" @change="selectedCustomer()">
                                             <option :value="null"> Selectioner un Client</option>
                                             <template v-for="(item, index) in customers" :key="index">
-                                                <option :value="item.id"> {{ item.name }} -- Solde:{{ item.solde }}
+                                                <option :value="item.id"> {{ item.name }} -- Solde:{{parseInt(item.solde)/100 }}
                                                 </option>
                                             </template>
                                         </select>

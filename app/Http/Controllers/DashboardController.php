@@ -30,13 +30,13 @@ class DashboardController extends Controller
                                 ->first();
 
                 $invoice_completed = DB::table('orders')
-                                ->selectRaw('count(*)  as data_count, sum(ttc_total_order) as data_sum')
+                                ->selectRaw('count(*)  as data_count, sum(ttc_total_order)/100 as data_sum')
                                 ->where('company_id',$company_id)
                                 ->whereIn('order_status',[2,3])
                                 ->whereRaw('MONTH(created_at) = MONTH(CURRENT_DATE())')
                                 ->first();
                 $solde = DB::table('customers')
-                                ->selectRaw(' sum(solde) as data')
+                                ->selectRaw(' sum(solde)/100 as data')
                                 ->where('company_id',$company_id)
                                 ->where('active',1)
                                 ->first();
@@ -52,7 +52,7 @@ class DashboardController extends Controller
                                 ->limit(10)
                                 ->get();
 
-                $statsale= Order::select(DB::raw("SUM(ttc_total_order) as somme, MONTH(created_at) as month"))
+                $statsale= Order::select(DB::raw("SUM(ttc_total_order)/100 as somme, MONTH(created_at) as month"))
                     //->orderBy('created_at')
                     ->groupBy(DB::raw("MONTH(created_at)"))
                     ->whereIn('order_status' ,[2,3])

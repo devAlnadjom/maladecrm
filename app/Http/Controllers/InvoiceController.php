@@ -29,6 +29,7 @@ class InvoiceController extends Controller
         foreach($products as $product){
             $items[] = (new InvoiceItem())
             ->title($product->pivot->name)
+            ->taxByPercent($product->pivot->tax)
             //->description('Your product or service description')
             ->pricePerUnit($product->pivot->total_price)
             ->quantity($product->pivot->total_quantity);
@@ -103,7 +104,7 @@ class InvoiceController extends Controller
             ->filename($order->order_key)
             ->addItems($items)
             ->notes($notes)
-            ->taxRate($order->tax_1_percentage)
+           // ->taxRate($order->tax_1_percentage)
             // You can additionally save generated invoice to configured disk
             ->save('public');
 
