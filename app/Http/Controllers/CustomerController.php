@@ -41,11 +41,18 @@ class CustomerController extends Controller
     }
 
 
-    public function show( $customer)
+    public function show( $customer,Request $request)
     {
         $customer= Customer::findOrFail($customer);
        // dd($customer);
-        return Inertia::render('Customers/Edit',[
+       if($request->wantsJson())
+       {
+        if($request->has('view') && $request->get('view')=="invoices"){
+                $invoices=$customer->orders()->get();
+                return response()->json($invoices);
+            }
+       }
+        return Inertia::render('Customers/Show',[
             'customers'=> $customer,
         ]);
     }
@@ -54,11 +61,10 @@ class CustomerController extends Controller
     public function edit(int $customer, UpdateCustomerRequest $request)
     {
         $customer= Customer::findOrFail($customer);
-        $validated = $request->validated();
-        //dd($validated);
-        $customer->update($validated);
-
-        return Redirect::back()->with('success', "Fiche Client mis à jour");
+       // dd($customer);
+        return Inertia::render('Customers/Edit',[
+            'customers'=> $customer,
+        ]);
     }
 
 
