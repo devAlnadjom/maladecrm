@@ -84,13 +84,13 @@ onMounted(() =>{
                                         A Confirmer
                                     </span>
                                     <span v-if="order?.order_status==2" class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                                        Validee
+                                        Validée
                                     </span>
                                     <span v-if="order?.order_status==3" class="px-2 py-1 font-semibold leading-tight text-blue-700 bg-blue-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                                        Payee
+                                        Payée
                                     </span>
                                     <span v-if="order?.order_status==4" class="px-2 py-1 font-semibold leading-tight text-red-700 bg-red-100 rounded-full dark:bg-red-700 dark:text-red-100">
-                                        Annullee
+                                        Annullée
                                     </span>
                                 </td>
                                 <td class="px-6 py-2">
@@ -99,7 +99,7 @@ onMounted(() =>{
                                 </td>
                                 <td class="px-6 py-2 text-right">
                                     <Link :href="route('orders.edit', order.id)"
-                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Details</Link>
+                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Détails</Link>
                                     <a :href="'invoices/'+order.order_key+'/'+order.id" target="_blank"
                                         class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2" title="Voir la facture">Facture</a>
                                 </td>

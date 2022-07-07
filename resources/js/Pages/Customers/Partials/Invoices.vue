@@ -13,16 +13,25 @@ const props = defineProps({
 });
 
 const invoices = ref([]);
+const invoices_count = ref(0);
+const invoices_validated = ref(0);
+const sum_validated = ref(0);
 
 const showInvoices = () => {
     return axios.get('/customers/' + props.customers?.id + '?view=invoices').then(response => {
-        invoices.value = response.data;
+        invoices.value = response.data?.invoices;
+        invoices_count.value = response.data?.count_invoices;
+        invoices_validated.value = response.data?.validated_orders;
+        sum_validated.value = response.data?.validated_sum;
         console.log(response.data);
     });
 };
 
 const formatMoney = (number) => {
-    return number.toLocaleString('en-US') + ' XAF';
+    let val = parseInt(number);
+    if (isNaN(val))
+        return 0 + " XAF";
+    return val.toLocaleString('en-US') + ' XAF ';
 };
 
 onMounted(() => {
@@ -52,13 +61,81 @@ const form = useForm({
 
                 </AlertBox-->
     <div class="mt-1">
-        <div class="w-full md:flex flex-column  lg:justify-between mx-auto py-5 sm:px-6 lg:px-8 lg:gap-2">
+        <div class="w-full md:flex flex-column  lg:justify-between mx-auto py-5 sm:px-6 lg:px-8 lg:gap-4">
             <div class="  lg:flex-1 ">
-                <h3 class="text-bold text-lg"> Factures </h3>
+                <!--h3 class="text-bold text-lg"> Factures </h3-->
+
+
+                <div
+                    class="container flex flex-col mx-auto w-full items-center justify-center bg-white dark:bg-gray-800 rounded-lg shadow mr-6">
+                    <div class="px-4 py-5 sm:px-6 border-b w-full">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white">
+                            Statistiques
+                        </h3>
+                        <p class="mt-1 max-w-2xl text-sm text-gray-500 dark:text-gray-200">
+                            Informations des factures sur l'annee en cours
+                        </p>
+                    </div>
+                    <ul class="flex flex-col divide divide-y w-full">
+                        <li class="flex flex-row">
+                            <div class="select-none cursor-pointer flex flex-1 items-center p-3">
+                                <div class="flex flex-col w-8 h-8 justify-center items-center mr-1">
+                                    <div
+                                        class="p-2 mr-1 text-green-500 bg-blue-100 rounded-full dark:text-green-100 dark:bg-green-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="flex-1 pl-1 mr-16">
+                                    <div class="font-medium dark:text-white">
+                                        Valides
+                                    </div>
+
+                                </div>
+                                <div class="text-gray-600 dark:text-gray-200 text-xs">
+                                    <span class=".text-xl">{{ invoices_validated }}</span> / <span class=".text-3xl">{{
+                                            invoices_count
+                                    }}</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="flex flex-row">
+                            <div class="select-none cursor-pointer flex flex-1 items-center p-3">
+                                <div class="flex flex-col w-8 h-8 justify-center items-center mr-1">
+                                    <div
+                                        class="p-2 mr-1 text-blue-500 bg-blue-100 rounded-full dark:text-blue-100 dark:bg-blue-500">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" stroke-width="1">
+                                            <path
+                                                d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="flex-1 pl-1 mr-16">
+                                    <div class="font-medium dark:text-white">
+                                        Total
+                                    </div>
+
+                                </div>
+                                <div class="text-gray-600 dark:text-gray-200 text-xs">
+                                    {{ formatMoney(sum_validated / 100) }}
+                                </div>
+                            </div>
+                        </li>
+
+
+                    </ul>
+                </div>
+
                 <!--p class="text-sm mb-4">Mettez un commentaires si possible</p-->
             </div>
 
-            <div class="w-full md:w-2/3 lg:w-3/4 border rounded-md overflow-hidden shadow">
+            <div class="w-full md:w-2/3  border rounded-md overflow-hidden shadow">
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400  ">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
@@ -80,7 +157,7 @@ const form = useForm({
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-if="! invoices.length" class="bg-white dark:bg-gray-800  border-t">
+                        <tr v-if="!invoices.length" class="bg-white dark:bg-gray-800  border-t">
                             <td colspan="5" class="px-6 py-8">
                                 <p class="text-2xl text-gray-600 text-center"> Aucune Facture pour l'instant.</p>
                             </td>
@@ -105,15 +182,15 @@ const form = useForm({
                                 </span>
                                 <span v-if="order?.order_status == 2"
                                     class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                                    Validee
+                                    Validée
                                 </span>
                                 <span v-if="order?.order_status == 3"
                                     class="px-2 py-1 font-semibold leading-tight text-blue-700 bg-blue-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                                    Payee
+                                    Payée
                                 </span>
                                 <span v-if="order?.order_status == 4"
                                     class="px-2 py-1 font-semibold leading-tight text-red-700 bg-red-100 rounded-full dark:bg-red-700 dark:text-red-100">
-                                    Annullee
+                                    Annullée
                                 </span>
                             </td>
                             <td class="px-6 py-2">
@@ -122,8 +199,8 @@ const form = useForm({
                             </td>
                             <td class="px-6 py-2 text-right">
                                 <Link :href="route('orders.edit', order.id)"
-                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Details</Link>
-                                <a :href="'invoices/' + order.order_key + '/' + order.id" target="_blank"
+                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Détails</Link>
+                                <a :href="'/invoices/' + order.order_key + '/' + order.id" target="_blank"
                                     class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2"
                                     title="Voir la facture">Facture</a>
                             </td>

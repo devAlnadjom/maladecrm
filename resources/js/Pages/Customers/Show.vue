@@ -151,8 +151,8 @@ const submit = () => {
                             <Invoices :customers="customers">
                             </Invoices>
                         </div>
-                        <div v-if="tabs_position==3" class="px-5 py-8 bg-gray-400"  role="tabpanel" aria-labelledby="tabs-profile-tab">
-                            Tab 3 content
+                        <div v-if="tabs_position==3" class="px-5 py-8 .bg-gray-400"  role="tabpanel" aria-labelledby="tabs-profile-tab">
+                            Aucune donnees a affiche pour l'instant...
                         </div>
 
                     </div>
