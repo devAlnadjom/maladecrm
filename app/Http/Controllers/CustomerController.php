@@ -48,10 +48,16 @@ class CustomerController extends Controller
        if($request->wantsJson())
        {
         if($request->has('view') && $request->get('view')=="invoices"){
-                $invoices=$customer->orders()->get();
-                return response()->json($invoices);
+                $data=[
+                        "invoices"=>$customer->orders()->get(),
+                        "count_invoices"=> $customer->orders()->count(),
+                        "validated_orders"=> $customer->orders()->whereIn('order_status',[2,3])->count(),
+                        "validated_sum"=> $customer->orders()->whereIn('order_status',[2,3])->sum('ttc_total_order'),
+                    ];
+                return response()->json($data);
             }
        }
+       //ddd($customer->orders()->whereIn('order_status',[2,3])->count());
         return Inertia::render('Customers/Show',[
             'customers'=> $customer,
         ]);
