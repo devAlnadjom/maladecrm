@@ -16,13 +16,14 @@ class InvoiceController extends Controller
     public function __invoke(Request $request,  $order_key,$order_id)
     {
 
-        $order= Order::findOrFail($order_id);
+        $order= Order::withoutGlobalScopes()->findOrFail($order_id);
+
         if($order->order_key != $order_key)
             abort(404);
 
-        $client= $order->customer()->first();
-        $products= $order->products()->get();
-        $company = $order->company()->first();
+        $client= $order->customer()->withoutGlobalScopes()->first();
+        $products= $order->products()->withoutGlobalScopes()->get();
+        $company = $order->company()->withoutGlobalScopes()->first();
 
         $items=[];
 
