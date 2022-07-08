@@ -17,7 +17,7 @@ class PaymentController extends Controller
     {
 
         $payments=Payment::Select(['id','description','montant','date','method','customer_id'])
-
+                            ->latest()
                             ->with('customer:id,name')
                             ->paginate(10);
 

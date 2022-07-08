@@ -49,7 +49,7 @@ class CustomerController extends Controller
        {
         if($request->has('view') && $request->get('view')=="invoices"){
                 $data=[
-                        "invoices"=>$customer->orders()->get(),
+                        "invoices"=>$customer->orders()->latest()->where('order_status','<>','6')->take(30)->get(),
                         "count_invoices"=> $customer->orders()->count(),
                         "validated_orders"=> $customer->orders()->whereIn('order_status',[2,3])->count(),
                         "validated_sum"=> $customer->orders()->whereIn('order_status',[2,3])->sum('ttc_total_order'),
@@ -57,7 +57,6 @@ class CustomerController extends Controller
                 return response()->json($data);
             }
        }
-       //ddd($customer->orders()->whereIn('order_status',[2,3])->count());
         return Inertia::render('Customers/Show',[
             'customers'=> $customer,
         ]);

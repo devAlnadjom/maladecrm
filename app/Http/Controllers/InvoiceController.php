@@ -39,20 +39,20 @@ class InvoiceController extends Controller
         if(!count($items)){
             abort(404);
         }
-        //dd($items);
-        $status="Drawn";
+
+        $status="Brouillon";
         switch($order->order_status){
             case 1:
-                $status="Created";
+                $status="Créée";
                 break;
             case 2:
-                $status="Validated";
+                $status="Validée";
                 break;
             case 3:
-                $status="Paid";
+                $status="Payée";
                 break;
             case 4:
-                $status="Cancelled";
+                $status="Annulée";
                 break;
         }
 
@@ -63,7 +63,7 @@ class InvoiceController extends Controller
             'name'          => $client->name,
             'phone'         => $client->contact,
             'custom_fields' => [
-                'note'        => $order->ref_customer,
+                'Ref'        => $order->ref_customer,
                 //'business id' => '365#GG',
             ],
         ]);
@@ -73,14 +73,14 @@ class InvoiceController extends Controller
             'address'       => $company->address,
             //'code'          => '#22663214',
             'custom_fields' => [
-                'order number' => 'Fact-'.$client->id."-".$order->id,
+                'Reference' => 'Fact-'.$client->id."-".$order->id,
             ],
         ]);
 
 
 
         $notes = [
-            'Thanks for ordering from us.'
+            'Merci de nous faire confiance.'
         ];
         $notes = implode("<br>", $notes);
 

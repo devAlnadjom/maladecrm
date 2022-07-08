@@ -21,6 +21,7 @@ class OrderController extends Controller
     {
         $orders =  Order::Select()
         ->where('order_status','<>','6')
+        ->latest()
         ->with('customer:id,name')
         ->paginate(10);
        /* ->withQueryString()
