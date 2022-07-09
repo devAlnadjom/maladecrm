@@ -135,7 +135,7 @@ const form = useForm({
                 <!--p class="text-sm mb-4">Mettez un commentaires si possible</p-->
             </div>
 
-            <div class="w-full md:w-2/3  border rounded-md overflow-hidden shadow">
+            <div class="w-full md:w-2/3 mt-4 md:mt-0   border rounded-md overflow-auto shadow">
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400  ">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>

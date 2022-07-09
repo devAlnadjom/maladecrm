@@ -54,14 +54,14 @@ const submit = () => {
                         <h3 class=" mt-3 font-extrabold text-2xl text-gray-900">
                             {{ customers?.name }}
                         </h3>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mt-3 text-green-500" fill="none"
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mt-3 text-green-500 hidden lg:block" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
                         </svg>
                     </div>
 
-                    <div class="md:flex md:gap-4 mt-3 text-gray-500 font-semibold">
+                    <div class="grid grid-cols-2 gap-4 md:flex md:gap-4 mt-3 text-gray-500 font-semibold">
                         <div class="text-sm flex gap-1">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor" stroke-width="2">
@@ -122,17 +122,17 @@ const submit = () => {
                 <section class=" bg-gray-50">
                     <ul class="nav nav-tabs flex flex-col md:flex-row flex-wrap list-none border-b pl-0 mb-4"
                         id="tabs-tab" role="tablist">
-                        <li class="nav-item" role="presentation">
+                        <li class="nav-item" role="presentation cursor-pointer">
                             <span href="#tabs-home" class="nav-link block font-medium text-sm leading-tight border-t-0  border-b-indigo-700
                                 px-6 py-3  hover:border-b-indigo-700 hover:bg-indigo-100 focus:border-transparent" :class="{ 'text-indigo-800 border-b-2': tabs_position==1}"
                                 @click="tabs_position=1">Details</span>
                         </li>
-                        <li class="nav-item" role="presentation">
+                        <li class="nav-item" role="presentation cursor-pointer">
                             <span href="#tabs-home" class="nav-link block font-medium text-sm leading-tight border-t-0  border-b-indigo-700
                                 px-6 py-3  hover:border-b-indigo-700 hover:bg-indigo-100 focus:border-transparent" :class="{ 'text-indigo-800 border-b-2': tabs_position==2}"
                                 @click="tabs_position=2">Factures</span>
                         </li>
-                        <li class="nav-item" role="presentation">
+                        <li class="nav-item" role="presentation cursor-pointer">
                             <span href="#tabs-home" class="nav-link block font-medium text-sm leading-tight border-t-0  border-b-indigo-700
                                 px-6 py-3  hover:border-b-indigo-700 hover:bg-indigo-100 focus:border-transparent" :class="{ 'text-indigo-800 border-b-2': tabs_position==3}"
                                 @click="tabs_position=3">Paiements</span>
@@ -142,7 +142,7 @@ const submit = () => {
 
 
                     </ul>
-                    <div class="tab-content lg: min-h-screen"  >
+                    <div class="tab-content lg:min-h-screen "  >
                         <div v-if="tabs_position==1" class="tab-pane" role="tabpanel" aria-labelledby="tabs-home-tab">
                             <EditForm :customers="customers">
                             </EditForm>

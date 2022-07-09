@@ -135,7 +135,7 @@ const formatMoney = (number) => {
                 </div>
                         </div>
 
-                        <div class="w-full md:w-2/3 ">
+                        <div class="w-full md:w-2/3 mt-4 md:mt-0 ">
                             <JetValidationErrors class="mb-4 " />
                             <div class="border p-4 rounded bg-white">
                                 <form @submit.prevent="submit">
