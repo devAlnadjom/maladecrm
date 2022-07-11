@@ -28,12 +28,12 @@ const form = useForm({
     order_status: props.order[0]?.order_status,
     date_order: props.order[0]?.date_order,
     due_date_order: props.order[0].due_date_order,
-    total_order: props.order[0].total_order/100,
+    total_order: props.order[0].total_order / 100,
     tax_1_percentage: props.order[0].tax_1_percentage,
     tax_2_percentage: props.order[0].tax_2_percentage,
     tax_1_amount: props.order[0].tax_1_amount,
     tax_2_amount: props.order[0].tax_2_amount,
-    ttc_total_order: props.order[0].ttc_total_order/100,
+    ttc_total_order: props.order[0].ttc_total_order / 100,
     order_status: props.order[0].order_status,
     order_comment: props.order[0].order_comment,
     remise_order: props.order[0].remise_order,
@@ -42,11 +42,11 @@ const form = useForm({
 });
 
 var can_update = props.order[0]?.order_status == 1 ? true : false;
-const taxTable= reactive({
-    '0':0,
-    '5':5,
-    '18':18,
-    '20':20,
+const taxTable = reactive({
+    '0': 0,
+    '5': 5,
+    '18': 18,
+    '20': 20,
 });
 
 const renderComponent = ref(true);
@@ -63,7 +63,7 @@ const oneLigne = reactive({
     total_price: 0,
     total_quantity: 0,
     ligne_total: 0,
-    tax:0
+    tax: 0
 });
 const lignes = props.order[0]?.products;
 
@@ -77,7 +77,7 @@ const addLigne = () => {
         console.log((oneLigne.name).length);
         return;
     }
-    oneLigne.ligne_total=  Math.round(oneLigne.total_quantity * oneLigne.total_price* (1 + (oneLigne.tax/100))*100) /100;
+    oneLigne.ligne_total = Math.round(oneLigne.total_quantity * oneLigne.total_price * (1 + (oneLigne.tax / 100)) * 100) / 100;
 
     if (milestone == null) {
         milestone = oneLigne;
@@ -88,11 +88,11 @@ const addLigne = () => {
     }
 
     milestone = null;
-    formAdd.value= true;
+    formAdd.value = true;
     forceRerender();
     clearForm();
     invoiceTotal();
-    openForm.value =false;
+    openForm.value = false;
 
 };
 
@@ -120,17 +120,17 @@ const removeItem = (index) => {
 const EditItem = (index) => {
 
     console.log(index);
-    formAdd.value= false;
+    formAdd.value = false;
     let data = { ...lignes[index].pivot };
     // oneLigne = data;
-    formAdd.value=false;
+    formAdd.value = false;
     oneLigne.product_id = data.product_id;
     oneLigne.name = data.name;
     oneLigne.description = data.description;
     oneLigne.total_price = data.total_price;
     oneLigne.total_quantity = data.total_quantity;
     oneLigne.tax = data.tax;
-    oneLigne.ligne_total = Math.round(data.total_quantity * data.total_price* (1 + (data.tax/100))*100) /100;
+    oneLigne.ligne_total = Math.round(data.total_quantity * data.total_price * (1 + (data.tax / 100)) * 100) / 100;
     milestone = index;
     toogleForm();
 
@@ -138,7 +138,7 @@ const EditItem = (index) => {
 }
 
 const invoiceTotal = () => {
-    let total = lignes.reduce((a, b) => a + (Math.round(b.pivot.total_price * b.pivot.total_quantity* (1+(b.pivot.tax/100)) *100)/100), 0);
+    let total = lignes.reduce((a, b) => a + (Math.round(b.pivot.total_price * b.pivot.total_quantity * (1 + (b.pivot.tax / 100)) * 100) / 100), 0);
     console.log(total);
     form.total_order = total;
     form.tax_1_amount = (total * (form.tax_1_percentage / 100));
@@ -176,9 +176,9 @@ const toogleForm = (a = 0) => {
        oneLigne.ligne_total= oneLigne.total_price*currentValue
    });*/
 
-const cancel_order=() =>{
-    if(!confirm("Voulez vous annuler cette facture?"))return;
-    form.order_status=4;
+const cancel_order = () => {
+    if (!confirm("Voulez vous annuler cette facture?")) return;
+    form.order_status = 4;
     submit();
 }
 
@@ -188,21 +188,23 @@ const submit = () => {
         form.products.push(item.pivot)
     });
     form.post(route('orders.update', props.order[0]?.id,), {
-        onSuccess: () => { clearForm(); form.products = [],
-                            showAlert.value = true;
-                            setTimeout(() => { showAlert.value = false }, 5000) },
+        onSuccess: () => {
+            clearForm(); form.products = [],
+                showAlert.value = true;
+            setTimeout(() => { showAlert.value = false }, 5000)
+        },
     });
 };
 
-const validateOrder=() => {
-     if(!confirm('Cette action ajoutera le total au solde du client et la facture ne sera plus modifible. Valider ?'))
+const validateOrder = () => {
+    if (!confirm('Cette action ajoutera le total au solde du client et la facture ne sera plus modifible. Valider ?'))
         return;
-    form.order_status=2;
+    form.order_status = 2;
     submit();
 }
 
 const deleteOrder = () => {
-    if(!confirm('Voulez vous supprimer cette facture?'))
+    if (!confirm('Voulez vous supprimer cette facture?'))
         return;
 
     Inertia.delete(route('orders.destroy', props.order[0]?.id));
@@ -219,28 +221,26 @@ onMounted(() => {
         <div class="py-8 px-3">
             <div class="flex flex-row justify-between">
                 <h3>
-                    <Link class="text-xl" :href="route('orders.index')">Gestions des Facture</Link> / Facture N- {{props?.order[0]?.id}}
+                    <Link class="text-xl" :href="route('orders.index')">Gestions des Facture</Link> / Facture N-
+                    {{props?.order[0]?.id}}
                 </h3>
                 <div class="flex flex-row justify-end">
                     <span v-if="props.order[0].order_status==1" @click="validateOrder"
                         class=" cursor-pointer flex items-center mx-2 justify-between w-40 px-4 py-2 text-sm font-medium leading-5 text-green-600  hover:text-white transition-colors duration-150 border border-green-600 rounded-lg active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-green">
-                    Valider
-                    <span class="ml-2" aria-hidden="true">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                        </svg>
-                    </span>
+                        Valider
+                        <span class="ml-2" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </span>
                     </span>
                     <span v-if="props.order[0].order_status==1" @click="deleteOrder"
                         class=" cursor-pointer flex items-center mx-2 justify-between w-40 px-4 py-2 text-sm font-medium leading-5 text-red-600  hover:text-white transition-colors duration-150 border border-red-600 rounded-lg active:bg-red-600 hover:bg-red-700 focus:outline-none focus:shadow-outline-red">
-                    Supprimer
-                    <span class="ml-2" aria-hidden="true">X</span>
+                        Supprimer
+                        <span class="ml-2" aria-hidden="true">X</span>
                     </span>
-                    <Link :href="route('orders.create')" v-if="props.order[0].order_status==2"
-                        class="flex items-center mx-2 justify-between w-40 px-4 py-2 text-sm font-medium leading-5 text-purple-600  hover:text-white transition-colors duration-150 border border-purple-600 rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                    Paiement
-                    <span class="ml-2" aria-hidden="true">+</span>
-                    </Link>
+
                     <Link :href="route('orders.create')"
                         class="flex items-center justify-between w-40 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
                     Nouvelle Facture
@@ -248,12 +248,14 @@ onMounted(() => {
                     </Link>
                     <a :href="'/invoices/'+props.order[0].order_key+'/'+props.order[0].id" target="_blank"
                         class="flex ml-2 items-center justify-between w-30 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-600 border border-transparent rounded-lg active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-green">
-                    Impr.
-                    <span class="ml-2" aria-hidden="true">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                        </svg>
-                    </span>
+                        Impr.
+                        <span class="ml-2" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                            </svg>
+                        </span>
                     </a>
                 </div>
 
@@ -377,7 +379,7 @@ onMounted(() => {
                                                 </th>
 
                                                 <th scope="col" class="px-6 py-3">
-                                                    Quantity
+                                                    Quantite
                                                 </th>
                                                 <th scope="col" class="px-6 py-3">
                                                     P. Unit.
@@ -411,18 +413,24 @@ onMounted(() => {
                                                         {{ item.pivot.total_price * item.pivot.total_quantity }}
                                                     </td>
                                                     <td class="px-6 py-4 text-right flex gap-2">
-                                                        <a class="font-medium text-blue-600 dark:text-blue-500 hover:text-blue-700" title="Edit"
-                                                            @click="EditItem(index)">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                                                </svg>
-                                                            </a>
-                                                        <a class="font-medium text-red-500 dark:text-blue-500 hover:text-red-700 px-2" title="Delete"
-                                                            @click="removeItem(index)">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                                </svg>
-                                                            </a>
+                                                        <a class="font-medium text-blue-600 dark:text-blue-500 hover:text-blue-700"
+                                                            title="Edit" @click="EditItem(index)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
+                                                                fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                                stroke-width="1">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                                            </svg>
+                                                        </a>
+                                                        <a class="font-medium text-red-500 dark:text-blue-500 hover:text-red-700 px-2"
+                                                            title="Delete" @click="removeItem(index)">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
+                                                                fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                                stroke-width="1">
+                                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                            </svg>
+                                                        </a>
                                                     </td>
                                                 </tr>
                                             </template>
@@ -475,21 +483,25 @@ onMounted(() => {
                                                 <div class="text-xl text-gray-600 text-right flex-1">Montant due</div>
                                                 <div class="text-right w-40">
                                                     <div class="text-xl text-gray-800 font-bold">{{ form.ttc_total_order
-                                                    }}</div>
+                                                        }}</div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div v-if="props.order[0]?.order_status == 2" class="flex items-center justify-end mt-4">
-                                    <button type="button" class="ml-4 px-4 p-2 rounded-md text-white bg-red-700 hover:bg-red-500 text-sm" :class="{ 'opacity-25': form.processing }"
-                                        :disabled="form.processing" @click="cancel_order()">
+                                <div v-if="props.order[0]?.order_status == 2"
+                                    class="flex items-center justify-end mt-4">
+                                    <button type="button"
+                                        class="ml-4 px-4 p-2 rounded-md text-white bg-red-700 hover:bg-red-500 text-sm"
+                                        :class="{ 'opacity-25': form.processing }" :disabled="form.processing"
+                                        @click="cancel_order()">
                                         Annuler cette Facture
                                     </button>
                                 </div>
 
-                                <div v-if="props.order[0]?.order_status == 1" class="flex items-center justify-end mt-4">
+                                <div v-if="props.order[0]?.order_status == 1"
+                                    class="flex items-center justify-end mt-4">
                                     <select class="ml-2 mt-1 block w-48 bg-gray-100 border-0 rounded"
                                         v-model="form.order_status">
                                         <option :value="1"> A confirmer</option>
@@ -514,54 +526,59 @@ onMounted(() => {
 
             <JetDialogModal :show="openForm" @close="toogleForm">
                 <template #title>
-                   <h2 class="font-bold text-2xl mb-6 text-gray-800 border-b pb-2">Veuillez ajouter une ligne</h2>
+                    <h2 class="font-bold text-2xl mb-6 text-gray-800 border-b pb-2">Veuillez ajouter une ligne</h2>
                 </template>
 
                 <template #content>
 
-                   <div class="w-full rounded-lg bg-white overflow-hidden  block ">
+                    <div class="w-full rounded-lg bg-white overflow-hidden  block ">
 
 
-					<div class="mb-4">
-						<label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Description</label>
-                         <JetInput v-model="oneLigne.name" type="text"
-                                                placeholder="Designation Produit" class="mt-1 block w-full" />
-                    </div>
-
-					<div class="flex flex-column md:flex-row">
-						<div class="mb-4 sm:w-full md:w-20 mr-2">
-							<label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Unités</label>
-							<JetInput id="qty" v-model="oneLigne.total_quantity" type="number"
-                                                placeholder="Quantite" class="mt-1 block w-full" />
+                        <div class="mb-4">
+                            <label
+                                class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Description</label>
+                            <JetInput v-model="oneLigne.name" type="text" placeholder="Designation Produit"
+                                class="mt-1 block w-full" />
                         </div>
 
-						<div class="mb-4 sm:w-full md:w-32 mr-2">
-							<label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Prix Unitaire</label>
-                            <JetInput id="pu" v-model="oneLigne.total_price" type="number"
-                                                placeholder="Prix Unitaire" class="mt-1 block w-full" />
-                        </div>
-                        	<div class="mb-4 sm:w-full md:w-32 mr-2">
-							<label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Taxe</label>
-                            <select class="mt-1 block w-full bg-gray-100 border-0 rounded"
-                                            v-model="oneLigne.tax" >
-
-                                            <template v-for="(item, index) in taxTable" :key="index">
-                                                <option :value="item"> {{ item }}
-                                                </option>
-                                            </template>
-                            </select>
-                        </div>
-
-						<div class="mb-4 sm:w-full md:w-40">
-							<label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Montant Total</label>
-							<span class="mt-1 block w-full px-5 py-2 rounded  border border-black "
-                                                readonly="true">{{ oneLigne.ligne_total }}</span>
+                        <div class="flex flex-column md:flex-row">
+                            <div class="mb-4 sm:w-full md:w-20 mr-2">
+                                <label
+                                    class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Unités</label>
+                                <JetInput id="qty" v-model="oneLigne.total_quantity" type="number"
+                                    placeholder="Quantite" class="mt-1 block w-full" />
                             </div>
-					</div>
+
+                            <div class="mb-4 sm:w-full md:w-32 mr-2">
+                                <label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Prix
+                                    Unitaire</label>
+                                <JetInput id="pu" v-model="oneLigne.total_price" type="number"
+                                    placeholder="Prix Unitaire" class="mt-1 block w-full" />
+                            </div>
+                            <div class="mb-4 sm:w-full md:w-32 mr-2">
+                                <label
+                                    class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Taxe</label>
+                                <select class="mt-1 block w-full bg-gray-100 border-0 rounded" v-model="oneLigne.tax">
+
+                                    <template v-for="(item, index) in taxTable" :key="index">
+                                        <option :value="item"> {{ item }}
+                                        </option>
+                                    </template>
+                                </select>
+                            </div>
+
+                            <div class="mb-4 sm:w-full md:w-40">
+                                <label
+                                    class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Montant
+                                    Total</label>
+                                <span class="mt-1 block w-full px-5 py-2 rounded  border border-black "
+                                    readonly="true">{{ oneLigne.ligne_total }}</span>
+                            </div>
+                        </div>
 
 
 
-				</div>
+                    </div>
                 </template>
 
                 <template #footer>
@@ -569,13 +586,11 @@ onMounted(() => {
                         Fermer
                     </JetSecondaryButton>
 
-                    <JetButton v-if="formAdd" class="ml-3"
-                        @click="addLigne">
+                    <JetButton v-if="formAdd" class="ml-3" @click="addLigne">
                         Ajouter
                     </JetButton>
 
-                    <JetButton v-if="!formAdd" class="ml-3"
-                        @click="addLigne">
+                    <JetButton v-if="!formAdd" class="ml-3" @click="addLigne">
                         Modifier
                     </JetButton>
                 </template>

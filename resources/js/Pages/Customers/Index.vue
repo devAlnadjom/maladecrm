@@ -40,7 +40,7 @@ const  formatMoney=(number) =>{
 
             </div>
             <div class="mt-5">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                <div class="bg-white overflow-auto shadow-xl sm:rounded-lg">
 
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
