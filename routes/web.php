@@ -7,6 +7,7 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +40,7 @@ Route::get('/', function () {
 });
 
 Route::get('/invoices/{order_key}/{order_id}', InvoiceController::class)->name('invoices');
+Route::get('/transactions/{customer_id}', [TransactionController::class,"customer_portal"])->name('transaction.portal');
 
 Route::middleware([
     'auth:sanctum',

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Actions\Order\OrderActions;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use App\Jobs\SendEmailJob;
 use App\Mail\OrderShipped;
 use App\Models\Customer;
 use App\Models\Order;
@@ -65,7 +66,9 @@ class OrderController extends Controller
 
     public function edit($id)
     {
-        //Mail::to('altest@gmail.com')->send(new OrderShipped( Order::findOrFail($id)));
+        /*dispatch(new SendEmailJob ($id))
+            ->delay(now()->addMinutes(1));*/
+
         $order = Order::Where('id',$id)
                 ->with('products')
                 ->get();

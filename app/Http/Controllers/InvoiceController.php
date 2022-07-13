@@ -8,7 +8,7 @@ use Illuminate\Support\Carbon;
 use LaravelDaily\Invoices\Invoice;
 use LaravelDaily\Invoices\Classes\Party;
 use LaravelDaily\Invoices\Classes\InvoiceItem;
-
+use App\Actions\Invoice\InvoiceActions;
 
 class InvoiceController extends Controller
 {
@@ -20,100 +20,12 @@ class InvoiceController extends Controller
 
         if($order->order_key != $order_key)
             abort(404);
-
-        $client= $order->customer()->withoutGlobalScopes()->first();
-        $products= $order->products()->withoutGlobalScopes()->get();
-        $company = $order->company()->withoutGlobalScopes()->first();
-
-        $items=[];
-
-        foreach($products as $product){
-            $items[] = (new InvoiceItem())
-            ->title($product->pivot->name)
-            ->taxByPercent($product->pivot->tax)
-            //->description('Your product or service description')
-            ->pricePerUnit($product->pivot->total_price)
-            ->quantity($product->pivot->total_quantity);
-            //->discount(10);
-        }
-        if(!count($items)){
-            abort(404);
+        try{
+            $invoice = InvoiceActions::buildInvoice($order_id);
+        }catch(\Exception $e){
+            abort(404,"Factue Introuvable!");
         }
 
-        $status="Brouillon";
-        switch($order->order_status){
-            case 1:
-                $status="Créée";
-                break;
-            case 2:
-                $status="Validée";
-                break;
-            case 3:
-                $status="Payée";
-                break;
-            case 4:
-                $status="Annulée";
-                break;
-        }
-
-        $currency_sign="CFA";
-        $currency_code="XAF";
-
-        $customer = new Party([
-            'name'          => $client->name,
-            'phone'         => $client->contact,
-            'custom_fields' => [
-                'Ref'        => $order->ref_customer,
-                //'business id' => '365#GG',
-            ],
-        ]);
-
-        $clientt = new Party([
-            'name'          => $company->name,
-            'address'       => $company->address,
-            //'code'          => '#22663214',
-            'custom_fields' => [
-                'Reference' => 'Fact-'.$client->id."-".$order->id,
-            ],
-        ]);
-
-
-
-        $notes = [
-            'Merci de nous faire confiance.'
-        ];
-        $notes = implode("<br>", $notes);
-
-        $invoice = Invoice::make('Invoice')
-            ->series('FACT')
-            // ability to include translated invoice status
-            // in case it was paid
-           // ->status(__('invoices::invoice.drawn'))
-            ->status($status)
-            ->sequence($order->id)
-            ->serialNumberFormat('{SERIES}-'.$client->id.'-{SEQUENCE}')
-            ->seller($clientt)
-            ->buyer($customer)
-            ->date(Carbon::parse($order->date_order))
-            ->dateFormat('d/m/Y')
-            ->payUntilDays(30)
-            ->currencySymbol($currency_sign)
-            ->currencyCode($currency_code)
-            ->currencyFormat('{VALUE} {SYMBOL}')
-            ->currencyThousandsSeparator('.')
-            ->currencyDecimalPoint(',')
-            ->filename($order->order_key)
-            ->addItems($items)
-            ->notes($notes)
-           // ->taxRate($order->tax_1_percentage)
-            // You can additionally save generated invoice to configured disk
-            ->save('public');
-
-        $link = $invoice->url();
-        // Then send email to party with link
-
-        // And return invoice itself to browser or have a different view
         return $invoice->stream();
-        //return $invoice->toHtml();
     }
 }

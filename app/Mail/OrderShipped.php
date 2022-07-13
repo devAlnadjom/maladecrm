@@ -25,7 +25,7 @@ class OrderShipped extends Mailable
      */
     public function build()
     {
-
+        // Call a service to create the last version of the invoice then send
         return $this->from('example@example.com', 'Example')
                     ->markdown('emails.orders.shipped',
                         ['url' => '#'])
