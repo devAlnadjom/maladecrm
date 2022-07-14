@@ -44,6 +44,10 @@ class CustomerController extends Controller
     public function show( $customer,Request $request)
     {
         $customer= Customer::findOrFail($customer);
+
+        $company = $customer->company()->withoutGlobalScopes()->first();
+
+        $public_key=sha1($customer->id.'00'.$company->id);
        // dd($customer);
        if($request->wantsJson())
        {
@@ -59,6 +63,7 @@ class CustomerController extends Controller
        }
         return Inertia::render('Customers/Show',[
             'customers'=> $customer,
+            'public_key'=> $public_key,
         ]);
     }
 

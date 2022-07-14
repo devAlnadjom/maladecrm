@@ -40,7 +40,7 @@ Route::get('/', function () {
 });
 
 Route::get('/invoices/{order_key}/{order_id}', InvoiceController::class)->name('invoices');
-Route::get('/transactions/{customer_id}', [TransactionController::class,"customer_portal"])->name('transaction.portal');
+Route::get('/transactions/{customer_id}/{public_key}', [TransactionController::class,"customer_portal"])->name('transaction.portal');
 
 Route::middleware([
     'auth:sanctum',

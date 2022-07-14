@@ -15,6 +15,7 @@ import Invoices from './Partials/Invoices.vue';
 
 const props = defineProps({
     customers: Object,
+    public_key: Object,
 });
 
 const tabs_position = ref(1);
@@ -136,6 +137,12 @@ const submit = () => {
                             <span href="#tabs-home" class="nav-link block font-medium text-sm leading-tight border-t-0  border-b-indigo-700
                                 px-6 py-3  hover:border-b-indigo-700 hover:bg-indigo-100 focus:border-transparent" :class="{ 'text-indigo-800 border-b-2': tabs_position==3}"
                                 @click="tabs_position=3">Paiements</span>
+                        </li>
+                        <li class="nav-item" role="presentation cursor-pointer">
+                            <a :href="route('transaction.portal',[customers.id, public_key])"  target="_blank" class="nav-link block font-medium text-sm leading-tight border-t-0  border-b-indigo-700
+                                px-6 py-3  hover:border-b-indigo-700 hover:bg-indigo-100 focus:border-transparent">
+                                Transactions
+                            </a>
                         </li>
 
 

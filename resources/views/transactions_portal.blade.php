@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title >Transaction With You</title>
+        <title >Transaction Avec Nous</title>
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
@@ -16,8 +16,20 @@
     </head>
     <body class="font-sans antialiased">
 
-        <section class="bg-gray-50 md:py-8" >
-            <h3 class=" text-xl my-3 pl-8 hidden md:block">Transaction</h3>
+        <section class="bg-gray-50 md:pb-8" >
+            <div class=" bg-white overflow-auto rounded border md:mx-8 lg:mx-10  md:flex md:justify-between">
+                <div class=" md:my-3 md:w-1/3 lg:w-1/6 md:border-l-4 md:ml-4">
+                    <span class=" underline font-bold my-3 pl-4 hidden md:block">Client</span>
+                    <h3 class=" text-xl my-2 pl-4 ">{{$customer->name}}</h3>
+                    <p class=" my-2 pl-4 ">{{$customer->address}}</p>
+                </div>
+                <div class=" md:w-1/3 lg:w-1/6 md:border-l-4 hidden md:block">
+                    <span class=" underline font-bold my-3 pl-4 hidden md:block ">De</span>
+                    <h3 class=" text-xl my-2 pl-4 ">{{$company->name}}</h3>
+                    <p class=" my-2 pl-4 ">{{$company->address}}</p>
+                </div>
+            </div>
+            <h3 class=" text-xl my-3 pl-8 hidden md:block">Transaction a ce jour: {{ date('d-m-Y') }}</h3>
             <div class=" bg-white overflow-auto rounded border md:mx-8 lg:mx-10 mx-10 hidden md:block">
                 <table class=" w-full text-center">
                     <thead class="bg-gray-400">
@@ -45,7 +57,7 @@
 
             <ul class="w-full divide-y bg-white rounded-md border block md:hidden mx-2 overflow-hidden">
                 <li class="w-full bg-slate-400 px-3 py-4">
-                    <h3 class=" text-xl">Transaction</h3>
+                    <h3 class=" text-xl">Transaction a ce jour: {{ date('d-m-Y') }}</h3>
                 </li>
                 @foreach($transactions as $item)
                 <li class="hover:bg-slate-50">
