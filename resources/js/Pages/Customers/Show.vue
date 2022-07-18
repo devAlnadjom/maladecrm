@@ -16,6 +16,7 @@ import Invoices from './Partials/Invoices.vue';
 const props = defineProps({
     customers: Object,
     public_key: Object,
+    comments: Object,
 });
 
 const tabs_position = ref(1);
@@ -47,6 +48,7 @@ const submit = () => {
         <div class="py-8 px-3 bg-white">
             <div class="flex flex-row justify-between">
                 <div>
+
                     <div class="text-sm text-gray-500">
                         Acceuil /
                         <Link class="text-gray-600 hover:text-gray-800" :href="route('customers.index')">Client</Link>
@@ -115,30 +117,34 @@ const submit = () => {
                 </div>
 
             </div>
-            <div class="mt-5">
+            <div>
                 <AlertBox :flash="$page.props.flash" :on="true" class="mr-3">
 
                 </AlertBox>
+            </div>
+
+            <div class="mt-5">
+
 
                 <section class=" bg-gray-50">
                     <ul class="nav nav-tabs flex flex-col md:flex-row flex-wrap list-none border-b pl-0 mb-4"
                         id="tabs-tab" role="tablist">
-                        <li class="nav-item" role="presentation cursor-pointer">
+                        <li class="nav-item cursor-pointer" role="presentation">
                             <span href="#tabs-home" class="nav-link block font-medium text-sm leading-tight border-t-0  border-b-indigo-700
                                 px-6 py-3  hover:border-b-indigo-700 hover:bg-indigo-100 focus:border-transparent" :class="{ 'text-indigo-800 border-b-2': tabs_position==1}"
                                 @click="tabs_position=1">Details</span>
                         </li>
-                        <li class="nav-item" role="presentation cursor-pointer">
+                        <li class="nav-item cursor-pointer" role="presentation ">
                             <span href="#tabs-home" class="nav-link block font-medium text-sm leading-tight border-t-0  border-b-indigo-700
                                 px-6 py-3  hover:border-b-indigo-700 hover:bg-indigo-100 focus:border-transparent" :class="{ 'text-indigo-800 border-b-2': tabs_position==2}"
                                 @click="tabs_position=2">Factures</span>
                         </li>
-                        <li class="nav-item" role="presentation cursor-pointer">
+                        <li class="nav-item cursor-pointer" role="presentation ">
                             <span href="#tabs-home" class="nav-link block font-medium text-sm leading-tight border-t-0  border-b-indigo-700
                                 px-6 py-3  hover:border-b-indigo-700 hover:bg-indigo-100 focus:border-transparent" :class="{ 'text-indigo-800 border-b-2': tabs_position==3}"
                                 @click="tabs_position=3">Paiements</span>
                         </li>
-                        <li class="nav-item" role="presentation cursor-pointer">
+                        <li class="nav-item cursor-pointer" role="presentation ">
                             <a :href="route('transaction.portal',[customers.id, public_key])"  target="_blank" class="nav-link block font-medium text-sm leading-tight border-t-0  border-b-indigo-700
                                 px-6 py-3  hover:border-b-indigo-700 hover:bg-indigo-100 focus:border-transparent">
                                 Transactions
@@ -151,7 +157,7 @@ const submit = () => {
                     </ul>
                     <div class="tab-content lg:min-h-screen "  >
                         <div v-if="tabs_position==1" class="tab-pane" role="tabpanel" aria-labelledby="tabs-home-tab">
-                            <EditForm :customers="customers">
+                            <EditForm :customers="customers" :comments="comments">
                             </EditForm>
                         </div>
                         <div v-if="tabs_position==2" class="tab-pane"  role="tabpanel" aria-labelledby="tabs-profile-tab">

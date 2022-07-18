@@ -5,6 +5,7 @@ namespace App\Actions\Order;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Customer;
+use App\Models\customerLog;
 use App\Models\Order;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
@@ -40,7 +41,7 @@ class OrderActions
                 'company_id'=>auth()->user()->company->id,
                 'customer_id'=>$validated['customer_id'],
                 'user_id'=>auth()->user()->id,
-                'description'=>"Adding Facture(Comptant) N:".$order->id." to account.",
+                'description'=>"Ajout de la Facture(Comptant) N:".$order->id." au compte.",
                 'debit'=>$validated['ttc_total_order'],
                 'credit'=>$validated['ttc_total_order'],
                 'solde'=>($solde_client),
@@ -48,6 +49,7 @@ class OrderActions
 
 
         }
+        (new customerLog)->saveLog("Commande n-".$order->id." Créée",$validated['customer_id']);
         return $order;
     }
 
@@ -87,11 +89,13 @@ class OrderActions
                 'company_id'=>$company_id,
                 'customer_id'=>$validated['customer_id'],
                 'user_id'=>auth()->user()->id,
-                'description'=>"Adding Facture N:".$order->id." to account.",
+                'description'=>"Ajout Facture N:".$order->id." au compte.",
                 'debit'=>"0",
                 'credit'=>$validated['ttc_total_order'],
                 'solde'=>($validated['ttc_total_order']+ $solde_client),
             ]);
+
+            (new customerLog)->saveLog("Commande n-".$order->id." validée",$validated['customer_id']);
         }
 
         // Cancel Invoice
@@ -102,11 +106,13 @@ class OrderActions
                 'company_id'=>$company_id,
                 'customer_id'=>$validated['customer_id'],
                 'user_id'=>auth()->user()->id,
-                'description'=>"Cancelling Facture N:".$order->id." to account.",
+                'description'=>"Annulation Facture N:".$order->id." .",
                 'debit'=>$validated['ttc_total_order'],
                 'credit'=>"0",
                 'solde'=>($solde_client-$validated['ttc_total_order']),
             ]);
+
+            (new customerLog)->saveLog("Commande n-".$order->id." Annulée",$validated['customer_id']);
         }
     }
 }

@@ -54,6 +54,9 @@ Route::middleware([
 
 
     Route::middleware(['company.check'])->group(function () {
+
+        Route::put('/customers/{customer_id}/storecomment', [CustomerController::class,"storeComment"])->name('customers.storeComment');
+
         Route::get('/company/settings', [CompanyController::class,"my_company"])->name('company.settings');
         Route::resource('feedbacks', FeedbackController::class);
         Route::resource('payments', PaymentController::class);

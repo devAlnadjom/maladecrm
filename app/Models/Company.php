@@ -33,4 +33,8 @@ class Company extends Model
     public function users(){
         return $this->belongsTo(Users::class);
     }
+
+    public function customerLogs(){
+        return $this->hasMany(customerLog::class);
+    }
 }

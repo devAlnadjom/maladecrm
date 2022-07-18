@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePaymentRequest;
-use App\Models\Customer;
+use Inertia\Inertia;
 use App\Models\Payment;
+use App\Models\Customer;
+use App\Models\customerLog;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
-use Inertia\Inertia;
+use App\Http\Requests\StorePaymentRequest;
 
 class PaymentController extends Controller
 {
@@ -60,13 +61,13 @@ class PaymentController extends Controller
                 'company_id'=>$company_id,
                 'customer_id'=>$validated['customer_id'],
                 'user_id'=>auth()->user()->id,
-                'description'=>"Paiemnt dans le compte to account.",
+                'description'=>"Paiemnt dans le compte.",
                 'debit'=>$validated['montant'],
                 'credit'=>"0",
                 'solde'=>$solde_client-$validated['montant'],
             ]);
 
-
+            (new customerLog)->saveLog("Reglemnt de ".$validated['montant'].", Ref:".$payment->id." .",$validated['customer_id']);
         return Redirect::route('payments.index')->with('success', "Paiement ajouté au compte du client");
     }
 

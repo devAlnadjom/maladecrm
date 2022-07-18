@@ -20,4 +20,8 @@ class Customer extends Model
         return $this->belongsTo(Company::class);
     }
 
+    public function customerLogs(){
+        return $this->hasMany(customerLog::class);
+    }
+
 }

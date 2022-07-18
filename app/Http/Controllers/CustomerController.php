@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCustomerRequest;
-use App\Http\Requests\UpdateCustomerRequest;
+use Inertia\Inertia;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
-use Inertia\Inertia;
+use App\Http\Requests\StoreCustomerRequest;
+use App\Http\Requests\UpdateCustomerRequest;
+use App\Http\Requests\StoreClientCommentRequest;
 
 class CustomerController extends Controller
 {
@@ -61,9 +62,13 @@ class CustomerController extends Controller
                 return response()->json($data);
             }
        }
+
+       $comments = $customer->customerLogs()->latest()->take(10)->get();
+       //dd($comments);
         return Inertia::render('Customers/Show',[
             'customers'=> $customer,
             'public_key'=> $public_key,
+            'comments'=> $comments,
         ]);
     }
 
@@ -97,4 +102,15 @@ class CustomerController extends Controller
     {
         //
     }
+
+
+    public function storeComment( StoreClientCommentRequest $request, int $customer)
+    {
+        $customer= Customer::findOrFail($customer);
+        $validated = $request->validated();
+        $customer->customerLogs()->create($validated);
+        return Redirect::back()->with('success', "Commentaire Ajoute");
+    }
+
+
 }
