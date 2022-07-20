@@ -7,6 +7,7 @@ import JetLabel from '@/Jetstream/Label.vue';
 import JetValidationErrors from '@/Jetstream/ValidationErrors.vue';
 import JetActionMessage from '@/Jetstream/ActionMessage.vue';
 import AlertBox from '@/Jetstream/AlertBox.vue';
+import OrderStatusBadge from '../../../Components/OrderStatusBadge.vue';
 
 const props = defineProps({
     customers: Object,
@@ -64,7 +65,6 @@ const form = useForm({
         <div class="w-full md:flex flex-column  lg:justify-between mx-auto py-5 sm:px-6 lg:px-8 lg:gap-4">
             <div class="  lg:flex-1 ">
                 <!--h3 class="text-bold text-lg"> Factures </h3-->
-
 
                 <div
                     class="container flex flex-col mx-auto w-full items-center justify-center bg-white dark:bg-gray-800 rounded-lg shadow mr-6">
@@ -169,29 +169,11 @@ const form = useForm({
                                 ORD- {{ order.id }}
                             </th>
                             <td class="px-6 py-2">
-
                                 <p class="">{{ order?.ref_customer }}</p>
-
                             </td>
 
                             <td class="px-6 py-2">
-
-                                <span v-if="order?.order_status == 1"
-                                    class="px-2 py-1 font-semibold leading-tight text-yellow-700 bg-yellow-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                                    A Confirmer
-                                </span>
-                                <span v-if="order?.order_status == 2"
-                                    class="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                                    Validée
-                                </span>
-                                <span v-if="order?.order_status == 3"
-                                    class="px-2 py-1 font-semibold leading-tight text-blue-700 bg-blue-100 rounded-full dark:bg-green-700 dark:text-green-100">
-                                    Payée
-                                </span>
-                                <span v-if="order?.order_status == 4"
-                                    class="px-2 py-1 font-semibold leading-tight text-red-700 bg-red-100 rounded-full dark:bg-red-700 dark:text-red-100">
-                                    Annullée
-                                </span>
+                                <OrderStatusBadge :status="order?.order_status"></OrderStatusBadge>
                             </td>
                             <td class="px-6 py-2">
 

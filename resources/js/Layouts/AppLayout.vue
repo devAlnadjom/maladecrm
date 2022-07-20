@@ -36,7 +36,7 @@ const logout = () => {
         <JetBanner />
 
         <div class="flex min-h-screen bg-gray-100">
-            <aside class="z-20 hidden w-60 overflow-y-auto bg-white border-r dark:bg-gray-800 md:block flex-shrink-0">
+            <aside class="z-20 hidden md:w-44 lg:w-52 xl:w-56 overflow-y-auto bg-white border-r dark:bg-gray-800 md:block flex-shrink-0">
                 <div class="py-4 text-gray-500 dark:text-gray-400">
                     <a class="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200" href="#">
                         FreeCRM <sup>beta</sup>
