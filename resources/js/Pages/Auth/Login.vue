@@ -34,8 +34,8 @@ const submit = () => {
 
     <JetAuthenticationCard>
         <template #logo>
-            <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">FreeCRM
-                    <sup>beta</sup> </span>
+            <Link :href="'/'" class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">FreeCRM
+                    <sup>beta</sup> </Link>
         </template>
 
         <JetValidationErrors class="mb-4" />
