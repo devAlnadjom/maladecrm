@@ -115,4 +115,27 @@ class OrderActions
             (new customerLog)->saveLog("Commande n-".$order->id." Annulée",$validated['customer_id']);
         }
     }
+
+
+    public static function clone(Order $order_to_clone) : Order
+    {
+
+            $order =  $order_to_clone->replicate()->fill([
+                'order_key' => sha1(time()),
+                'order_status' => 1,
+            ]);
+
+            $order->save();
+            foreach ($order_to_clone->products as  $values){
+                $values =$values->toArray()['pivot'];
+                unset($values['order_id']);
+                //dd($values->toArray());
+                $order->products()->attach($values['product_id'], $values);
+            }
+
+            (new customerLog)->saveLog("Commande n-".$order->id." Annulée",$order->customer_id);
+
+            return $order;
+
+    }
 }

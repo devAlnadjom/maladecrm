@@ -60,7 +60,10 @@ Route::middleware([
         Route::get('/company/settings', [CompanyController::class,"my_company"])->name('company.settings');
         Route::resource('feedbacks', FeedbackController::class);
         Route::resource('payments', PaymentController::class);
+
+        Route::get('/orders/{order_id}/clone', [OrderController::class,"cloneOrder"])->name('orders.clone');
         Route::resource('orders', OrderController::class);
+
         Route::resource('customers', CustomerController::class);
     });
 

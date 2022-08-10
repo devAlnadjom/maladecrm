@@ -8,7 +8,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div>
+
         <ol class="relative border-l border-gray-200 dark:border-gray-700">
             <template v-for="comment in comments" :key="comment.id">
                 <li class="mb-5 ml-2">
@@ -29,5 +29,5 @@ const props = defineProps({
             </template>
 
         </ol>
-    </div>
+
 </template>

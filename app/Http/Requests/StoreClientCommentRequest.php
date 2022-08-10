@@ -38,8 +38,7 @@ class StoreClientCommentRequest extends FormRequest
             'type.*' => 'Veuillez Selectionner un type',
             'comment.min' => 'Le Commentaire doit contenir au moins 3 caracteres.',
             'comment.required' => 'Vous devez fournir un commentaire.',
-
-            // ..
+            'comment.max' => 'Les Commentaires sont de 255 characteres Max.',
         ];
     }
 

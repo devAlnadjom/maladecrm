@@ -160,7 +160,7 @@ const formatMoney = (number) => {
                 <!-- Time Line Componenet limit 3-->
                 <div class=" mt-3 pl-2">
                     <div class="md:flex md:justify-between">
-                        <h3 class=" -left-2 text-lg font-semibold text-gray-900 dark:text-white">Activities</h3>
+                        <h3 class=" -left-2 text-lg font-semibold text-gray-900 dark:text-white">Activities ({{comments?.length}})</h3>
                         <span @click="open_comment = !open_comment"
                             class="p-1 rounded text-indigo-500 hover:text-indigo-700 hover:bg-indigo-100 cursor-pointer">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
@@ -199,7 +199,10 @@ const formatMoney = (number) => {
 
                         </form>
                     </div>
-                    <CommentBox :comments="comments"></CommentBox>
+                    <div class=" md:max-h-96 overflow-y-auto p-0 mt-3 overflow-x-visible">
+                      <CommentBox :comments="comments"></CommentBox>
+                    </div>
+
                 </div>
             </div>
 

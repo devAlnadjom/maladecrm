@@ -82,6 +82,7 @@ const  formatMoney=(number) =>{
                                 <td class="px-6 py-3 text-right">
                                     <Link :href="route('customers.show', customer.id)"
                                         class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Details</Link>
+
                                     <Link :href="route('payments.create')+'?customer_id='+customer.id"
                                         class="font-medium text-blue-600 dark:text-blue-500 hover:underline px-2">Paiement</Link>
                                     <Link :href="route('orders.create')+'?customer_id='+customer.id" title="Add Order"
@@ -90,7 +91,6 @@ const  formatMoney=(number) =>{
                             </tr>
                         </tbody>
                     </table>
-
 
 
                 </div>

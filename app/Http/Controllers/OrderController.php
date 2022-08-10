@@ -108,6 +108,13 @@ class OrderController extends Controller
         return Redirect::route('orders.index')->with('success', "Facture supprimée..");
     }
 
+    public function cloneOrder( int $order_id)
+    {
+        $order_to_clone = Order::findOrFail($order_id);
+        $order= OrderActions::clone($order_to_clone);
+        sleep(1);
 
+        return Redirect::route('orders.edit',$order->id)->with('success', "Facture clonée.");
+    }
 
 }
