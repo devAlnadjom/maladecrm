@@ -45,6 +45,20 @@ class CompanyController extends Controller
 
     }
 
+    public function kanban(){
+        if(!auth()->user()->company->id){
+            abort(404);
+        }
+
+        $company= Company::findorFail(auth()->user()->company->id);
+        return Inertia::render('Companies/Kanban',[
+            'companies' => $company,
+        ]);
+
+    }
+
+
+
     public function update(UpdateCompanyRequest $request, $company)
     {
         $company= Company::findOrFail($company);

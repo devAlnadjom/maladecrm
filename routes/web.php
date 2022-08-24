@@ -57,6 +57,7 @@ Route::middleware([
 
         Route::put('/customers/{customer_id}/storecomment', [CustomerController::class,"storeComment"])->name('customers.storeComment');
 
+        Route::get('/company/kanban', [CompanyController::class,"kanban"])->name('company.kanban');
         Route::get('/company/settings', [CompanyController::class,"my_company"])->name('company.settings');
         Route::resource('feedbacks', FeedbackController::class);
         Route::resource('payments', PaymentController::class);
