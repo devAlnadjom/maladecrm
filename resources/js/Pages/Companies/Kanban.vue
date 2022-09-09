@@ -130,6 +130,52 @@ const columns = reactive( [{
               type: "Feature Request"
             }
           ]
+        },
+        {
+          title: "Confirmed",
+          tasks: [
+            {
+              id: 17,
+              title: "Add discount code to checkout page",
+              date: "Sep 14",
+              type: "Feature Request"
+            },
+            {
+              id: 18,
+              title: "Design shopping cart dropdown",
+              date: "Sep 9",
+              type: "Design"
+            },
+            {
+              id: 19,
+              title: "Add discount code to checkout page",
+              date: "Sep 14",
+              type: "Feature Request"
+            }
+          ]
+        },
+        {
+          title: "Confirmed2",
+          tasks: [
+            {
+              id: 20,
+              title: "Add discount code to checkout page",
+              date: "Sep 14",
+              type: "Feature Request"
+            },
+            {
+              id: 21,
+              title: "Design shopping cart dropdown",
+              date: "Sep 9",
+              type: "Design"
+            },
+            {
+              id: 22,
+              title: "Add discount code to checkout page",
+              date: "Sep 14",
+              type: "Feature Request"
+            }
+          ]
         }
       ]);
 const form = useForm({
@@ -151,8 +197,9 @@ const submit = () => {
 
 <template>
     <AppLayout title="Customer Management">
+        <div class="w-full .lg:max-w-[1000px] .xl:max-w-[1280px] .2xl:max-w-full" >
 
-        <div class="py-8 px-3">
+        <div class="py-8 px-12">
             <div class="flex flex-row justify-between">
                 <h3>
                     <Link class="text-xl" :href="route('companies.index')">Mon Entreprise</Link> / Configuration
@@ -171,38 +218,36 @@ const submit = () => {
                 <AlertBox :flash="$page.props.flash" :on="true" class="mr-3">
 
                 </AlertBox>
-                <!--div class="w-full mx-auto py-5 sm:px-6 lg:px-8 gap-2 overflow-x-scroll"-->
+                <div class="max-w-full">
 
-                    <div class=" m-auto max-w-6xl overflow-x-scroll flex justify-center">
-                        <div class="min-h-screen flex overflow-x-auto py-12">
+                    <div class=" mx-auto w-full .bg-black  overflow-x-auto max-w-full lg:max-w-[980px] xl:max-w-[1180px] 2xl:max-w-[1480px] 2xl:px-6">
+                        <div class="min-h-screen flex py-10 ">
                             <div v-for="column in columns" :key="column.title"
-                                class="bg-gray-200 px-3 py-3 column-width rounded mr-4">
+                                class="bg-gray-200 px-3 py-3 min-w-[220px] lg:min-w-[280px] lg:max-w-80 xl:max-w-[300px] 2xl:max-w-[320px] rounded mr-4">
                                 <p class="text-gray-700 font-semibold font-sans tracking-wide text-sm">{{ column.title }}
                                 </p>
                                 <!-- Draggable component comes from vuedraggable. It provides drag & drop functionality -->
-                                <Draggable v-model="column.tasks"  @start="drag=true" @end="drag=true"  item-key="id" :animation="200" ghost-class="ghost-card" group="tasks">
+                                <Draggable v-model="column.tasks"  @start="drag=true" @end="drag=true"  item-key="id" :animation="200" ghost-class="ghost-card" group="tasks" tag="ul">
                                           <template #item="{element}">
 
                                             <TaskCard  :task="element"
                                                 class="mt-3 cursor-move"></TaskCard>
                                         </template>
-                                    <!-- Each element from here will be draggable and animated. Note :key is very important here to be unique both for draggable and animations to be smooth & consistent. -->
-
-                                    <!-- </transition-group> -->
                                 </Draggable>
                             </div>
                         </div>
                     </div>
-
+                </div>
             </div>
         </div>
+    </div>
     </AppLayout>
 </template>
 
 <style scoped>
 .column-width {
-  min-width: 320px;
-  width: 320px;
+  min-width: 300px;
+  width: 300px;
 }
 /* Unfortunately @apply cannot be setup in codesandbox,
 but you'd use "@apply border opacity-50 border-blue-500 bg-gray-200" here */
