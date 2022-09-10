@@ -37,7 +37,7 @@ const formatMoney = (number) => {
                                 <h1 class="text-xl font-semibold text-gray-900">Gestion des Clients</h1>
                             </div>
                             <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-                                <Link :href="route('customers.create')"
+                                <Link :href="route('payments.create')"
                                       class="inline-flex items-center rounded-md border border-transparent bg-purple-100 px-4 mr-2 py-2 text-sm font-medium text-purple-700 hover:bg-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
                                     Paiement
                                     <AddIcon/>

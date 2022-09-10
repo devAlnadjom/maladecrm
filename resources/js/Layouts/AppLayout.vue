@@ -59,8 +59,8 @@ const logout = () => {
                     </ul>
                     <ul>
 
-                        <li class="relative px-6 py-3">
-                            <Link :href="route('customers.index')" class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer"
+                        <li class="relative px-6 py-3 hover:bg-purple-100 duration-500 transition-all">
+                            <Link :href="route('customers.index')" class="inline-flex items-center w-full text-sm font-semibold transition-all duration-300  hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer"
                                 >
                                  <span v-if="$page.url.startsWith('/customers')" class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
                                 aria-hidden="true"></span>
@@ -73,7 +73,7 @@ const logout = () => {
                                 <span class="ml-4">Clients</span>
                             </Link >
                         </li>
-                        <li class="relative px-6 py-3">
+                        <li class="relative px-6 py-3 hover:bg-purple-100 duration-500 transition-all">
                             <Link :href="route('orders.index')" class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer"
                                 >
                                  <span v-if="$page.url.startsWith('/orders')" class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
@@ -87,7 +87,7 @@ const logout = () => {
                                 <span class="ml-4">Facturation</span>
                             </Link >
                         </li>
-                        <li class="relative px-6 py-3">
+                        <li class="relative px-6 py-3 hover:bg-purple-100 duration-500 transition-all">
                             <Link :href="route('payments.index')" class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer"
                                 >
                                  <span v-if="$page.url.startsWith('/payments')" class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
@@ -100,7 +100,19 @@ const logout = () => {
                                 <span class="ml-4">Paiements</span>
                             </Link >
                         </li>
-                        <li v-if="$page.props.user.id==1" class="relative px-6 py-3">
+                        <li v-if="$page.props.user.id==1" class="relative px-6 py-3 hover:bg-purple-100 duration-500 transition-all">
+                            <Link :href="route('projects.index')" class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer"
+                                >
+                                 <span v-if="$page.url.startsWith('/projects')" class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
+                                aria-hidden="true"></span>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
+                                </svg>
+
+                                <span class="ml-4">Projects</span>
+                            </Link >
+                        </li>
+                        <li v-if="$page.props.user.id==1" class="relative px-6 py-3 hover:bg-purple-100 duration-500 transition-all">
                             <Link :href="route('feedbacks.index')" class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer"
                                 >
                                  <span v-if="$page.url.startsWith('/feedbacks')" class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
@@ -108,7 +120,6 @@ const logout = () => {
                                 <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round"
                                     stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
                                          <path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-
                                 </svg>
                                 <span class="ml-4">FeedBacks</span>
                             </Link >

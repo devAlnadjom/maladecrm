@@ -7,6 +7,7 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Artisan;
@@ -59,6 +60,7 @@ Route::middleware([
 
         Route::get('/company/kanban', [CompanyController::class,"kanban"])->name('company.kanban');
         Route::get('/company/settings', [CompanyController::class,"my_company"])->name('company.settings');
+        Route::resource('projects', ProjectController::class);
         Route::resource('feedbacks', FeedbackController::class);
         Route::resource('payments', PaymentController::class);
 
