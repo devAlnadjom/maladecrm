@@ -40,7 +40,7 @@ defineProps({
             <div class="mt-5">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
 
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <!--table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="px-6 py-3">
@@ -84,12 +84,14 @@ defineProps({
                                 </td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table-->
 
 
                 </div>
 
                 <div class="mt-6 grid md:grid-cols-3 lg:grid-cols-3 gap-4">
+                    <template v-for="project in projects.data" :key="project.id">
+                        <Link :href="route('projects.show', project.id)">
                         <div class="p-6 max-w-sm bg-white rounded-lg border-b-4 hover:bg-white transition-all duration-700 hover:scale-[1.03] border-gray-400 shadow-md dark:bg-gray-800 dark:border-gray-700">
 
                             <div class=" flex justify-between">
@@ -101,14 +103,14 @@ defineProps({
 
                                 </span>
                             </div>
-                            <h3 class="my-4 font-bold text-lg"> Project Title</h3>
+                            <h3 class="my-4 font-bold text-lg"> {{ project?.project_name }} </h3>
                             <div class="flex .justify-between text-gray-600 pb-2 ">
                                 <span>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="w-4 h-4">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
                                     </svg>
                                 </span>
-                                <span class="text-sm mx-2"> 22 Jun, 2022 </span>
+                                <span class="text-sm mx-2"> {{ project?.project_end_date }} </span>
 
                                 <span class="ml-6">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="w-4 h-4">
@@ -116,19 +118,22 @@ defineProps({
                                 </svg>
 
                                 </span>
-                                <span class="ml-2 text-sm">10 Tasks</span>
+                                <span class="ml-2 text-sm">{{ project?.tasks_count}} Tasks</span>
                             </div>
-                            <p class="mb-3 font-normal text-sm text-gray-500  dark:text-gray-400">Web Development</p>
-                            <div class="flex  text-gray-600">
+                            <p class="mb-3 font-normal text-sm text-gray-500  dark:text-gray-400">{{ project?.project_category}}</p>
+                            <div  v-if="project?.client_name" class="flex  text-gray-600">
                                 <span class="p-1 bg-gray-200 rounded-full">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
                                     </svg>
 
                                 </span>
-                                <span class="text-sm mx-2 p-1"> Client Name</span>
+                                <span  class="text-sm mx-2 p-1"> Client Name</span>
                             </div>
                         </div>
+                    </Link>
+                    </template>
+
 
 
                 </div>
