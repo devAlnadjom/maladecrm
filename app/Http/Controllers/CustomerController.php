@@ -21,11 +21,7 @@ class CustomerController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
         return Inertia::render('Customers/Create', []);
@@ -63,7 +59,7 @@ class CustomerController extends Controller
         }
 
         $comments = $customer->customerLogs()->latest()->take(10)->get();
-        //dd($comments);
+
         return Inertia::render('Customers/Show', [
             'customers' => $customer,
             'public_key' => $public_key,
@@ -75,7 +71,7 @@ class CustomerController extends Controller
     public function edit(int $customer, UpdateCustomerRequest $request)
     {
         $customer = Customer::findOrFail($customer);
-        // dd($customer);
+
         return Inertia::render('Customers/Edit', [
             'customers' => $customer,
         ]);
@@ -91,12 +87,6 @@ class CustomerController extends Controller
         return Redirect::back()->with('success', "Fiche Client mis à jour");
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param \App\Models\Customer $customer
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Customer $customer)
     {
         //
