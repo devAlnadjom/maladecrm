@@ -53,7 +53,6 @@ Route::middleware([
 
     /** Companies Informations */
 
-
     Route::middleware(['company.check'])->group(function () {
 
         Route::put('/customers/{customer_id}/storecomment', [CustomerController::class,"storeComment"])->name('customers.storeComment');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Invoice\InvoiceActions;
 use App\Actions\Order\OrderActions;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
@@ -112,7 +113,34 @@ class OrderController extends Controller
     {
         $order_to_clone = Order::findOrFail($order_id);
         $order= OrderActions::clone($order_to_clone);
-        sleep(1);
+
+        return Redirect::route('orders.edit',$order->id)->with('success', "Facture clonée.");
+    }
+
+    /**
+     * sendMailtoCustomer to Customer and attach invoice
+     *
+     * @Post {from:Name, Subject, Message, email:}
+     */
+    public function sendMailtoCustomer( Request $request, int $order_id)
+    {
+        $order = Order::findOrFail($order_id);
+
+        $validated = $request->validate([
+            'from' => 'required|string|max:30',
+            'from' => 'required|string|max:30',
+            'body' => 'required',
+        ]);
+
+        try{
+            $invoice = InvoiceActions::buildInvoice($order_id);
+        }catch(\Exception $e){
+            abort(404,"Factue Introuvable!");
+        }
+
+        if($invoice){
+            // send mail
+        }
 
         return Redirect::route('orders.edit',$order->id)->with('success', "Facture clonée.");
     }
