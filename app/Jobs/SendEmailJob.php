@@ -14,18 +14,18 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Support\Facades\Log;
 
 class SendEmailJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
    // protected $id;
-    protected $data;
+    public  $data;
 
-    public function __construct(/*$id,*/ $data)
+    public function __construct($data)
     {
-       // $this->id =$id;
-        $this->$data =$data;
+        $this->data = $data;
     }
 
     /**
@@ -37,7 +37,9 @@ class SendEmailJob implements ShouldQueue
     {
            /* $order=  Order::withoutGlobalScopes()->findOrFail($this->id);
             InvoiceActions::buildInvoice($order->id);*/
-
-            Mail::to($this->data['email'])->send(new OrderShipped($this->data));
+            //$data= json_decode($this->data);
+            Log::info("merci:" . print_r($this->data->get('email'), true));
+            //return;
+            Mail::to($this->data->get('email'))->send(new OrderShipped($this->data));
     }
 }

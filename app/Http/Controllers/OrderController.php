@@ -127,10 +127,10 @@ class OrderController extends Controller
         $order = Order::findOrFail($order_id);
 
         $validated = $request->validate([
-            'customer_id' => 'numeric',
-            'order_key'=> 'string',
-            'subject'=> "string",
-            'message'=> "string",
+            'customer_id' => 'numeric|required',
+            'order_key'=> 'string|required',
+            'subject'=> "string|required|max:50",
+            'message'=> "string|required|max:300",
         ]);
 
         //abort_if(( auth()->user()->company->id != $validated['company_id']) , '403');
@@ -150,6 +150,8 @@ class OrderController extends Controller
             abort(404,"Factue Introuvable!");
         }
 
+        $data = collect($data);
+        //dd($data);
         if($invoice){
             dispatch(new SendEmailJob($data))->afterResponse();
         }

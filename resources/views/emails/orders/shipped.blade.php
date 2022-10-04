@@ -1,10 +1,10 @@
 @component('mail::message')
-# Introduction
+# Salut.
+{{ $message}}
 
-The body of your message.
-
-@component('mail::button', ['url' => ''])
-Button Text
+Vous pouvez telecharger la facture via ce lien.
+@component('mail::button', ['url' => $url])
+Lien direct
 @endcomponent
 
 Thanks,<br>

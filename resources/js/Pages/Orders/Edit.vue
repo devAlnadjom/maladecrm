@@ -44,6 +44,7 @@ const form = useForm({
 });
 const messageForm = useForm({
    // order_id: props.order[0]?.id,
+    _method: "PUT",
     customer_id: props.order[0]?.customer_id,
     order_key: props.order[0]?.order_key,
     subject: "",
@@ -225,9 +226,11 @@ const sendMessage = () => {
 
     messageForm.post(route('orders.sendmessage', props.order[0]?.id,), {
         onSuccess: () => {
+            messageForm.subject = ""; messageForm.message = "";
             openMessage.value=false;
         },
-        onError: (e) =>{ console.log(e);  openMessage.value=true;}
+        onError: (e) =>{ console.log(e);  openMessage.value=true;},
+        //preserveState: false,
     });
 
 };
@@ -665,7 +668,7 @@ onMounted(() => {
                         <div class="mb-4">
                             <label
                                 class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Message</label>
-                                 <textarea id="description" rows="3" v-model="messageForm.Message" type="text"
+                                 <textarea id="description" rows="3" v-model="messageForm.message" type="text"
                                             placeholder="Contenu du message"
                                             class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full"></textarea>
 
