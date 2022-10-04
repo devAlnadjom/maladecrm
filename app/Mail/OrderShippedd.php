@@ -13,15 +13,16 @@ class OrderShipped extends Mailable
     use Queueable, SerializesModels;
 
     public $order;
+    public $data;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Order $order)
+    public function __construct(Array $data)
     {
-        $this->order= $order;
+        $this->data= $$data;
     }
 
     /**
@@ -31,9 +32,9 @@ class OrderShipped extends Mailable
      */
     public function build()
     {
-        return $this->from('example@example.com', 'Example')
-                    ->view('emails.orders.shipped')
-                    ->attachFromStorage('/public/'.$this->order->order_key, 'name.pdf', [
+        return $this->from($this->data['from'], $this->data['subject'])
+                    ->view('emails.orders.shipped', ['message' => $this->data['message']])
+                    ->attachFromStorage('/public/'.$this->data['order_key'], 'name.pdf', [
                         'mime' => 'application/pdf'
                     ]);
 

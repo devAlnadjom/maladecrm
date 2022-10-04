@@ -127,10 +127,22 @@ class OrderController extends Controller
         $order = Order::findOrFail($order_id);
 
         $validated = $request->validate([
-            'from' => 'required|string|max:30',
-            'from' => 'required|string|max:30',
-            'body' => 'required',
+            'customer_id' => 'numeric',
+            'order_key'=> 'string',
+            'subject'=> "string",
+            'message'=> "string",
         ]);
+
+        //abort_if(( auth()->user()->company->id != $validated['company_id']) , '403');
+        $email = $order->customer->email;
+        $data =[
+            "from" => auth()->user()->company->name,
+            "subject" => $validated['subject'],
+            "message" => $validated['message'],
+            "order_key" => $order->order_key,
+            "link" => route('invoices', array($order->order_key, $order_id)),
+            "email" => $email,
+        ];
 
         try{
             $invoice = InvoiceActions::buildInvoice($order_id);
@@ -139,10 +151,10 @@ class OrderController extends Controller
         }
 
         if($invoice){
-            // send mail
+            dispatch(new SendEmailJob($data))->afterResponse();
         }
 
-        return Redirect::route('orders.edit',$order->id)->with('success', "Facture clonée.");
+        return Redirect::route('orders.edit',$order->id)->with('success', "Message envoyé.");
     }
 
 }

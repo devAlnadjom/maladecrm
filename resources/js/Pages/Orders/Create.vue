@@ -11,7 +11,9 @@ import JetValidationErrors from '@/Jetstream/ValidationErrors.vue';
 import JetDialogModal from '@/Jetstream//DialogModal.vue';
 import JetInputError from '@/Jetstream/InputError.vue';
 import JetSecondaryButton from '@/Jetstream/SecondaryButton.vue';
-//import vSelect from 'vue-select'
+import vSelect from 'vue-select';
+import 'vue-select/dist/vue-select.css';
+
 
 
 const props = defineProps({
@@ -52,18 +54,18 @@ const oneLigne = reactive({
     description: '',
     is_service: true,
     //unit_price: 0,
-    tax:0,
+    tax: 0,
     total_price: 0,
     total_quantity: 0,
-    ligne_total: computed(() => Math.round(oneLigne.total_quantity * oneLigne.total_price* (1 + (oneLigne.tax/100))*100) /100),
+    ligne_total: computed(() => Math.round(oneLigne.total_quantity * oneLigne.total_price * (1 + (oneLigne.tax / 100)) * 100) / 100),
 });
 const lignes = reactive([]);
 const formAdd = ref(true);
-const taxTable= reactive({
-    '0':0,
-    '5':5,
-    '18':18,
-    '20':20,
+const taxTable = reactive({
+    '0': 0,
+    '5': 5,
+    '18': 18,
+    '20': 20,
 });
 
 const addLigne = () => {
@@ -88,8 +90,8 @@ const addLigne = () => {
     forceRerender();
     clearForm();
     invoiceTotal();
-    openForm.value =false;
-    formAdd.value =true;
+    openForm.value = false;
+    formAdd.value = true;
 
 };
 
@@ -108,8 +110,8 @@ const EditItem = (index) => {
     oneLigne.total_quantity = data.total_quantity;
     oneLigne.tax = data.tax;
     milestone = index;
-    openForm.value= true;
-    formAdd.value =false;
+    openForm.value = true;
+    formAdd.value = false;
     //textUpdate
 }
 
@@ -282,13 +284,19 @@ const submit = () => {
                                 <div class="mt-4 flex flex-row justify-between w-full">
                                     <div class="w-full lg:w-1/3">
 
-                                        <select class="mt-1 block w-full bg-gray-100 border-0 rounded"
+                                        <select class="hidden mt-1  w-full bg-gray-100 border-0 rounded"
                                             v-model="form.customer_id" @change="selectedCustomer()">
                                             <option :value="null"> Select Client</option>
                                             <template v-for="(item, index) in customers" :key="index">
                                                 <option :value="item.id"> {{item.name}}</option>
                                             </template>
                                         </select>
+                                        <div class="mb-2">
+                                            <vSelect v-model="form.customer_id" :options="customers"
+                                                :reduce="country => country.id" label="name"
+                                                placeholder="Select. un Client"></vSelect>
+                                        </div>
+
                                         <h4 class="mt-1 block w-full bg-gray-100 border-0 rounded p-2" title="Solde">
                                             {{(form.solde/100)}}</h4>
                                         <JetInput v-model="form.ref_customer" type="text"
@@ -418,17 +426,14 @@ const submit = () => {
                                                 <div class="text-xl text-gray-600 text-right flex-1">Montant due</div>
                                                 <div class="text-right w-40">
                                                     <div class="text-xl text-gray-800 font-bold">{{ form.ttc_total_order
-                                                        }}</div>
+                                                    }}</div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-
-
                                 <div class="flex items-center justify-end mt-4">
-
 
                                     <JetButton class="ml-4" :class="{ 'opacity-25': form.processing }"
                                         :disabled="form.processing">
@@ -436,10 +441,7 @@ const submit = () => {
                                     </JetButton>
                                 </div>
                             </form>
-
-
                         </div>
-
 
                     </div>
                 </div>
@@ -448,56 +450,68 @@ const submit = () => {
 
             <JetDialogModal :show="openForm" @close="toogleForm">
                 <template #title>
-                   <h2 class="font-bold text-2xl mb-6 text-gray-800 border-b pb-2">Veuillez ajouter une ligne</h2>
+                    <h2 class="font-bold text-2xl mb-6 text-gray-800 border-b pb-2">
+                        <span class=" inline-block flex-1 mr-2" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+
+                        </span><span class=" inline-block">Veuillez ajouter une ligne</span>
+                    </h2>
                 </template>
 
                 <template #content>
 
-                   <div class="w-full rounded-lg bg-white overflow-hidden  block ">
+                    <div class="w-full rounded-lg bg-white overflow-hidden  block ">
 
 
-					<div class="mb-4">
-						<label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Description</label>
-                         <JetInput v-model="oneLigne.name" type="text"
-                                                placeholder="Designation Produit" class="mt-1 block w-full" />
-                    </div>
-
-					<div class="flex flex-column md:flex-row">
-						<div class="mb-4 sm:w-full md:w-20 mr-2">
-							<label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Unités</label>
-							<JetInput id="qty" v-model="oneLigne.total_quantity" type="number"
-                                                placeholder="Quantite" class="mt-1 block w-full" />
+                        <div class="mb-4">
+                            <label
+                                class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Description</label>
+                            <JetInput v-model="oneLigne.name" type="text" placeholder="Designation Produit"
+                                class="mt-1 block w-full" />
                         </div>
 
-						<div class="mb-4 sm:w-full md:w-32 mr-2">
-							<label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Prix Unitaire</label>
-                            <JetInput id="pu" v-model="oneLigne.total_price" type="number"
-                                                placeholder="Prix Unitaire" class="mt-1 block w-full" />
-                        </div>
-						<div class="mb-4 sm:w-full md:w-32 mr-2">
-							<label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Taxe</label>
-                            <select class="mt-1 block w-full bg-gray-100 border-0 rounded"
-                                            v-model="oneLigne.tax" >
-
-                                            <template v-for="(item, index) in taxTable" :key="index">
-                                                <option :value="item"> {{ item }}
-                                                </option>
-                                            </template>
-                            </select>
-                        </div>
-
-
-
-						<div class="mb-4 sm:w-full md:w-40">
-							<label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Montant Total</label>
-							<span class="mt-1 block w-full px-5 py-2 rounded  border border-black "
-                                                readonly="true">{{ oneLigne.ligne_total }}</span>
+                        <div class="flex flex-column md:flex-row">
+                            <div class="mb-4 sm:w-full md:w-20 mr-2">
+                                <label
+                                    class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Unités</label>
+                                <JetInput id="qty" v-model="oneLigne.total_quantity" type="number"
+                                    placeholder="Quantite" class="mt-1 block w-full" />
                             </div>
-					</div>
+
+                            <div class="mb-4 sm:w-full md:w-32 mr-2">
+                                <label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Prix
+                                    Unitaire</label>
+                                <JetInput id="pu" v-model="oneLigne.total_price" type="number"
+                                    placeholder="Prix Unitaire" class="mt-1 block w-full" />
+                            </div>
+                            <div class="mb-4 sm:w-full md:w-32 mr-2">
+                                <label
+                                    class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Taxe</label>
+                                <select class="mt-1 block w-full bg-gray-100 border-0 rounded" v-model="oneLigne.tax">
+
+                                    <template v-for="(item, index) in taxTable" :key="index">
+                                        <option :value="item"> {{ item }}
+                                        </option>
+                                    </template>
+                                </select>
+                            </div>
+
+                            <div class="mb-4 sm:w-full md:w-40">
+                                <label
+                                    class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Montant
+                                    Total</label>
+                                <span class="mt-1 block w-full px-5 py-2 rounded  border border-black "
+                                    readonly="true">{{ oneLigne.ligne_total }}</span>
+                            </div>
+                        </div>
 
 
 
-				</div>
+                    </div>
                 </template>
 
                 <template #footer>
@@ -505,13 +519,11 @@ const submit = () => {
                         Fermer
                     </JetSecondaryButton>
 
-                        <JetButton v-if="formAdd" class="ml-3"
-                        @click="addLigne">
+                    <JetButton v-if="formAdd" class="ml-3" @click="addLigne">
                         Ajouter
                     </JetButton>
 
-                    <JetButton v-if="!formAdd" class="ml-3"
-                        @click="addLigne">
+                    <JetButton v-if="!formAdd" class="ml-3" @click="addLigne">
                         Modifier
                     </JetButton>
                 </template>

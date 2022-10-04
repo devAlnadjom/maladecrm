@@ -12,6 +12,8 @@ import AlertBox from '@/Jetstream/AlertBox.vue';
 import JetDialogModal from '@/Jetstream//DialogModal.vue';
 import JetInputError from '@/Jetstream/InputError.vue';
 import JetSecondaryButton from '@/Jetstream/SecondaryButton.vue';
+import vSelect from 'vue-select';
+import 'vue-select/dist/vue-select.css';
 
 const props = defineProps({
     order: Object,
@@ -40,6 +42,13 @@ const form = useForm({
     ref_customer: props.order[0].ref_customer,
     products: [],
 });
+const messageForm = useForm({
+   // order_id: props.order[0]?.id,
+    customer_id: props.order[0]?.customer_id,
+    order_key: props.order[0]?.order_key,
+    subject: "",
+    message: "",
+});
 
 var can_update = props.order[0]?.order_status == 1 ? true : false;
 const taxTable = reactive({
@@ -53,6 +62,7 @@ const renderComponent = ref(true);
 const formAdd = ref(true);
 var milestone = null;
 const openForm = ref(false);
+const openMessage = ref(false);
 const showAlert = ref(true);
 const oneLigne = reactive({
     product_id: 1,
@@ -208,7 +218,19 @@ const deleteOrder = () => {
         return;
 
     Inertia.delete(route('orders.destroy', props.order[0]?.id));
-}
+};
+
+const openMessageModal = () => { openMessage.value=true;};
+const sendMessage = () => {
+
+    messageForm.post(route('orders.sendmessage', props.order[0]?.id,), {
+        onSuccess: () => {
+            openMessage.value=false;
+        },
+        onError: (e) =>{ console.log(e);  openMessage.value=true;}
+    });
+
+};
 
 onMounted(() => {
 
@@ -246,6 +268,15 @@ onMounted(() => {
                     Nouvelle Facture
                     <span class="ml-2" aria-hidden="true">+</span>
                     </Link>
+                    <button @click="openMessageModal"
+                        class="flex ml-2 items-center justify-between w-30 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-slate-500 border border-transparent rounded-lg active:bg-slate-600 hover:bg-slate-700 focus:outline-none focus:shadow-outline-slate">
+                        Mail.
+                        <span class="ml-2" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                            </svg>
+                        </span>
+                    </button>
                     <a :href="'/invoices/'+props.order[0].order_key+'/'+props.order[0].id" target="_blank"
                         class="flex ml-2 items-center justify-between w-30 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-green-600 border border-transparent rounded-lg active:bg-green-600 hover:bg-green-700 focus:outline-none focus:shadow-outline-green">
                         Impr.
@@ -342,13 +373,16 @@ onMounted(() => {
                                 <div class="mt-4 flex gap-2 flex-col md:flex-row justify-between w-full">
                                     <div class="w-full lg:w-1/3">
 
-                                        <select class="mt-1 block w-full bg-gray-100 border-0 rounded"
+                                        <select class="hidden mt-1 w-full bg-gray-100 border-0 rounded"
                                             v-model="form.customer_id" @change="selectedCustomer()">
                                             <option :value="null"> Select Client</option>
                                             <template v-for="(item, index) in customers" :key="index">
                                                 <option :value="item.id"> {{ item.name }}</option>
                                             </template>
                                         </select>
+                                        <div class="mb-2">
+                                            <vSelect v-model="form.customer_id" :options="customers" :reduce="country => country.id" label="name" placeholder="Select. un Client" ></vSelect>
+                                        </div>
                                         <h4 class="mt-1 block w-full bg-gray-100 border-0 rounded p-2" title="Solde">
                                             {{ parseInt(form.solde)/100 }}</h4>
                                         <JetInput v-model="form.ref_customer" type="text"
@@ -452,8 +486,9 @@ onMounted(() => {
                                     <div class="w-full lg:w-1/2">
                                         <JetLabel for="description" value="Info Supplementaires" />
                                         <textarea id="description" rows="3" v-model="form.order_comment" type="text"
-                                            placeholder="Fill for extra information"
+                                            placeholder="Informations supplementaires"
                                             class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full"></textarea>
+                                    <small class="mt-2 text-indigo-900">Apparaitra sous la facture.</small>
                                     </div>
                                     <div class="py-2 ml-auto mt-3 w-full sm:w-2/4 lg:w-1/3">
                                         <div class="flex justify-between mb-3">
@@ -526,7 +561,15 @@ onMounted(() => {
 
             <JetDialogModal :show="openForm" @close="toogleForm">
                 <template #title>
-                    <h2 class="font-bold text-2xl mb-6 text-gray-800 border-b pb-2">Veuillez ajouter une ligne</h2>
+
+                    <h2 class="font-bold text-2xl mb-6 text-gray-800 border-b pb-2">
+                        <span class=" inline-block flex-1 mr-2" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+
+                        </span><span class=" inline-block">Veuillez ajouter une ligne</span>
+                    </h2>
                 </template>
 
                 <template #content>
@@ -592,6 +635,58 @@ onMounted(() => {
 
                     <JetButton v-if="!formAdd" class="ml-3" @click="addLigne">
                         Modifier
+                    </JetButton>
+                </template>
+            </JetDialogModal>
+
+            <!--Dialog of Messassage -->
+            <JetDialogModal :show="openMessage" @close="openMessage = !openMessage">
+                <template #title>
+
+                    <h2 class="font-bold text-2xl mb-6 text-gray-800 border-b pb-2">
+                        <span class=" inline-block flex-1 mr-2" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                            </svg>
+                        </span><span class=" inline-block">Envoyez un mail pour cette facture</span>
+                    </h2>
+                </template>
+
+                <template #content>
+
+                    <div class="w-full rounded-lg bg-white overflow-hidden  block ">
+
+                        <div class="mb-4">
+                            <label
+                                class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Objet</label>
+                            <JetInput v-model="messageForm.subject" type="text" placeholder="Ex: Precision FactureX-001 "
+                                class="mt-1 block w-full" />
+                        </div>
+                        <div class="mb-4">
+                            <label
+                                class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Message</label>
+                                 <textarea id="description" rows="3" v-model="messageForm.Message" type="text"
+                                            placeholder="Contenu du message"
+                                            class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full"></textarea>
+
+                        </div>
+
+                    </div>
+                </template>
+
+                <template #footer>
+                    <JetSecondaryButton @click="openMessage = !openMessage">
+                        Fermer
+                    </JetSecondaryButton>
+
+                    <JetButton class="ml-3" @click="sendMessage">
+                        <span class="flex-1 mr-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                            </svg>
+
+                        </span>
+                        Envoyer
                     </JetButton>
                 </template>
             </JetDialogModal>

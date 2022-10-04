@@ -63,6 +63,7 @@ Route::middleware([
         Route::resource('feedbacks', FeedbackController::class);
         Route::resource('payments', PaymentController::class);
 
+        Route::post('/orders/{order_id}/sendmessage', [OrderController::class,"sendMailtoCustomer"])->name('orders.sendmessage');
         Route::get('/orders/{order_id}/clone', [OrderController::class,"cloneOrder"])->name('orders.clone');
         Route::resource('orders', OrderController::class);
 

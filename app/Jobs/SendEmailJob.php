@@ -19,11 +19,13 @@ class SendEmailJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $id;
+   // protected $id;
+    protected $data;
 
-    public function __construct($id)
+    public function __construct(/*$id,*/ $data)
     {
-        $this->id =$id;
+       // $this->id =$id;
+        $this->$data =$data;
     }
 
     /**
@@ -33,8 +35,9 @@ class SendEmailJob implements ShouldQueue
      */
     public function handle()
     {
-            $order=  Order::withoutGlobalScopes()->findOrFail($this->id);
-            InvoiceActions::buildInvoice($order->id);
-            Mail::to('altest@gmail.com')->send(new OrderShipped($order));
+           /* $order=  Order::withoutGlobalScopes()->findOrFail($this->id);
+            InvoiceActions::buildInvoice($order->id);*/
+
+            Mail::to($this->data['email'])->send(new OrderShipped($this->data));
     }
 }
