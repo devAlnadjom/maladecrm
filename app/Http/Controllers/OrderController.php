@@ -67,15 +67,12 @@ class OrderController extends Controller
 
     public function edit($id)
     {
-        /*dispatch(new SendEmailJob ($id))
-            ->delay(now()->addMinutes(1));*/
 
         $order = Order::Where('id',$id)
                 ->with('products')
                 ->get();
 
         $customers= Customer::Select(['id','name','contact','solde'])
-                   // ->where('company_id',auth()->user()->company->id)
                     ->get();
 
 
@@ -117,11 +114,7 @@ class OrderController extends Controller
         return Redirect::route('orders.edit',$order->id)->with('success', "Facture clonée.");
     }
 
-    /**
-     * sendMailtoCustomer to Customer and attach invoice
-     *
-     * @Post {from:Name, Subject, Message, email:}
-     */
+
     public function sendMailtoCustomer( Request $request, int $order_id)
     {
         $order = Order::findOrFail($order_id);
@@ -133,7 +126,8 @@ class OrderController extends Controller
             'message'=> "string|required|max:300",
         ]);
 
-        //abort_if(( auth()->user()->company->id != $validated['company_id']) , '403');
+        abort_if(( $order->order_key != $validated['order_key']) , '403');
+
         $email = $order->customer->email;
         $data =[
             "from" => auth()->user()->company->name,
@@ -151,7 +145,6 @@ class OrderController extends Controller
         }
 
         $data = collect($data);
-        //dd($data);
         if($invoice){
             dispatch(new SendEmailJob($data))->afterResponse();
         }

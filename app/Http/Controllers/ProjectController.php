@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Project\StoreActivityRequest;
 use App\Http\Requests\StoreProjectRequest;
+use App\Http\Requests\StoreTaskRequest;
+use App\Models\Activity;
 use Inertia\Inertia;
 use App\Models\Project;
 use App\Models\Customer;
+use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
@@ -17,7 +21,7 @@ class ProjectController extends Controller
 
         return Inertia::render('Projects/Index', [
             'projects' => Project::Select(['id', 'project_name', 'project_theme', 'project_category','project_end_date','customer_id'])
-                        ->with('customer:id,name')
+                        ->with(['customer:id,name'])
                         ->withCount('Tasks')
                         ->paginate(9),
         ]);
@@ -52,13 +56,68 @@ class ProjectController extends Controller
 
     public function show(int $project, Request $request)
     {
-        $project = Project::findOrFail($project);
+        $project = Project::findOrFail($project)
+                    ->with('tasks')
+                    ->withCount('activities')->get();
 
+        //dd($project);
+        //$company = $project->company()->withoutGlobalScopes()->first();
+        //$tasks = $project->load('tasks');
+
+
+        return Inertia::render('Projects/Show', [
+            'project' => $project[0],
+            //'comments' => $comments,
+        ]);
+    }
+
+
+    public function edit(Project $project)
+    {
+        //
+    }
+
+
+    public function update(Request $request, Project $project)
+    {
+        //
+    }
+
+
+    public function destroy(Project $project)
+    {
+        //
+    }
+
+
+    public function storeTask(StoreTaskRequest $request)
+    {
+        $validated = $request->validated();
+        //dd($validated);
+        Task::create($validated);
+
+        return Redirect::back()->with('success', "Projet Ajoutee");
+    }
+
+    public function storeActivity(StoreActivityRequest $request)
+    {
+        $validated = $request->validated();
+        //dd($validated);
+        Activity::create($validated);
+
+        return Redirect::back()->with('success', "Projet Ajoutee");
+    }
+
+
+    public function showTask(int $project, int $task, Request $request)
+    {
+        $project = Project::findOrFail($project);
+        $task = Task::findOrFail($task)->with('activites');
         $company = $project->company()->withoutGlobalScopes()->first();
 
+        //$tasks = $project->load('tasks');
 
-        // dd($project);
-        if ($request->wantsJson()) {
+        /*if ($request->wantsJson()) {
             if ($request->has('view') && $request->get('view') == "invoices") {
                 $data = [
                     "invoices" => $project->orders()->latest()->where('order_status', '<>', '6')->take(30)->get(),
@@ -68,47 +127,12 @@ class ProjectController extends Controller
                 ];
                 return response()->json($data);
             }
-        }
-
-       //$comments = $project->customerLogs()->latest()->take(10)->get();
+        }*/
 
         return Inertia::render('Projects/Show', [
             'project' => $project,
+            'task' => $task,
             //'comments' => $comments,
         ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Project $project)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Project $project)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Project  $project
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Project $project)
-    {
-        //
     }
 }
