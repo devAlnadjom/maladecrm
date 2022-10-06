@@ -10,13 +10,15 @@ import JetLabel from '@/Jetstream/Label.vue';
 import JetValidationErrors from '@/Jetstream/ValidationErrors.vue';
 import JetActionMessage from '@/Jetstream/ActionMessage.vue';
 import AlertBox from '@/Jetstream/AlertBox.vue';
-
 import JetDialogModal from '@/Jetstream//DialogModal.vue';
+import vSelect from 'vue-select';
+import 'vue-select/dist/vue-select.css';
 
 const props = defineProps({
     project: Object,
 });
-const openCreateListe= ref(false);
+const openCreateListe = ref(false);
+const openCreateActivity = ref(false);
 
 const form = useForm({
     _method: "PUT",
@@ -33,9 +35,23 @@ const formTask = useForm({
     task_description: '',
     task_theme: 'Indigo',
     task_estimated_price: 0,
-    task_start_date:'',
+    task_start_date: '',
     task_due_date: '',
     task_done: false,
+    project_id: props.project?.id,
+});
+
+const formActivity = useForm({
+    activity_name: '',
+    activity_description: '',
+    activity_theme: 'Indigo',//
+    activity_priority: 1,
+    activity_estimated_price: 0,
+    activity_start_date: '',
+    activity_due_date: '',
+    activity_done: 0,
+    task_id: null,
+    project_id: props.project?.id,
 });
 console.log(props.project);
 const submit = () => {
@@ -45,8 +61,14 @@ const submit = () => {
 };
 
 const submitTask = () => {
-    formTask.post(route('project.storetask'/*, props.project?.id*/), {
-        //onFinish: () => form.reset(),
+    formTask.post(route('project.storeTask'), {
+        onSuccess: () => { openCreateListe.value = false; formTask.task_name = ""; formTask.task_description = ""; formTask.task_estimated_price = 0; },
+    });
+};
+
+const submitActivity = () => {
+    formActivity.post(route('project.storeActivity'), {
+        onSuccess: () => { openCreateActivity.value = false; formActivity.activity_name = ""; formActivity.activity_description = ""; formActivity.activity_estimated_price = 0; formActivity.task_id=null;},
     });
 };
 </script>
@@ -71,8 +93,10 @@ const submitTask = () => {
 
                     <div class="grid grid-cols-2 gap-4 md:flex md:gap-4 mt-3 text-gray-500 font-semibold">
                         <div class="text-sm flex gap-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
                             </svg>
 
@@ -100,24 +124,20 @@ const submitTask = () => {
                 </div>
 
                 <div class="flex flex-row justify-end max-h-10">
-                    <Link v-if="props.project.tasks.length > 0" :href="route('payments.create') + '?project_id=' + props.project.id"
+                    <button v-if="props.project.tasks.length > 0" @click="openCreateActivity = true"
                         class="flex items-center mx-2 justify-between w-42 px-4 py-2 text-sm font-medium leading-5 text-purple-600  hover:text-white transition-colors duration-150 border border-purple-600 rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                    Ajouter une Tache
-                    <span class="ml-2" aria-hidden="true">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 10.5v6m3-3H9m4.06-7.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
-                        </svg>
-                    </span>
-                    </Link>
+                        Ajouter une Tache
+                    </button>
                     <button @click="openCreateListe = true"
                         class="flex items-center justify-between w-42 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
                         <span class="mr-2" aria-hidden="true">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 10.5v6m3-3H9m4.06-7.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 10.5v6m3-3H9m4.06-7.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
                             </svg>
                         </span>
                         Creer une Liste
-
                     </button>
                 </div>
 
@@ -147,7 +167,8 @@ const submitTask = () => {
                                 <span> Information</span>
                             </div>
                             <span @click="open_comment = !open_comment"
-                            class="p-1 rounded text-indigo-500 hover:text-indigo-700 hover:bg-indigo-100 cursor-pointer" title="Modifier">
+                                class="p-1 rounded text-indigo-500 hover:text-indigo-700 hover:bg-indigo-100 cursor-pointer"
+                                title="Modifier">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor" stroke-width="1">
                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -160,8 +181,8 @@ const submitTask = () => {
                         <div class="mt-4 text-sm ">
                             <h4 class="font-bold text-gray-700">Description</h4>
                             <p class="">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                 Laudantium commodi ut, ea tenetur fuga consequatur fugit ipsum minus nam,
-                                  a nisi non? Distinctio eligendi deleniti nulla, dolore a quasi explicabo.</p>
+                                Laudantium commodi ut, ea tenetur fuga consequatur fugit ipsum minus nam,
+                                a nisi non? Distinctio eligendi deleniti nulla, dolore a quasi explicabo.</p>
                         </div>
 
                         <div class="mt-4 text-sm ">
@@ -170,7 +191,7 @@ const submitTask = () => {
                         </div>
 
                         <div class="mt-4 text-sm ">
-                            <h4 class=" text-gray-700">Date  ( Interval)</h4>
+                            <h4 class=" text-gray-700">Date ( Interval)</h4>
                             <div class="font-bold">
                                 <span> XX/XX/XXXX</span> - <span> XX/XX/XXX</span>
                             </div>
@@ -184,13 +205,17 @@ const submitTask = () => {
                     <div class="flex-1 p-6 rounded">
                         <div class="mt-4 w-full .text-sm md:flex ">
                             <h4 class="font-bold flex flex-1">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z" />
                                 </svg>
 
-<span class="ml-2 inline-block">Liste et Taches (0)</span></h4>
+                                <span class="ml-2 inline-block">Liste et Taches ({{props.project.tasks.length}})</span>
+                            </h4>
                             <span @click="openCreateListe = true"
-                            class="p-1 rounded text-indigo-500 hover:text-indigo-700 hover:bg-indigo-100 cursor-pointer" title="Nouvelle liste">
+                                class="p-1 rounded text-indigo-500 hover:text-indigo-700 hover:bg-indigo-100 cursor-pointer"
+                                title="Nouvelle liste">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor" stroke-width="1">
                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -199,7 +224,7 @@ const submitTask = () => {
                             </span>
 
                         </div>
-                        <div>
+                        <div v-if="props.project.tasks.length == 0">
                             <div class="mt-4  md:flex gap-8">
                                 <div class="md:w-4/5 p-2 bg-gray-200 animate-pulse rounded-lg"></div>
                                 <div class="flex-1 p-2 bg-gray-200 animate-pulse rounded-lg"></div>
@@ -213,6 +238,35 @@ const submitTask = () => {
                                 <div class="flex-1 p-2 bg-gray-200 animate-pulse rounded-lg"></div>
                             </div>
                         </div>
+
+                        <ul class="w-full mt-4">
+                            <Link v-for="task in props.project.tasks" :key="task.id">
+                            <div class="border-b hover:bg-gray-50 py-2 duration-200">
+                                <div class="flex justify-between px-2">
+                                    <div class="md:w-3/5"> {{task.task_name}}</div>
+                                    <div class="flex-1 flex justify-end">
+                                        <span class="p-1 text-sm  text-gray-500 hover:text-gray-700 mr-2 rounded"
+                                            title="Ajouter une Tache">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </span>
+                                        <span class="p-1 text-sm bg-blue-100 text-blue-700 mr-2 rounded">03 Tasks</span>
+                                        <span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="text-gray-700 w-6 h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            </Link>
+                        </ul>
 
                     </div>
                 </div>
@@ -225,11 +279,7 @@ const submitTask = () => {
                 <template #title>
 
                     <h2 class="font-bold text-2xl mb-6 text-gray-800 border-b pb-2">
-                        <span class=" inline-block flex-1 mr-2" aria-hidden="true">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                            </svg>
-                        </span><span class=" inline-block">Creer une nouvelle Liste</span>
+                        <span class="inline-block">Creer une nouvelle Liste</span>
                     </h2>
                 </template>
 
@@ -238,40 +288,40 @@ const submitTask = () => {
                     <div class="w-full rounded-lg bg-white overflow-hidden  block ">
 
                         <div class="mb-4">
-                            <label
-                                class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Nom </label>
-                            <JetInput  type="text" v-model="formTask.task_name" placeholder="Ex: Precision FactureX-001 "
+                            <label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Nom
+                            </label>
+                            <JetInput type="text" v-model="formTask.task_name" placeholder="Ex: ToDo "
                                 class="mt-1 block w-full" />
                         </div>
                         <div class="mb-4">
                             <label
                                 class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Description</label>
-                                 <textarea id="description" rows="3" type="text" v-model="formTask.task_description"
-                                            placeholder="Contenu du message"
-                                            class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full"></textarea>
+                            <textarea id="description" rows="3" type="text" v-model="formTask.task_description"
+                                placeholder="Description..."
+                                class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full"></textarea>
 
                         </div>
 
                         <div class="md:grid grid-cols-2 gap-2">
-                        <div class="mb-2">
-                            <label
-                                class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Date Debut </label>
-                            <JetInput  type="date" v-model="formTask.task_start_date" placeholder="Ex: Precision FactureX-001 "
-                                class="mt-1 block w-full" />
-                        </div>
-                        <div class="mb-2">
-                            <label
-                                class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Date Fin </label>
-                            <JetInput  type="date" v-model="formTask.task_due_date" placeholder="Ex: Precision FactureX-001 "
-                                class="mt-1 block w-full" />
-                        </div>
+                            <div class="mb-2">
+                                <label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Date
+                                    Debut </label>
+                                <JetInput type="date" v-model="formTask.task_start_date"
+                                    placeholder="Ex: Precision FactureX-001 " class="mt-1 block w-full" />
+                            </div>
+                            <div class="mb-2">
+                                <label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Date
+                                    Fin </label>
+                                <JetInput type="date" v-model="formTask.task_due_date"
+                                    placeholder="Ex: Precision FactureX-001 " class="mt-1 block w-full" />
+                            </div>
 
-                        <div class="mb-4">
-                            <label
-                                class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Prix </label>
-                            <JetInput  type="number" v-model="formTask.task_estimated_price" placeholder="Ex: Precision FactureX-001 "
-                                class="mt-1 block w-full" />
-                        </div>
+                            <div class="mb-4">
+                                <label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Prix
+                                </label>
+                                <JetInput type="number" v-model="formTask.task_estimated_price"
+                                    placeholder="Ex: Precision FactureX-001 " class="mt-1 block w-full" />
+                            </div>
                         </div>
 
                     </div>
@@ -284,12 +334,91 @@ const submitTask = () => {
 
                     <JetButton class="ml-3" @click="submitTask">
                         <span class="flex-1 mr-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                            </svg>
+
+
+                        </span>
+                        Ajouter
+                    </JetButton>
+                </template>
+            </JetDialogModal>
+
+
+            <!--Dialog of New Activity -->
+            <JetDialogModal :show="openCreateActivity" @close="openCreateActivity = !openCreateActivity">
+                <template #title>
+
+                    <h2 class="font-bold text-2xl mb-6 text-gray-800 border-b pb-2">
+                        <span class="inline-block">Nouvelle Tache</span>
+                    </h2>
+                </template>
+
+                <template #content>
+
+                    <div class="w-full rounded-lg bg-white overflow-hidden  block ">
+
+                        <div class="mb-4">
+                            <label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Nom
+                            </label>
+                            <JetInput type="text" v-model="formActivity.activity_name" placeholder="Ex: ToDo "
+                                class="mt-1 block w-full" />
+                        </div>
+                        <div class="mb-4">
+                            <label
+                                class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Description</label>
+                            <textarea id="description" rows="3" type="text" v-model="formActivity.activity_description"
+                                placeholder="Description..."
+                                class="border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full"></textarea>
+
+                        </div>
+                        <div class="mb-4">
+                                <label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Liste
+                                </label>
+                                <vSelect v-model="formActivity.task_id" :options="props.project.tasks" :reduce="task => task.id" label="task_name" placeholder="Select. Liste" ></vSelect>
+                        </div>
+                        <div class="md:grid grid-cols-2 gap-2">
+                            <div class="mb-2">
+                                <label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Date
+                                    Debut </label>
+                                <JetInput type="date" v-model="formActivity.activity_start_date"
+                                    placeholder="Ex: Precision FactureX-001 " class="mt-1 block w-full" />
+                            </div>
+                            <div class="mb-2">
+                                <label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Date
+                                    Fin </label>
+                                <JetInput type="date" v-model="formActivity.activity_due_date"
+                                    placeholder="Ex: Precision FactureX-001 " class="mt-1 block w-full" />
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="text-gray-800 block mb-1 font-bold text-sm uppercase tracking-wide">Prix
+                                </label>
+                                <JetInput type="number" v-model="formActivity.activity_estimated_price"
+                                    placeholder="Ex: Precision FactureX-001 " class="mt-1 block w-full" />
+                            </div>
+
+                        </div>
+
+                    </div>
+                </template>
+
+                <template #footer>
+                    <JetSecondaryButton @click="openCreateActivity = !openCreateActivity">
+                        Fermer
+                    </JetSecondaryButton>
+
+                    <JetButton class="ml-3" @click="submitActivity">
+                        <span class="flex-1 mr-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                             </svg>
 
                         </span>
-                        Envoyer
+                        Ajouter
                     </JetButton>
                 </template>
             </JetDialogModal>

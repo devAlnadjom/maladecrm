@@ -28,7 +28,7 @@ class StoreTaskRequest extends FormRequest
             "company_id"=>"numeric",
             "user_id"=>"numeric",
             "project_id"=>"numeric|nullable",
-            'task_priority' => 1,
+            'task_priority' => 'nullable|numeric',
         ];
     }
 
@@ -38,7 +38,7 @@ class StoreTaskRequest extends FormRequest
             'task_done' => false,
             'task_priority' => 1,
             'company_id' => auth()->user()->company->id,
-            'user_id' => auth()->user()->id,
+            'user_id' => auth()->user()->id
         ]);
     }
 }

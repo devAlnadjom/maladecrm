@@ -24,7 +24,7 @@ class StoreActivityRequest extends FormRequest
             "activity_estimated_price"=> 'numeric',//
             "activity_start_date"=> 'date|nullable',//
             "activity_due_date"=> 'date|nullable',//
-            "activity_done"=> 'numeric',//
+            "activity_done"=> 'nullable|numeric',//
 
             "company_id"=>"numeric",//
             "user_id"=>"numeric",//
