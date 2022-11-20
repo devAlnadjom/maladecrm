@@ -3,6 +3,7 @@ import './bootstrap';
 import {createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/inertia-vue3';
 import { InertiaProgress } from '@inertiajs/progress';
+import { modal } from "momentum-modal"
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'MALADECRM';
 
@@ -11,6 +12,9 @@ createInertiaApp({
     resolve: (name) => require(`./Pages/${name}.vue`),
     setup({ el, app, props, plugin }) {
         return createApp({ render: () => h(app, props) })
+            .use(modal, {
+                resolve: (name) => import(`./Pages/${name}`),
+            })
             .use(plugin)
             .mixin({ methods: { route } })
             .mount(el);

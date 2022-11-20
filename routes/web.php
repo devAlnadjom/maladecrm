@@ -78,6 +78,7 @@ Route::middleware([
     Route::resource('companies', CompanyController::class);
 
 
+    Route::get('/dashboard/show', [DashboardController::class,'adminShow'])->name('dashboard.show');
     Route::get('/dashboard/userlist', [DashboardController::class,'adminManagement'])->name('dashboard.userlist');
 
     Route::get('admin/link', function () {

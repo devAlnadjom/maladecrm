@@ -48,4 +48,16 @@ class DashboardController extends Controller
             'users' => $users,
         ]);
     }
+
+    public function adminShow(){
+        // abort_if(auth()->id() != 1, 404, 'Unauthorise');
+        $users = User::With(['company:id,name'])
+            ->paginate(10);
+
+            return Inertia::modal('Management/UserList')
+            ->with([
+                'user' => ["hello"=>'some'],
+            ])
+            ->baseRoute('dashboard.userlist',null);
+    }
 }

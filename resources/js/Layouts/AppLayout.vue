@@ -8,6 +8,7 @@ import JetDropdown from '@/Jetstream/Dropdown.vue';
 import JetDropdownLink from '@/Jetstream/DropdownLink.vue';
 import JetNavLink from '@/Jetstream/NavLink.vue';
 import JetResponsiveNavLink from '@/Jetstream/ResponsiveNavLink.vue';
+import { Modal } from 'momentum-modal'
 
 defineProps({
     title: String,
@@ -538,6 +539,7 @@ const logout = () => {
                     </div>
 
                 </main>
+                <Modal />
             </div>
 
 
