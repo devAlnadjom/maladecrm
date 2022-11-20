@@ -236,7 +236,7 @@ const pieConfig = {
                     Bienvenue
                 </h2>
                 <span @click="showModal()"
-                    class=" cursor-pointer flex items-center mx-2 justify-between w-58 px-4 py-2 text-sm font-medium leading-5 text-purple-600  hover:text-white transition-colors duration-150 border border-purple-600 rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+                    class=" cursor-pointer flex items-center mx-2 justify-between w-58 px-4 py-2 text-sm font-medium leading-5 text-white bg-purple-700 hover:text-purple-600 transition-colors duration-150 border border-purple-600 rounded-lg active:bg-white-600 hover:bg-white focus:outline-none focus:shadow-outline-purple  animate-pulse hover:animate-none">
                     Suggestions, Beugs, Remarques?
 
                 </span>

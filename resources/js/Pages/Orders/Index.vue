@@ -8,13 +8,12 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import AlertBox from '@/Jetstream/AlertBox.vue';
 import Pagination from '../../Jetstream/Pagination.vue';
 import OrderStatusBadge from '../../Components/OrderStatusBadge.vue';
+import Helper from '@/helper.js'
 defineProps({
     orders: Object,
 });
 
-const  formatMoney=(number) =>{
-   return  number.toLocaleString('en-US') +' XAF';
-};
+
 const showAlert =ref(true);
 
 onMounted(() =>{
@@ -83,8 +82,7 @@ onMounted(() =>{
                                     <OrderStatusBadge :status="order?.order_status"></OrderStatusBadge>
                                 </td>
                                 <td class="px-6 py-2">
-
-                                    {{ formatMoney(order?.ttc_total_order/100)}}
+                                    {{ Helper.formatMoney(order?.ttc_total_order/100)}}
                                 </td>
                                 <td class="px-6 py-2 text-right">
                                     <div class="md:flex md:items-end">

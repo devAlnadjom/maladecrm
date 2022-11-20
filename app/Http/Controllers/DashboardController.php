@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\Dashboard\DashboardData;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\User;
 
 class DashboardController extends Controller
 {
@@ -36,6 +37,15 @@ class DashboardController extends Controller
             'solde' => isset($solde)?$solde:0,
             'lastproducts' => isset($lastproduct)?$lastproduct:0,
             'statsale' => isset($statsale)?$statsale:[],
+        ]);
+    }
+
+    public function adminManagement(){
+        abort_if(auth()->id() != 1, 404, 'Unauthorise');
+        $users = User::With(['company:id,name'])
+            ->paginate(10);
+        return Inertia::render('Management/UserList',[
+            'users' => $users,
         ]);
     }
 }

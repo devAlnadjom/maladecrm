@@ -9,14 +9,13 @@ import Pagination from '../../Jetstream/Pagination.vue';
 import UserAdd from '../../Components/Icons/UserAdd.vue';
 import AddIcon from '../../Components/Icons/AddIcon.vue';
 import UsersIcon from '../../Components/Icons/UsersIcon.vue';
+import Helper from '@/helper.js'
 
 defineProps({
     customers: Object,
 });
 
-const formatMoney = (number) => {
-    return 'XAF ' + number.toLocaleString('en-US');
-};
+
 /*const logout = () => {
     Inertia.post(route('logout'));
 };*/
@@ -71,10 +70,10 @@ const formatMoney = (number) => {
                                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ customer?.contact }}</td>
                                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                                     <span v-if="customer?.solde > 500" class="inline-flex items-center rounded-full bg-red-100 px-3 py-0.5 text-sm font-medium text-red-800">
-                                                        {{ formatMoney(customer?.solde / 100) }}
+                                                        {{ Helper.formatMoney(customer?.solde / 100) }}
                                                     </span>
                                                     <span v-if="customer?.solde <= 500" class="inline-flex items-center rounded-full bg-green-100 px-3 py-0.5 text-sm font-medium text-green-800">
-                                                        {{ formatMoney(customer?.solde / 100) }}
+                                                        {{ Helper.formatMoney(customer?.solde / 100) }}
                                                     </span>
                                                 </td>
                                                 <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
