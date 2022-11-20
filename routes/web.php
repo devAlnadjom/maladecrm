@@ -59,6 +59,10 @@ Route::middleware([
 
         Route::get('/company/kanban', [CompanyController::class,"kanban"])->name('company.kanban');
         Route::get('/company/settings', [CompanyController::class,"my_company"])->name('company.settings');
+
+        Route::post('/projects/storetactivity', [ProjectController::class,"storeActivity"])->name('project.storeActivity');
+        Route::post('/projects/storetask', [ProjectController::class,"storeTask"])->name('project.storeTask');
+
         Route::resource('projects', ProjectController::class);
         Route::resource('feedbacks', FeedbackController::class);
         Route::resource('payments', PaymentController::class);

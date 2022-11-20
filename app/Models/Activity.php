@@ -6,9 +6,9 @@ use App\Traits\FilterByCompany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Task extends Model
+class Activity extends Model
 {
-    use HasFactory,FilterByCompany;
+    use HasFactory, FilterByCompany;
 
     protected $guarded = [];
 
@@ -20,7 +20,7 @@ class Task extends Model
         return $this->belongsTo(Project::class);
     }
 
-    public function activities(){
-        return $this->hasMany(Activity::class);
+    public function task(){
+        return  $this->belongsTo(Task::class);
     }
 }

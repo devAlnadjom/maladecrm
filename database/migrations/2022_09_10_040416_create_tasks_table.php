@@ -23,7 +23,7 @@ return new class extends Migration
             $table->mediumText("task_description")->nullable();
             $table->integer("task_priority")->default(1); // 1-Low , 2, 3 High
 
-            $table->string("task_theme")->nullable(); // Color
+            $table->string("task_theme")->nullable();
             $table->string("task_done")->boolean()->default(false); // Color
             $table->integer("task_estimated_price")->default(0);
             $table->date("task_start_date")->nullable();

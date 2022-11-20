@@ -24,5 +24,7 @@ class Project extends Model
         return $this->belongsTo(Customer::class);
     }
 
-
+    public function activities(){
+        return $this->hasMany(Activity::class);
+    }
 }
